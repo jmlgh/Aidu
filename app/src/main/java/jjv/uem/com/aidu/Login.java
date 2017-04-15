@@ -1,9 +1,13 @@
 package jjv.uem.com.aidu;
 
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -11,12 +15,38 @@ public class Login extends AppCompatActivity {
 
     private FirebaseAuth auth;
     private FirebaseAuth.AuthStateListener authStateListener;
+    private TextView tvLogo, tvRegister;
+    private EditText etUserName, etPwd;
+    private Button btnLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        initViews();
+        setTypeFace();
+        initFirebase();
+    }
+
+    private void initViews() {
+        etUserName = (EditText) findViewById(R.id.et_username);
+        etPwd = (EditText) findViewById(R.id.et_password);
+        tvLogo = (TextView) findViewById(R.id.tv_logo);
+        tvRegister = (TextView) findViewById(R.id.tv_register);
+        btnLogin = (Button) findViewById(R.id.btn_login);
+    }
+
+    private void setTypeFace() {
+        Typeface bubblerFont = Typeface.createFromAsset(getAssets(), "fonts/BubblerOne-Regular.ttf");
+        tvLogo.setTypeface(bubblerFont);
+        tvRegister.setTypeface(bubblerFont);
+        etUserName.setTypeface(bubblerFont);
+        etPwd.setTypeface(bubblerFont);
+        btnLogin.setTypeface(bubblerFont);
+    }
+
+    private void initFirebase() {
         // inicializa el listner para la autentificacion
         auth = FirebaseAuth.getInstance();
         authStateListener = new FirebaseAuth.AuthStateListener() {
