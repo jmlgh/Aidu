@@ -4,6 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="jjv.uem.com.aidu.Chats">
+    tools:context="jjv.uem.com.aidu.UI.Chats">
 
 </android.support.constraint.ConstraintLayout>

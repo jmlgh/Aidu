@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "78091639469-3ri0arlmmds9jg61pn2lop1vb05ejjj0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "jjv.uem.com.aidu",
+            "certificate_hash": "00258b1bb638e968e6dc3d8cf0878ece602f8f0a"
+          }
+        },
+        {
           "client_id": "78091639469-n2jllavtq7b1lbatain90k7veou7clud.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

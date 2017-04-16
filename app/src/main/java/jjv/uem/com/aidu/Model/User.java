@@ -1,0 +1,24 @@
+package jjv.uem.com.aidu.Model;
+
+/**
+ * Created by Victor on 16/04/2017.
+ */
+
+public class User {
+
+    /*
+    |-NOMBRE
+|-EMAIL
+|-VALORACIÓN MEDIA
+|-SALDO DE PUNTOS
+|-UBICACIÓN HABITUAL
+|-FOTO PERFIL
+|-LISTA VALORACIONES - PUNTUACIÓN
+			|-------VALORACIÓN (COMENTARIO)
+			|-------USUARIO QUE HA REALIZADO - NOMBRE Y KEY
+|-COMUNIDADES
+|-KEY COMUNIDAD
+|-USUARIOS FAVS
+|-KEY USUARIO
+     */
+}
