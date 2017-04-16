@@ -83,6 +83,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:background="@drawable/boton_redondo"
+            android:onClick="login"
             android:text="@string/login_btn_login"
             android:textColor="@android:color/white"
             android:textSize="24sp"

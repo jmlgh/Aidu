@@ -5,4 +5,9 @@
     <string name="login_tv_pwd">Password</string>
     <string name="login_btn_login">Sign In</string>
     <string name="login_tv_register">Sign up here!</string>
+    <string name="login_toast_creden">Write your username and password to sign in!</string>
+    <string name="incorrect_email">email is not valid</string>
+    <string name="incorrect_pwd">Password is not valid</string>
+    <string name="wrong_mail_format">mail has wrong format</string>
+    <string name="auth_failed">Something went wrong!</string>
 </resources>
