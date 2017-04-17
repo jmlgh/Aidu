@@ -8,7 +8,7 @@
     tools:context="jjv.uem.com.aidu.UI.Login">
 
     <TextView
-        android:id="@+id/tv_logo"
+        android:id="@+id/r_tv_logo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -23,7 +23,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/tv_logo"
+        android:layout_below="@id/r_tv_logo"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginBottom="10dp"
@@ -57,7 +57,7 @@
                     android:layout_marginTop="10dp"
                     android:ems="10"
                     android:hint="@string/login_tv_user"
-                    android:inputType="textPersonName"
+                    android:inputType="textEmailAddress"
                     android:textAlignment="center"
                     android:textSize="24sp"
                     android:textStyle="bold" />

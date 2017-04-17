@@ -46,18 +46,18 @@ public class Login extends AppCompatActivity {
     private void initViews() {
         etUserName = (EditText) findViewById(R.id.et_username);
         etPwd = (EditText) findViewById(R.id.et_password);
-        tvLogo = (TextView) findViewById(R.id.tv_logo);
+        tvLogo = (TextView) findViewById(R.id.r_tv_logo);
         tvRegister = (TextView) findViewById(R.id.tv_register);
-        btnLogin = (Button) findViewById(R.id.btn_login);
 
-        btnLogin.setOnClickListener(new View.OnClickListener() {
+        tvRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getBaseContext(),MainActivity.class);
-
-                startActivity(intent);
+                Intent i = new Intent(Login.this, Register.class);
+                startActivity(i);
             }
         });
+
+        btnLogin = (Button) findViewById(R.id.btn_login);
     }
 
     private void setTypeFace() {
@@ -77,7 +77,8 @@ public class Login extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser usuarioActual = firebaseAuth.getCurrentUser();
                 if(usuarioActual != null){
-                    Log.d("LOGEO: ", "OK!");
+                    Log.d("LOGEO: ", "OK! -> " + usuarioActual.getEmail());
+                    finish();
                 }else{
                     Log.d("LOGEO: ", "ERROR!");
                 }
@@ -142,10 +143,5 @@ public class Login extends AppCompatActivity {
         if(authStateListener != null){
             auth.removeAuthStateListener(authStateListener);
         }
-    }
-
-    @Override
-    public void onBackPressed() {
-        finishAffinity();
     }
 }
