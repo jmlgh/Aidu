@@ -1,4 +1,4 @@
-package jjv.uem.com.aidu;
+package jjv.uem.com.aidu.UI;
 
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -17,6 +17,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import jjv.uem.com.aidu.R;
 
 public class Login extends AppCompatActivity {
 
@@ -47,6 +49,15 @@ public class Login extends AppCompatActivity {
         tvLogo = (TextView) findViewById(R.id.tv_logo);
         tvRegister = (TextView) findViewById(R.id.tv_register);
         btnLogin = (Button) findViewById(R.id.btn_login);
+
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getBaseContext(),MainActivity.class);
+
+                startActivity(intent);
+            }
+        });
     }
 
     private void setTypeFace() {
