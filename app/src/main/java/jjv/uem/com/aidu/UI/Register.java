@@ -140,4 +140,5 @@ public class Register extends AppCompatActivity {
             auth.removeAuthStateListener(authStateListener);
         }
     }
+
 }
