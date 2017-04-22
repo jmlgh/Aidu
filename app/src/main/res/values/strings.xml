@@ -18,4 +18,10 @@
     <string name="incorrect_pwd">Incorrect password. Try again!</string>
     <string name="wrong_mail_format">Mail has wrong format</string>
     <string name="auth_failed">Something went wrong! Please try again or contact us</string>
+    <string name="title_activity_main2">Main2Activity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
 </resources>
