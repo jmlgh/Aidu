@@ -12,15 +12,19 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+
 import jjv.uem.com.aidu.R;
 
-public class Login extends AppCompatActivity {
+public class Login extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
     private static final String ERROR_PWD_INCORRECTA = "com.google.firebase.auth.FirebaseAuthInvalidCredentialsException: The password is invalid or the user does not have a password.";
     private static final String ERROR_MAIL_NO_EXISTENTE = "com.google.firebase.auth.FirebaseAuthInvalidUserException: There is no user record corresponding to this identifier. The user may have been deleted.";
@@ -32,6 +36,7 @@ public class Login extends AppCompatActivity {
     private TextView tvLogo, tvRegister;
     private EditText etUserName, etPwd;
     private Button btnLogin;
+    private GoogleApiClient googleApiClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +46,16 @@ public class Login extends AppCompatActivity {
         initViews();
         setTypeFace();
         initFirebase();
+        initGoogleSignIn();
+    }
+
+    private void initGoogleSignIn() {
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+
+        /* INCOMPLETO */
+
     }
 
     private void initViews() {
@@ -143,5 +158,10 @@ public class Login extends AppCompatActivity {
         if(authStateListener != null){
             auth.removeAuthStateListener(authStateListener);
         }
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
     }
 }

@@ -4,7 +4,7 @@
     <string name="login_tv_user">Email</string>
     <string name="login_tv_pwd">Password</string>
     <string name="login_btn_login">Sign In</string>
-    <string name="login_tv_register">Sign up here!</string>
+    <string name="login_tv_register">No account? Create one!</string>
     <string name="register_btn_register">Create account</string>
     <string name="register_hint_username">Username</string>
     <string name="register_hint_email">Email</string>
