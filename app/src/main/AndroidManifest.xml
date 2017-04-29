@@ -23,12 +23,13 @@
         <activity
             android:name=".UI.Login"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".UI.Chats" />
         <activity
             android:name=".UI.Register"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".UI.ServiceView"></activity>
     </application>
 
 </manifest>
