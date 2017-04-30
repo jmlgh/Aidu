@@ -24,4 +24,12 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+    <string name="service_points">000p</string>
+    <string name="type_service">Type Service</string>
+    <string name="user_name">User name</string>
+    <string name="details">Details</string>
+    <string name="no_service_details">No service details</string>
+    <string name="dd_mm_yyyy_hh_mm">DD/MM/YYYY HH:MM</string>
+    <string name="location">Location</string>
+    <string name="send_message">Send message</string>
 </resources>

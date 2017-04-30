@@ -128,6 +128,9 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
             @Override
             public void onItemClick(Service item) {
                 //TODO LISTENER DEL RECYCLER VIEW
+
+                Intent i = new Intent(getBaseContext(),ServiceView.class);
+                startActivity(i);
             }
         };
         return listener;
