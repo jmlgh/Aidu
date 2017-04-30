@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimaryBackground"
+    android:background="@color/colorPrimaryDark"
     tools:context="jjv.uem.com.aidu.UI.Login">
 
     <!-- Dummy item to prevent AutoCompleteTextView from receiving focus -->
@@ -13,17 +13,18 @@
         android:focusableInTouchMode="true"
         android:layout_width="0px"
         android:layout_height="0px"/>
+
     <TextView
         android:id="@+id/r_tv_logo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="30dp"
         android:text="@string/login_tv_logo"
         android:textAlignment="center"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="80sp"
+        android:textColor="@color/colorPrimaryBackground"
+        android:textSize="100sp"
         android:textStyle="bold" />
 
     <LinearLayout
@@ -105,17 +106,38 @@
             android:onClick="login"
             android:text="@string/login_btn_login"
             android:textColor="@android:color/white"
-            android:textSize="24sp"
+            android:textSize="35sp"
             android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_signinalt"
+            android:layout_marginStart="120dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/login_signinalt"
+            android:textSize="20sp"
+            android:textColor="@android:color/white"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="120dp"/>
+
+        <ImageView
+            android:contentDescription="@string/login_contentDesc"
+            android:id="@+id/iv_google_signin_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_google_login"
+            android:layout_marginStart="150dp"
+            android:layout_marginLeft="150dp"
+            android:layout_marginTop="10dp"/>
 
         <TextView
             android:id="@+id/tv_register"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="55dp"
+            android:layout_marginTop="40dp"
             android:text="@string/login_tv_register"
             android:textAlignment="center"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@color/colorPrimaryBackground"
             android:textSize="24sp"
             android:textStyle="bold" />
 
