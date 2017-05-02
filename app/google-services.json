@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "78091639469",
+    "firebase_url": "https://aidu-195e7.firebaseio.com",
+    "project_id": "aidu-195e7",
+    "storage_bucket": "aidu-195e7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:78091639469:android:05d7823f4436ec48",
+        "android_client_info": {
+          "package_name": "jjv.uem.com.aidu"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "78091639469-3ri0arlmmds9jg61pn2lop1vb05ejjj0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "jjv.uem.com.aidu",
+            "certificate_hash": "00258b1bb638e968e6dc3d8cf0878ece602f8f0a"
+          }
+        },
+        {
+          "client_id": "78091639469-n2jllavtq7b1lbatain90k7veou7clud.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "jjv.uem.com.aidu",
+            "certificate_hash": "b4c4b8c9053129ce22298bdae97ca7bc295dac6a"
+          }
+        },
+        {
+          "client_id": "78091639469-gi5hkerek8ojr185uep14df68jl81bmi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBbTj0QRGAZF70QxnLBahDI7rbk-k3Zijc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "78091639469-gi5hkerek8ojr185uep14df68jl81bmi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

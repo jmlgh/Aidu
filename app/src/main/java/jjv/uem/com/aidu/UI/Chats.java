@@ -1,15 +1,15 @@
-package jjv.uem.com.aidu;
+package jjv.uem.com.aidu.UI;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class MainActivity extends AppCompatActivity {
+import jjv.uem.com.aidu.R;
+
+public class Chats extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        String nombre;
-
+        setContentView(R.layout.activity_chats);
     }
 }

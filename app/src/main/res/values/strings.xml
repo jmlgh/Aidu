@@ -1,3 +1,27 @@
 <resources>
     <string name="app_name">Aidu</string>
+    <string name="login_tv_logo">AIDU</string>
+    <string name="login_tv_user">Email</string>
+    <string name="login_tv_pwd">Password</string>
+    <string name="login_btn_login">Sign In</string>
+    <string name="login_tv_register">Sign up here!</string>
+    <string name="register_btn_register">Create account</string>
+    <string name="register_hint_username">Username</string>
+    <string name="register_hint_email">Email</string>
+    <string name="register_hint_pwd">Password</string>
+    <string name="register_toast_enterallfields">Please complete all fields to create a new account</string>
+    <string name="register_toast_password_length">The password must have at least 6 characters</string>
+    <string name="register_toast_bad_format_email">The email address is badly formatted</string>
+    <string name="register_toast_email_in_use">The email address is already in use</string>
+    <string name="login_toast_creden">Write your username and password to sign in!</string>
+    <string name="incorrect_email">Mail is not valid</string>
+    <string name="incorrect_pwd">Incorrect password. Try again!</string>
+    <string name="wrong_mail_format">Mail has wrong format</string>
+    <string name="auth_failed">Something went wrong! Please try again or contact us</string>
+    <string name="title_activity_main2">Main2Activity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
 </resources>
