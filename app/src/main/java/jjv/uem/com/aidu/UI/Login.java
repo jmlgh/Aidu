@@ -77,6 +77,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         tvLogo = (TextView) findViewById(R.id.r_tv_logo);
         tvRegister = (TextView) findViewById(R.id.tv_register);
         tvAltLogin = (TextView) findViewById(R.id.tv_signinalt);
+
         ivGoogleSignInButton = (ImageView) findViewById(R.id.iv_google_signin_button);
 
         ivGoogleSignInButton.setOnClickListener(new View.OnClickListener() {

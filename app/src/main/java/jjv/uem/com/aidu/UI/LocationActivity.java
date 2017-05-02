@@ -21,6 +21,7 @@ public class LocationActivity extends FragmentActivity implements OnMapReadyCall
     private double lat;
     private double lon;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
