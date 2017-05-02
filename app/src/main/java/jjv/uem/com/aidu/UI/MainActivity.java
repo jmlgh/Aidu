@@ -19,6 +19,7 @@ import android.view.View;
 import android.widget.TextView;
 
 
+import com.google.android.gms.auth.api.Auth;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -32,6 +33,8 @@ import jjv.uem.com.aidu.util.TextViewCustom;
 
 public class MainActivity extends AppCompatActivity  implements NavigationView.OnNavigationItemSelectedListener{
 
+    private static final String TAG = MainActivity.class.getSimpleName();
+
     private FirebaseAuth auth;
     private FirebaseAuth.AuthStateListener authListener;
     private ArrayList<Service>services = new ArrayList<>();
@@ -39,26 +42,30 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     private Service_Adapter_RV.OnItemClickListener l;
     private Service_Adapter_RV adapter;
 
-    private static final String TAG = MainActivity.class.getSimpleName();
+    private TextView navUserName, navUserEmail;
+    private View headerView;
+    NavigationView navigationView;
+    private FirebaseUser usuarioLogeado;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         // control de usuario, si no hay usuario activo abre el login
         auth = FirebaseAuth.getInstance();
         authListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
+                usuarioLogeado = firebaseAuth.getCurrentUser();
                 // si existe el usuario
-                if(user != null){
+                if(usuarioLogeado != null){
                     try{
-                        Log.d("USR: ", user.getDisplayName());
+                        Log.d("USR: ", usuarioLogeado.getDisplayName());
+                        Log.d("MAIL: ", usuarioLogeado.getEmail());
+
                     } catch (NullPointerException e){
-                        Log.d("USR:" , "No display name for: " + user.getEmail());
+                        Log.d("USR:" , "No display name for: " + usuarioLogeado.getEmail());
                     }
                 }
                 // si el usuario no existe abre la pantalla de Login
@@ -73,10 +80,8 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         //App bar
         Toolbar toolbar = (Toolbar) findViewById(R.id.appbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Services");
+        getSupportActionBar().setTitle("");
         applyFont(toolbar);
-
-
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -84,8 +89,12 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        headerView = navigationView.getHeaderView(0);
+        // views para el panel lateral
+        navUserName = (TextView) headerView.findViewById(R.id.nav_username);
+        navUserEmail = (TextView) headerView.findViewById(R.id.nav_usermail);
 
         recyclerView = (RecyclerView) findViewById(R.id.lstLista);
         Service s;
@@ -102,7 +111,11 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
 
         recyclerView.setAdapter(adapter);
 
-
+        // configura el menu lateral con el nombre de usuario y el email
+        if(auth.getCurrentUser() != null){
+            navUserName.setText(auth.getCurrentUser().getDisplayName());
+            navUserEmail.setText(auth.getCurrentUser().getEmail());
+        }
 
     }
 
@@ -114,7 +127,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
             View view = toolbar.getChildAt(i);
             if(view instanceof TextView){
                 tv = (TextView) view;
-                  if(tv.getText().equals(toolbar.getTitle())){
+                  if(tv.getText().equals(getString(R.string.toolbar_title_services))){
                       Log.i(TAG, "i value : "+i);
                     tv.setTypeface(titleFont);
                     break;
@@ -128,6 +141,8 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
             @Override
             public void onItemClick(Service item) {
                 //TODO LISTENER DEL RECYCLER VIEW
+                Intent i = new Intent(getBaseContext(),ServiceView.class);
+                startActivity(i);
             }
         };
         return listener;
@@ -141,6 +156,8 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         // cuando se inicia la actividad se añade el listener
         super.onStart();
         auth.addAuthStateListener(authListener);
+
+
     }
 
     @Override
@@ -157,17 +174,17 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.nav_my_services) {
             // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.nav_communities) {
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_chats) {
 
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.nav_settings) {
 
-        } else if (id == R.id.nav_share) {
+        } else if (id == R.id.nav_about_us) {
 
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.nav_exit) {
 
         }
 
@@ -203,7 +220,9 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
+            // firebase sign out
             FirebaseAuth.getInstance().signOut();
+            auth.signOut();
             super.onBackPressed();
         }
     }

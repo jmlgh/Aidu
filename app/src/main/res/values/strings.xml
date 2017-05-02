@@ -4,7 +4,7 @@
     <string name="login_tv_user">Email</string>
     <string name="login_tv_pwd">Password</string>
     <string name="login_btn_login">Sign In</string>
-    <string name="login_tv_register">Sign up here!</string>
+    <string name="login_tv_register">No account? Create one!</string>
     <string name="register_btn_register">Create account</string>
     <string name="register_hint_username">Username</string>
     <string name="register_hint_email">Email</string>
@@ -13,15 +13,38 @@
     <string name="register_toast_password_length">The password must have at least 6 characters</string>
     <string name="register_toast_bad_format_email">The email address is badly formatted</string>
     <string name="register_toast_email_in_use">The email address is already in use</string>
-    <string name="login_toast_creden">Write your username and password to sign in!</string>
+    <string name="login_toast_creden">Write your username and password to sign in.</string>
     <string name="incorrect_email">Mail is not valid</string>
-    <string name="incorrect_pwd">Incorrect password. Try again!</string>
+    <string name="incorrect_pwd">Incorrect password.</string>
     <string name="wrong_mail_format">Mail has wrong format</string>
-    <string name="auth_failed">Something went wrong! Please try again or contact us</string>
+    <string name="auth_failed">Something went wrong. Please try again or contact us</string>
     <string name="title_activity_main2">Main2Activity</string>
+    <string name="login_signinalt">Or sign in with:</string>
+    <string name="login_contentDesc">Login with your Google account</string>
+    <string name="login_googleSignIn_error">Something went wrong with Google login</string>
+    <string name="web_client_id">78091639469-gi5hkerek8ojr185uep14df68jl81bmi.apps.googleusercontent.com</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+    <string name="service_points">000p</string>
+    <string name="type_service">Type Service</string>
+    <string name="user_name">User name</string>
+    <string name="details">Details</string>
+    <string name="no_service_details">No service details</string>
+    <string name="dd_mm_yyyy_hh_mm">DD/MM/YYYY HH:MM</string>
+    <string name="location">Location</string>
+    <string name="send_message">Send message</string>
+
+    <string name="toolbar_title_services">Available Services</string>
+
+    <string name="mlateral_myServices">My Services</string>
+    <string name="mlateral_community">Community</string>
+    <string name="mlateral_chats">Chats</string>
+    <string name="mlateral_settings">Settings</string>
+    <string name="mlateral_about_us">About us</string>
+    <string name="mlateral_exit">Exit</string>
+    <string name="mlateral_username">User</string>
+    <string name="mlateral_email">Email</string>
 </resources>

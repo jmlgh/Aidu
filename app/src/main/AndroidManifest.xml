@@ -11,7 +11,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".UI.MainActivity"
-            android:label=""
+            android:label="Aidu"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -31,6 +31,8 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".UI.NewService"
             android:label=""></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".UI.ServiceView"></activity>
     </application>
 
 </manifest>
