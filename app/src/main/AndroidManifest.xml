@@ -30,8 +30,9 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".UI.NewService"
-            android:label=""></activity>
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:label="@string/new_service_activity_name"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".UI.MainActivity" />
         <activity android:name=".UI.ServiceView"></activity>
     </application>
 

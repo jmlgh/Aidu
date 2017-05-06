@@ -34,6 +34,8 @@ import jjv.uem.com.aidu.util.TextViewCustom;
 public class MainActivity extends AppCompatActivity  implements NavigationView.OnNavigationItemSelectedListener{
 
     private static final String TAG = MainActivity.class.getSimpleName();
+    public static final String USERNAME = "username" ;
+    public static final String USERUID = "useruid";
 
     private FirebaseAuth auth;
     private FirebaseAuth.AuthStateListener authListener;
@@ -200,7 +202,11 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_add) {
+            Intent i =new Intent(this,NewService.class);
+            i.putExtra(USERNAME,auth.getCurrentUser().getDisplayName());
+            i.putExtra(USERUID,auth.getCurrentUser().getUid());
+            startActivity(i);
             return true;
         }
 
