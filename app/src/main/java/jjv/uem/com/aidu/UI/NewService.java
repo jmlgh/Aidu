@@ -19,6 +19,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -36,10 +42,12 @@ import jjv.uem.com.aidu.Dialog.TimepickerDialog;
 import jjv.uem.com.aidu.Model.Service;
 import jjv.uem.com.aidu.R;
 
+
+
 public class NewService extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
-
+    private static final int PLACE_PICKER_REQUEST = 1;
     private TextView tv_date, tv_hour, tv_points, tv_photo;
     private EditText et_title, et_adress, et_description;
     private Spinner sp_category, sp_kind;
@@ -56,6 +64,9 @@ public class NewService extends AppCompatActivity {
     private ActionBar actBar;
     private String userName,userUid;
     private ArrayList<String> photos = new ArrayList<>();
+
+    private static final LatLngBounds BOUNDS_MOUNTAIN_VIEW = new LatLngBounds(
+            new LatLng(37.398160, -122.180831), new LatLng(37.430610, -121.972090));
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,6 +120,25 @@ public class NewService extends AppCompatActivity {
             public void onClick(View v) {
                 DialogFragment timepicker = new TimepickerDialog();
                 timepicker.show(getSupportFragmentManager(), "Select the time");
+            }
+        });
+
+        et_adress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                try {
+
+                    PlacePicker.IntentBuilder intentBuilder =
+                            new PlacePicker.IntentBuilder();
+                    intentBuilder.setLatLngBounds(BOUNDS_MOUNTAIN_VIEW);
+                    Intent intent = intentBuilder.build(NewService.this);
+                    startActivityForResult(intent, PLACE_PICKER_REQUEST);
+
+                } catch (GooglePlayServicesRepairableException
+                        | GooglePlayServicesNotAvailableException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -207,6 +237,20 @@ public class NewService extends AppCompatActivity {
         }
 
 
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d(TAG,"activyty resultttt");
+        if (requestCode == PLACE_PICKER_REQUEST) {
+            Log.d(TAG,"vuelta del placepicker " + resultCode);
+            if (resultCode == RESULT_OK) {
+                final Place place = PlacePicker.getPlace(this, data);
+                final CharSequence name = place.getName();
+                final CharSequence address = place.getAddress();
+                String attributions = (String) place.getAttributions();
+                Log.d(TAG,"Place:"+ place +", name: "+name+", adress: "+ address + ", atributions: "+attributions.toString());
+            }
+        }
     }
 
 
