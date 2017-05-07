@@ -58,4 +58,5 @@
     <string name="mlateral_exit">Exit</string>
     <string name="mlateral_username">User</string>
     <string name="mlateral_email">Email</string>
+    <string name="title_activity_location">Map</string>
 </resources>

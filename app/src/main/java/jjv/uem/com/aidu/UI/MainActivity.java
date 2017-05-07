@@ -133,6 +133,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
                       Log.i(TAG, "i value : "+i);
                     tv.setTypeface(titleFont);
                     break;
+
                 }
             }
         }
