@@ -3,11 +3,9 @@ package jjv.uem.com.aidu.UI;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -29,6 +27,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import org.lucasr.twowayview.TwoWayView;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -37,6 +37,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TimeZone;
 
+import jjv.uem.com.aidu.Adapters.Images_Adapter;
 import jjv.uem.com.aidu.Dialog.DatepickerDialog;
 import jjv.uem.com.aidu.Dialog.TimepickerDialog;
 import jjv.uem.com.aidu.Model.Service;
@@ -53,7 +54,7 @@ public class NewService extends AppCompatActivity {
     private Spinner sp_category, sp_kind;
     private SeekBar sb_points;
     private ImageView imgv_addPhoto;
-    private RecyclerView rcv_photos;
+    private TwoWayView twv_photos;
     private Button btn_addPhoto, btn_newService;
     private int pricePoints = 5;
     private String[] categorys = {"Pets", "Plants", "help"};
@@ -64,6 +65,7 @@ public class NewService extends AppCompatActivity {
     private ActionBar actBar;
     private String userName,userUid;
     private ArrayList<String> photos = new ArrayList<>();
+
 
     private static final LatLngBounds BOUNDS_MOUNTAIN_VIEW = new LatLngBounds(
             new LatLng(37.398160, -122.180831), new LatLng(37.430610, -121.972090));
@@ -93,12 +95,20 @@ public class NewService extends AppCompatActivity {
         sb_points = (SeekBar) findViewById(R.id.sb_points);
         btn_addPhoto = (Button) findViewById(R.id.btn_add_photo);
         btn_newService = (Button) findViewById(R.id.btn_new_service);
-        rcv_photos = (RecyclerView) findViewById(R.id.rcv_photos);
+        twv_photos = (TwoWayView) findViewById(R.id.twv_photos);
         imgv_addPhoto = (ImageView) findViewById(R.id.imageView);
         String currentTime = formatearHora(new Date().getTime());
         String currentDate = sdf.format(new Date());
 
-        rcv_photos.setVisibility(View.INVISIBLE);
+        imgv_addPhoto.setVisibility(View.INVISIBLE);
+        photos.add("https://firebasestorage.googleapis.com/v0/b/aidu-195e7.appspot.com/o/Images%2FDefaultImages%2Faddphoto.png?alt=media&token=341fcb95-a4da-4dec-9777-54b5bbf15d71");
+        photos.add("https://firebasestorage.googleapis.com/v0/b/aidu-195e7.appspot.com/o/Images%2FDefaultImages%2Faddphoto.png?alt=media&token=341fcb95-a4da-4dec-9777-54b5bbf15d71");
+        photos.add("https://firebasestorage.googleapis.com/v0/b/aidu-195e7.appspot.com/o/Images%2FDefaultImages%2Faddphoto.png?alt=media&token=341fcb95-a4da-4dec-9777-54b5bbf15d71");
+        photos.add("https://firebasestorage.googleapis.com/v0/b/aidu-195e7.appspot.com/o/Images%2FDefaultImages%2Faddphoto.png?alt=media&token=341fcb95-a4da-4dec-9777-54b5bbf15d71");
+        photos.add("https://firebasestorage.googleapis.com/v0/b/aidu-195e7.appspot.com/o/Images%2FDefaultImages%2Faddphoto.png?alt=media&token=341fcb95-a4da-4dec-9777-54b5bbf15d71");
+        Images_Adapter adapter = new Images_Adapter(this,photos);
+        twv_photos.setAdapter(adapter);
+
         tv_hour.setText(currentTime);
         tv_date.setText(currentDate);
         tv_points.setText(getString(R.string.new_service_hint_points, pricePoints));
