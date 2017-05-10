@@ -231,6 +231,7 @@ public class NewService extends AppCompatActivity {
             mDatabase = FirebaseDatabase.getInstance().getReference();
             String key = mDatabase.child("service").push().getKey();
             service.setServiceKey(key);
+
             Map<String, Object> servic = service.toMap();
             Map<String, Object> childUpdates = new HashMap<>();
 
