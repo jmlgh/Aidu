@@ -141,7 +141,7 @@ public class NewService extends AppCompatActivity {
 
                     PlacePicker.IntentBuilder intentBuilder =
                             new PlacePicker.IntentBuilder();
-                    intentBuilder.setLatLngBounds(BOUNDS_MOUNTAIN_VIEW);
+                    //intentBuilder.setLatLngBounds(BOUNDS_MOUNTAIN_VIEW);
                     Intent intent = intentBuilder.build(NewService.this);
                     startActivityForResult(intent, PLACE_PICKER_REQUEST);
 
@@ -235,7 +235,7 @@ public class NewService extends AppCompatActivity {
             Map<String, Object> childUpdates = new HashMap<>();
 
             childUpdates.put("/services/" + key, servic);
-            childUpdates.put("/user-trips/" + userUid + "/" + key, servic);
+            childUpdates.put("/user-services/" + userUid + "/" + key, servic);
             mDatabase.updateChildren(childUpdates).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void aVoid) {
@@ -258,7 +258,8 @@ public class NewService extends AppCompatActivity {
                 final CharSequence name = place.getName();
                 final CharSequence address = place.getAddress();
                 String attributions = (String) place.getAttributions();
-                Log.d(TAG,"Place:"+ place +", name: "+name+", adress: "+ address + ", atributions: "+attributions.toString());
+                Log.d(TAG,"Place:"+ place +", name: "+name+", adress: "+ place.getAddress() + ", atributions: "+attributions +"***"+ place.getAddress());
+                et_adress.setText(address);
             }
         }
     }
