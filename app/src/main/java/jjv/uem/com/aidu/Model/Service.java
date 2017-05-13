@@ -1,5 +1,6 @@
 package jjv.uem.com.aidu.Model;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -190,5 +191,25 @@ public class Service {
         return result;
     }
 
-
+    @Override
+    public String toString() {
+        return "Service{" +
+                "title='" + title + '\'' +
+                ", icon='" + icon + '\'' +
+                ", description='" + description + '\'' +
+                ", price_points='" + price_points + '\'' +
+                ", date='" + date + '\'' +
+                ", hour='" + hour + '\'' +
+                ", location='" + location + '\'' +
+                ", category='" + category + '\'' +
+                ", kind='" + kind + '\'' +
+                ", comunity=" + comunity +
+                ", photos=" + Arrays.toString(photos) +
+                ", userkeyInterested='" + userkeyInterested + '\'' +
+                ", state='" + state + '\'' +
+                ", userkey='" + userkey + '\'' +
+                ", userName='" + userName + '\'' +
+                ", serviceKey='" + serviceKey + '\'' +
+                '}';
+    }
 }
