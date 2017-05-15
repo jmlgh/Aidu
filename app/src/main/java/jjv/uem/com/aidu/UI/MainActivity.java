@@ -22,6 +22,11 @@ import android.widget.TextView;
 import com.google.android.gms.auth.api.Auth;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -34,9 +39,13 @@ import jjv.uem.com.aidu.util.TextViewCustom;
 public class MainActivity extends AppCompatActivity  implements NavigationView.OnNavigationItemSelectedListener{
 
     private static final String TAG = MainActivity.class.getSimpleName();
+    public static final String USERNAME = "username" ;
+    public static final String USERUID = "useruid";
+    public static final String KEY_SERVICE = "KEY_SERVICE";
 
     private FirebaseAuth auth;
     private FirebaseAuth.AuthStateListener authListener;
+    private FirebaseDatabase database;
     private ArrayList<Service>services = new ArrayList<>();
     private RecyclerView recyclerView;
     private Service_Adapter_RV.OnItemClickListener l;
@@ -52,6 +61,8 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        recyclerView = (RecyclerView) findViewById(R.id.lstLista);
+
         // control de usuario, si no hay usuario activo abre el login
         auth = FirebaseAuth.getInstance();
         authListener = new FirebaseAuth.AuthStateListener() {
@@ -63,6 +74,9 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
                     try{
                         Log.d("USR: ", usuarioLogeado.getDisplayName());
                         Log.d("MAIL: ", usuarioLogeado.getEmail());
+
+
+
 
                     } catch (NullPointerException e){
                         Log.d("USR:" , "No display name for: " + usuarioLogeado.getEmail());
@@ -96,20 +110,6 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         navUserName = (TextView) headerView.findViewById(R.id.nav_username);
         navUserEmail = (TextView) headerView.findViewById(R.id.nav_usermail);
 
-        recyclerView = (RecyclerView) findViewById(R.id.lstLista);
-        Service s;
-        for(int i = 0 ; i<30;i++){
-
-            s= new Service();
-            s.setTitle("Service " +i);
-            services.add(s);
-        }
-        l = initListener();
-        adapter = new Service_Adapter_RV(services,l);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getBaseContext()));
-
-        recyclerView.setAdapter(adapter);
 
         // configura el menu lateral con el nombre de usuario y el email
         if(auth.getCurrentUser() != null){
@@ -117,6 +117,40 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
             navUserEmail.setText(auth.getCurrentUser().getEmail());
         }
 
+
+        getServices();
+
+    }
+
+    private void getServices() {
+        // Acceso a BBDD Firebase
+        if(auth.getCurrentUser() != null){
+            database = FirebaseDatabase.getInstance();
+            DatabaseReference reference = database.getReference("services");
+            reference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    Iterable<DataSnapshot> iterator = dataSnapshot.getChildren();
+                    services = new ArrayList<Service>();
+                    for (DataSnapshot ds : iterator){
+                        Service s = ds.getValue(Service.class);
+                        Log.i("SERVICE GET:",s.toString());
+                        services.add(s);
+                    }
+                    l = initListener();
+                    adapter = new Service_Adapter_RV(services,l);
+                    recyclerView.setHasFixedSize(true);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(getBaseContext()));
+                    recyclerView.setAdapter(adapter);
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
     }
 
     private void applyFont(Toolbar toolbar) {
@@ -131,6 +165,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
                       Log.i(TAG, "i value : "+i);
                     tv.setTypeface(titleFont);
                     break;
+
                 }
             }
         }
@@ -139,9 +174,9 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     private Service_Adapter_RV.OnItemClickListener initListener(){
         Service_Adapter_RV.OnItemClickListener listener = new Service_Adapter_RV.OnItemClickListener() {
             @Override
-            public void onItemClick(Service item) {
-                //TODO LISTENER DEL RECYCLER VIEW
+            public void onItemClick(Service service) {
                 Intent i = new Intent(getBaseContext(),ServiceView.class);
+                i.putExtra(KEY_SERVICE,service.getServiceKey());
                 startActivity(i);
             }
         };
@@ -200,8 +235,16 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_add) {
+            Intent i =new Intent(this,NewService.class);
+            i.putExtra(USERNAME,auth.getCurrentUser().getDisplayName());
+            i.putExtra(USERUID,auth.getCurrentUser().getUid());
+            startActivity(i);
             return true;
+        }
+        else if(id == R.id.action_service_search){
+            Intent i = new Intent(this, ServiceSearch.class);
+            startActivity(i);
         }
 
         return super.onOptionsItemSelected(item);
