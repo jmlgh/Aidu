@@ -27,7 +27,7 @@
     <string name="new_service_activity_name">Add new service</string>
     <string name="new_service_hint_title">Title</string>
     <string name="new_service_hint_points">Points: %d</string>
-    <string name="new_service_hint_adress">Adress</string>
+    <string name="new_service_hint_address">Address</string>
     <string name="new_service_hint_Description">Description</string>
     <string name="new_service_text_photo">Photos</string>
     <string name="new_service_button_new">ADD NEW</string>
@@ -59,4 +59,6 @@
     <string name="mlateral_username">User</string>
     <string name="mlateral_email">Email</string>
     <string name="title_activity_location">Map</string>
+
+    <string name="menu_action_search">Service Search</string>
 </resources>

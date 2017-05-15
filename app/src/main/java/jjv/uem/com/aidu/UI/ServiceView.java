@@ -1,6 +1,7 @@
 package jjv.uem.com.aidu.UI;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,7 +27,7 @@ public class ServiceView extends AppCompatActivity {
     private FirebaseAuth auth;
     private Service service;
 
-    Button btnLocation;
+    Button btnLocation, btnsendMessage;
     TextView tvTypeService , tvUsername , tvPoints ,tvDateTime,tvDetails;
 
 
@@ -35,12 +36,14 @@ public class ServiceView extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_service);
         btnLocation= (Button) findViewById(R.id.btn_location);
+        btnsendMessage = (Button) findViewById(R.id.btn_talk);
         tvTypeService = (TextView) findViewById(R.id.tv_type_service);
         tvUsername = (TextView) findViewById(R.id.tv_username);
         tvPoints = (TextView) findViewById(R.id.tv_points_service);
         tvDateTime = (TextView) findViewById(R.id.tv_datetime);
         tvDetails = (TextView) findViewById(R.id.tv_description);
 
+        setTypeFace();
 
         auth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
@@ -97,5 +100,11 @@ public class ServiceView extends AppCompatActivity {
 
 
 
+    }
+
+    private void setTypeFace() {
+        Typeface bubblerFont = Typeface.createFromAsset(getAssets(), "fonts/BubblerOne-Regular.ttf");
+        btnsendMessage.setTypeface(bubblerFont);
+        btnLocation.setTypeface(bubblerFont);
     }
 }

@@ -242,6 +242,10 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
             startActivity(i);
             return true;
         }
+        else if(id == R.id.action_service_search){
+            Intent i = new Intent(this, ServiceSearch.class);
+            startActivity(i);
+        }
 
         return super.onOptionsItemSelected(item);
     }

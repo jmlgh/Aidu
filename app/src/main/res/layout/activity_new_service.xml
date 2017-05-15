@@ -11,7 +11,7 @@
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="15dp"
+        android:layout_margin="10dp"
         android:padding="10dp"
         app:cardCornerRadius="10dp">
 
@@ -119,7 +119,7 @@
                         android:id="@+id/et_adress"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/new_service_hint_adress"
+                        android:hint="@string/new_service_hint_address"
                         android:inputType="text"
                         android:textSize="@dimen/new_service_text_size" />
                 </android.support.design.widget.TextInputLayout>
@@ -207,7 +207,7 @@
                 android:background="@drawable/boton_redondo_oscuro"
                 android:text="@string/new_service_button_new"
                 android:textColor="@android:color/white"
-                android:textSize="14sp"
+                android:textSize="20sp"
                 android:onClick="addService"/>
 
 
