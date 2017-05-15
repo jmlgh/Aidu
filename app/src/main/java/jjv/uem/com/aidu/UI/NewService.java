@@ -253,6 +253,7 @@ public class NewService extends AppCompatActivity {
         if (title.equals("") || adress.equals("") || description.equals("")) {
             Toast.makeText(this, getText(R.string.new_service_toast_enterallfields), Toast.LENGTH_SHORT).show();
         } else {
+
             service.setDescription(description);
             service.setTitle(title);
             service.setLocation(adress);
