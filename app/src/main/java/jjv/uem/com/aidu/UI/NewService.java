@@ -1,13 +1,28 @@
 package jjv.uem.com.aidu.UI;
 
+import android.Manifest;
+import android.annotation.TargetApi;
+import android.app.Activity;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Typeface;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,14 +36,20 @@ import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import org.lucasr.twowayview.TwoWayView;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -44,11 +65,20 @@ import jjv.uem.com.aidu.Model.Service;
 import jjv.uem.com.aidu.R;
 
 
-
 public class NewService extends AppCompatActivity {
 
-    private static final String TAG = MainActivity.class.getSimpleName();
+    //for the treatmet ofthe images
+    public static final String URL_STORAGE_REFERENCE = "gs://aidu-195e7.appspot.com";
+    public static final String FOLDER_STORAGE_IMG = "Images/Userimage";
+    private static final String TAG = NewService.class.getSimpleName();
     private static final int PLACE_PICKER_REQUEST = 1;
+    private static final int CAPTURE_IMAGE = 10;
+    private static final int PICK_IMAGE = 20;
+
+
+    FirebaseStorage storage = FirebaseStorage.getInstance();
+    StorageReference storageRef = storage.getReferenceFromUrl(URL_STORAGE_REFERENCE).child(FOLDER_STORAGE_IMG);
+    private Images_Adapter adapter;
     private TextView tv_date, tv_hour, tv_points, tv_photo;
     private EditText et_title, et_adress, et_description;
     private Spinner sp_category, sp_kind;
@@ -63,26 +93,34 @@ public class NewService extends AppCompatActivity {
     private DatabaseReference mDatabase;
     private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
     private ActionBar actBar;
-    private String userName,userUid;
+    private String userName, userUid;
     private ArrayList<String> photos = new ArrayList<>();
+    private String key;
+
+    private File filePathImageCamera;
+    private FirebaseAuth mAuth;
+    private String cordenades;
 
 
-    private static final LatLngBounds BOUNDS_MOUNTAIN_VIEW = new LatLngBounds(
-            new LatLng(37.398160, -122.180831), new LatLng(37.430610, -121.972090));
+    /*private static final LatLngBounds BOUNDS_MOUNTAIN_VIEW = new LatLngBounds(
+            new LatLng(37.398160, -122.180831), new LatLng(37.430610, -121.972090));*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_service);
         getUserData();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        key = mDatabase.child("service").push().getKey();
         initViews();
         setTypeFace();
     }
 
     private void initViews() {
         actBar = getSupportActionBar();
+
         actBar.setDisplayHomeAsUpEnabled(true);
-        //actBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#455a64")));
+        //actBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#1c313aeg")));
         et_title = (EditText) findViewById(R.id.et_title);
         et_adress = (EditText) findViewById(R.id.et_adress);
         et_description = (EditText) findViewById(R.id.et_description);
@@ -100,15 +138,17 @@ public class NewService extends AppCompatActivity {
         String currentTime = formatearHora(new Date().getTime());
         String currentDate = sdf.format(new Date());
 
+
         imgv_addPhoto.setVisibility(View.INVISIBLE);
         photos.add("https://firebasestorage.googleapis.com/v0/b/aidu-195e7.appspot.com/o/Images%2FDefaultImages%2Faddphoto.png?alt=media&token=341fcb95-a4da-4dec-9777-54b5bbf15d71");
-        photos.add("https://firebasestorage.googleapis.com/v0/b/aidu-195e7.appspot.com/o/Images%2FDefaultImages%2Faddphoto.png?alt=media&token=341fcb95-a4da-4dec-9777-54b5bbf15d71");
-        photos.add("https://firebasestorage.googleapis.com/v0/b/aidu-195e7.appspot.com/o/Images%2FDefaultImages%2Faddphoto.png?alt=media&token=341fcb95-a4da-4dec-9777-54b5bbf15d71");
-        photos.add("https://firebasestorage.googleapis.com/v0/b/aidu-195e7.appspot.com/o/Images%2FDefaultImages%2Faddphoto.png?alt=media&token=341fcb95-a4da-4dec-9777-54b5bbf15d71");
-        photos.add("https://firebasestorage.googleapis.com/v0/b/aidu-195e7.appspot.com/o/Images%2FDefaultImages%2Faddphoto.png?alt=media&token=341fcb95-a4da-4dec-9777-54b5bbf15d71");
-        Images_Adapter adapter = new Images_Adapter(this,photos);
+        adapter = new Images_Adapter(this, photos);
         twv_photos.setAdapter(adapter);
-
+        twv_photos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                showImagePicker();
+            }
+        });
         tv_hour.setText(currentTime);
         tv_date.setText(currentDate);
         tv_points.setText(getString(R.string.new_service_hint_points, pricePoints));
@@ -155,7 +195,7 @@ public class NewService extends AppCompatActivity {
         sb_points.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                pricePoints=progress;
+                pricePoints = progress;
                 tv_points.setText(getString(R.string.new_service_hint_points, pricePoints));
             }
 
@@ -193,6 +233,7 @@ public class NewService extends AppCompatActivity {
         userName = i.getStringExtra(MainActivity.USERNAME);
         userUid = i.getStringExtra(MainActivity.USERUID);
     }
+
     public String formatearHora(long hora) {
         String horaFormateada;
         Calendar cal = Calendar.getInstance();
@@ -203,19 +244,19 @@ public class NewService extends AppCompatActivity {
         return horaFormateada;
     }
 
-    public void addService (View v){
+    public void addService(View v) {
         String title = et_title.getText().toString();
         String adress = et_adress.getText().toString();
         String description = et_description.getText().toString();
 
 
-        if (title.equals("")|| adress.equals("") || description.equals("")){
-            Toast.makeText(this,getText(R.string.new_service_toast_enterallfields),Toast.LENGTH_SHORT).show();
+        if (title.equals("") || adress.equals("") || description.equals("")) {
+            Toast.makeText(this, getText(R.string.new_service_toast_enterallfields), Toast.LENGTH_SHORT).show();
         } else {
             service.setDescription(description);
             service.setTitle(title);
             service.setLocation(adress);
-            service.setPrice_points(""+pricePoints);
+            service.setPrice_points("" + pricePoints);
             service.setCategory(sp_category.getSelectedItem().toString());
             service.setDate(tv_date.getText().toString());
             service.setHour(tv_hour.getText().toString());
@@ -224,12 +265,11 @@ public class NewService extends AppCompatActivity {
             service.setUserName(userName);
             service.setState("DISPONIBLE");
             service.setUserkeyInterested("anyone");
-            String[] mStringArray = new String[photos.size()];
-            mStringArray = photos.toArray(mStringArray);
-            service.setPhotos(mStringArray);
-            Log.d(TAG,service.getTitle()+" "+service.getCategory()+" "+service.getKind());
-            mDatabase = FirebaseDatabase.getInstance().getReference();
-            String key = mDatabase.child("service").push().getKey();
+            photos.remove(0);
+
+            service.setPhotos(photos);
+            Log.d(TAG, service.getTitle() + " " + service.getCategory() + " " + service.getKind());
+
             service.setServiceKey(key);
 
             Map<String, Object> servic = service.toMap();
@@ -240,31 +280,172 @@ public class NewService extends AppCompatActivity {
             mDatabase.updateChildren(childUpdates).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void aVoid) {
-                    Log.d(TAG,getString(R.string.new_service_toast_service_created));
+                    Log.d(TAG, getString(R.string.new_service_toast_service_created));
                 }
             });
             finish();
-            Toast.makeText(this,getText(R.string.new_service_toast_service_created),Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getText(R.string.new_service_toast_service_created), Toast.LENGTH_SHORT).show();
         }
 
 
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.d(TAG,"activyty resultttt");
-        if (requestCode == PLACE_PICKER_REQUEST) {
-            Log.d(TAG,"vuelta del placepicker " + resultCode);
-            if (resultCode == RESULT_OK) {
+        Log.d(TAG, "activyty resulttttttttttttttttttt");
+        if (resultCode == RESULT_OK) {
+            Log.d(TAG, "vuelta del placepicker " + resultCode);
+            if (requestCode == PLACE_PICKER_REQUEST) {
                 final Place place = PlacePicker.getPlace(this, data);
                 final CharSequence name = place.getName();
                 final CharSequence address = place.getAddress();
                 String attributions = (String) place.getAttributions();
-                Log.d(TAG,"Place:"+ place +", name: "+name+", adress: "+ place.getAddress() + ", atributions: "+attributions +"***"+ place.getAddress());
+                Log.d(TAG, "Place:" + place + ", name: " + name + ", adress: " + place.getAddress() + ", atributions: " + attributions + "***" + place.getAddress());
                 et_adress.setText(address);
-            }
+                cordenades = place.getLatLng().toString();
+            } else if (requestCode == PICK_IMAGE)
+                onSelectFromGalleryResult(data);
+            else if (requestCode == CAPTURE_IMAGE)
+                onCaptureImageResult(data);
         }
     }
 
+
+    // Mostramos un dialogo para dara elgir entre seleccionar la imagen de la galeria
+    // o hacer una foto desde la camara
+    private void showImagePicker() {
+
+
+        final boolean result = Utility.checkPermission(NewService.this);
+        if (result) {
+            CharSequence options[] = new CharSequence[]{"Galery", "Camera"};
+
+            AlertDialog.Builder picker = new AlertDialog.Builder(this);
+            picker.setTitle(getString(R.string.new_service_photo_selection));
+
+
+            picker.setCancelable(true);
+            picker.setItems(options, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    if (which == 0) {
+                        Log.e("Pulsado el btngaleria: ", "en on click");
+                        galleryIntent();
+                    } else {
+                        Log.e("Pulsado el btn camara: ", "en on click");
+                        cameraIntent();
+                    }
+                }
+            });
+            picker.show();
+        }
+
+    }
+
+    //Iniciamos un nuevo intent que nos abrira la camara
+    private void cameraIntent() {
+        filePathImageCamera = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), key + "/photo" + photos.size()+ ".jpg");
+        Intent it = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        it.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(filePathImageCamera));
+        startActivityForResult(it, CAPTURE_IMAGE);
+
+    }
+
+    private void galleryIntent() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);//
+        startActivityForResult(Intent.createChooser(intent, getString(R.string.new_service_photo_selection)), PICK_IMAGE);
+    }
+
+
+    private void onSelectFromGalleryResult(Intent data) {
+        Uri selectedImageUri = data.getData();
+        if (selectedImageUri != null) {
+            sendFileFirebase(storageRef, selectedImageUri);
+        } else {
+            //IS NULL
+        }
+
+
+    }
+
+    private void onCaptureImageResult(Intent data) {
+
+        if (filePathImageCamera != null && filePathImageCamera.exists()) {
+            Uri ImageUri = Uri.fromFile(filePathImageCamera);
+            sendFileFirebase(storageRef, ImageUri);
+        } else {
+            //IS NULL
+        }
+    }
+
+    public void sendFileFirebase(final StorageReference storageReference, final Uri file) {
+        if (storageReference != null) {
+
+
+            final StorageReference ref = storageReference.child(userUid + "/" + key + "/photo" + photos.size());
+            Log.e("Url", "entrando en send");
+            ref.putFile(file).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                    ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            Log.e("Url", uri.toString());
+                            photos.add(uri.toString());
+                            adapter = new Images_Adapter(NewService.this, photos);
+                            adapter.notifyDataSetChanged();
+                            twv_photos.setAdapter(adapter);
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                            // Handle any errors
+                        }
+                    });
+                }
+            });
+
+        } else {
+//IS NULL
+        }
+
+    }
+
+
+    public static class Utility {
+        public static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 123;
+
+        @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+        public static boolean checkPermission(final Context context) {
+            int currentAPIVersion = Build.VERSION.SDK_INT;
+            if (currentAPIVersion >= android.os.Build.VERSION_CODES.M) {
+                if (ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) context, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(context);
+                        alertBuilder.setCancelable(true);
+                        alertBuilder.setTitle("Permission necessary");
+                        alertBuilder.setMessage("External storage permission is necessary");
+                        alertBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+                            public void onClick(DialogInterface dialog, int which) {
+                                ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+                            }
+                        });
+                        AlertDialog alert = alertBuilder.create();
+                        alert.show();
+                    } else {
+                        ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+                    }
+                    return false;
+                } else {
+                    return true;
+                }
+            } else {
+                return true;
+            }
+        }
+    }
 
 
 }
