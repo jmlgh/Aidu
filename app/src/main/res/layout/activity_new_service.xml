@@ -176,10 +176,9 @@
                 android:layout_below="@+id/linearLayout2"
                 android:layout_marginLeft="11dp"
                 android:layout_marginRight="11dp"
-                android:background="@color/colorPrimaryBackground"
-                android:backgroundTint="@color/colorPrimaryBackground"
                 android:padding="5dp"
-                app:cardCornerRadius="10dp">
+                app:cardCornerRadius="10dp"
+                app:cardBackgroundColor="@color/colorPrimary">
 
                 <ImageView
                     android:id="@+id/imageView"
