@@ -17,8 +17,8 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.AnyRes;
 import android.support.annotation.NonNull;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -27,12 +27,11 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.SeekBar;
-import android.widget.Spinner;
+import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,30 +50,21 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import org.lucasr.twowayview.TwoWayView;
-
 import java.io.File;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.TimeZone;
 
-import jjv.uem.com.aidu.Adapters.Images_Adapter;
-import jjv.uem.com.aidu.Dialog.DatepickerDialog;
-import jjv.uem.com.aidu.Dialog.TimepickerDialog;
-import jjv.uem.com.aidu.Model.Service;
+import jjv.uem.com.aidu.Model.Comunity;
 import jjv.uem.com.aidu.R;
 
 
-public class NewService extends AppCompatActivity {
+public class NewComunity extends AppCompatActivity {
 
     //for the treatmet ofthe images
     public static final String URL_STORAGE_REFERENCE = "gs://aidu-195e7.appspot.com";
     public static final String FOLDER_STORAGE_IMG = "Images/Userimage";
-    private static final String TAG = NewService.class.getSimpleName();
+    private static final String TAG = NewComunity.class.getSimpleName();
     private static final int PLACE_PICKER_REQUEST = 1;
     private static final int CAPTURE_IMAGE = 10;
     private static final int PICK_IMAGE = 20;
@@ -82,31 +72,30 @@ public class NewService extends AppCompatActivity {
 
     FirebaseStorage storage = FirebaseStorage.getInstance();
     StorageReference storageRef = storage.getReferenceFromUrl(URL_STORAGE_REFERENCE).child(FOLDER_STORAGE_IMG);
-    ArrayList<String> photo = new ArrayList<>();
-    private Images_Adapter adapter;
-    private TextView tv_date, tv_hour, tv_points, tv_photo;
+
+
     private EditText et_title, et_adress, et_description;
-    private Spinner sp_category, sp_kind;
-    private SeekBar sb_points;
-    private TwoWayView twv_photos;
-    private Button btn_newService;
-    private int pricePoints = 5;
-    private String[] categorys = {"Pets", "Plants", "help"};
-    private String[] kinds = {"Offer", "Request"};
-    private Service service = new Service();
+    private TextInputLayout til_title, til_address, til_description;
+    private TextView tv_public;
+    private ImageView imv_photos;
+    private Button btn_newCommunity;
+    private Switch sw_public;
+
+    private Comunity community = new Comunity();
     private DatabaseReference mDatabase;
-    private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
     private ActionBar actBar;
     private String userName, userUid;
-    private ArrayList<String> photos = new ArrayList<>();
+    private int icon = -1;
+    private String photo = null;
     private String key;
+
 
     private File filePathImageCamera;
     private FirebaseAuth mAuth;
     private String cordenades;
-
-
     private ProgressDialog pd;
+
+    private Boolean subido = false;
 
     /*private static final LatLngBounds BOUNDS_MOUNTAIN_VIEW = new LatLngBounds(
             new LatLng(37.398160, -122.180831), new LatLng(37.430610, -121.972090));*/
@@ -123,10 +112,10 @@ public class NewService extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_service);
+        setContentView(R.layout.activity_new_comunity);
         getUserData();
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        key = mDatabase.child("service").push().getKey();
+        key = mDatabase.child("communyty").push().getKey();
         initViews();
         setTypeFace();
     }
@@ -139,52 +128,18 @@ public class NewService extends AppCompatActivity {
         et_title = (EditText) findViewById(R.id.et_title);
         et_adress = (EditText) findViewById(R.id.et_adress);
         et_description = (EditText) findViewById(R.id.et_description);
-        tv_date = (TextView) findViewById(R.id.tv_date);
-        tv_hour = (TextView) findViewById(R.id.tv_hour);
-        tv_points = (TextView) findViewById(R.id.tv_points);
-        tv_photo = (TextView) findViewById(R.id.tv_photos);
-        sp_category = (Spinner) findViewById(R.id.sp_category);
-        sp_kind = (Spinner) findViewById(R.id.sp_kind);
-        sb_points = (SeekBar) findViewById(R.id.sb_points);
-        btn_newService = (Button) findViewById(R.id.btn_new_service);
-        twv_photos = (TwoWayView) findViewById(R.id.twv_photos);
-        String currentTime = formatearHora(new Date().getTime());
-        String currentDate = sdf.format(new Date());
+        til_title= (TextInputLayout) findViewById(R.id.input_layout_title);
+        til_address= (TextInputLayout) findViewById(R.id.input_layout_adress);
+        til_description= (TextInputLayout) findViewById(R.id.input_layout_description);
+        tv_public = (TextView) findViewById(R.id.tv_public);
+        sw_public = (Switch) findViewById(R.id.sw_public);
 
-        Uri uri = getUriToDrawable(this, R.drawable.addphoto);
-        photos.add(uri.toString());
-        Log.e("uri del default ", uri.toString());
-        adapter = new Images_Adapter(this, photos);
-        twv_photos.setAdapter(adapter);
-        twv_photos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                showImagePicker();
-            }
-        });
-        tv_hour.setText(currentTime);
-        tv_date.setText(currentDate);
-        tv_points.setText(getString(R.string.new_service_hint_points, pricePoints));
-        ArrayAdapter<String> adapter_category = new ArrayAdapter(this, android.R.layout.simple_spinner_item, categorys);
-        sp_category.setAdapter(adapter_category);
-        ArrayAdapter<String> adapter_kind = new ArrayAdapter(this, android.R.layout.simple_spinner_item, kinds);
-        sp_kind.setAdapter(adapter_kind);
+        btn_newCommunity = (Button) findViewById(R.id.btn_new_community);
+        imv_photos = (ImageView) findViewById(R.id.imgv_photo);
 
-        tv_date.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DialogFragment datepicker = new DatepickerDialog();
-                datepicker.show(getSupportFragmentManager(), "Select the time");
-            }
-        });
 
-        tv_hour.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DialogFragment timepicker = new TimepickerDialog();
-                timepicker.show(getSupportFragmentManager(), "Select the time");
-            }
-        });
+
+
 
         et_adress.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -195,7 +150,7 @@ public class NewService extends AppCompatActivity {
                     PlacePicker.IntentBuilder intentBuilder =
                             new PlacePicker.IntentBuilder();
                     //intentBuilder.setLatLngBounds(BOUNDS_MOUNTAIN_VIEW);
-                    Intent intent = intentBuilder.build(NewService.this);
+                    Intent intent = intentBuilder.build(NewComunity.this);
                     startActivityForResult(intent, PLACE_PICKER_REQUEST);
 
                 } catch (GooglePlayServicesRepairableException
@@ -205,21 +160,21 @@ public class NewService extends AppCompatActivity {
             }
         });
 
-        sb_points.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        sw_public.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                pricePoints = progress;
-                tv_points.setText(getString(R.string.new_service_hint_points, pricePoints));
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked){
+                    sw_public.setText(getString(R.string.new_community_text_swicht_On));
+                }else{
+                    sw_public.setText(getString(R.string.new_community_text_swicht_Off));
+                }
             }
+        });
 
+        imv_photos.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
+            public void onClick(View v) {
+                showImagePicker();
             }
         });
 
@@ -227,14 +182,15 @@ public class NewService extends AppCompatActivity {
 
     private void setTypeFace() {
         Typeface bubblerFont = Typeface.createFromAsset(getAssets(), "fonts/BubblerOne-Regular.ttf");
-        tv_points.setTypeface(bubblerFont);
-        tv_date.setTypeface(bubblerFont);
-        tv_hour.setTypeface(bubblerFont);
-        tv_photo.setTypeface(bubblerFont);
         et_description.setTypeface(bubblerFont);
         et_title.setTypeface(bubblerFont);
         et_adress.setTypeface(bubblerFont);
-        btn_newService.setTypeface(bubblerFont);
+        til_description.setTypeface(bubblerFont);
+        til_title.setTypeface(bubblerFont);
+        til_address.setTypeface(bubblerFont);
+        tv_public.setTypeface(bubblerFont);
+        sw_public.setTypeface(bubblerFont);
+        btn_newCommunity.setTypeface(bubblerFont);
         TextView myTextView = new TextView(this);
         myTextView.setTypeface(bubblerFont);
         actBar.setCustomView(myTextView);
@@ -246,17 +202,9 @@ public class NewService extends AppCompatActivity {
         userUid = i.getStringExtra(MainActivity.USERUID);
     }
 
-    public String formatearHora(long hora) {
-        String horaFormateada;
-        Calendar cal = Calendar.getInstance();
-        cal.setTimeZone(TimeZone.getTimeZone("GMT+1"));
-        cal.setTimeInMillis(hora);
 
-        horaFormateada = String.format("%02d:%02d", cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE));
-        return horaFormateada;
-    }
 
-    public void addService(View v) {
+    public void addCommunity(View v) {
         String title = et_title.getText().toString();
         String adress = et_adress.getText().toString();
         String description = et_description.getText().toString();
@@ -264,63 +212,55 @@ public class NewService extends AppCompatActivity {
 
         if (title.equals("") || adress.equals("") || description.equals("")) {
             Toast.makeText(this, getText(R.string.new_service_toast_enterallfields), Toast.LENGTH_SHORT).show();
-        } else if (photos.size() < 2) {
+        } else if (photo == null && icon ==-1 ) {
             Toast.makeText(this, getText(R.string.new_service_toast_photos), Toast.LENGTH_SHORT).show();
         } else {
-            pd = new ProgressDialog(NewService.this);
+            pd = new ProgressDialog(NewComunity.this);
             pd.setMessage("loading");
             pd.show();
-            for (int i = 1; i < photos.size(); i++) {
-                sendFileFirebase(storageRef, Uri.parse(photos.get(i)), "photo" + i);
-                //Log.e("url sss"+(photo.size()-1),photo.get(photo.size()-1));
-            }
+            sendFileFirebase(storageRef, Uri.parse(photo), "photocommunity" + key);
         }
 
 
     }
 
-    private void uploadService() {
+    /*private void uploadCommunity(String title, String adress, String description) {
+        pd = new ProgressDialog(NewComunity.this);
+        pd.setMessage("loading");
+        pd.show();
 
-            if (photo.size() == photos.size() - 1) {
-                service.setDescription(et_description.getText().toString());
-                service.setTitle(et_title.getText().toString());
-                service.setLocation(et_adress.getText().toString());
-                service.setPrice_points("" + pricePoints);
-                service.setCategory(sp_category.getSelectedItem().toString());
-                service.setDate(tv_date.getText().toString());
-                service.setHour(tv_hour.getText().toString());
-                service.setKind(sp_kind.getSelectedItem().toString());
-                service.setUserkey(userUid);
-                service.setUserName(userName);
-                service.setState("DISPONIBLE");
-                service.setUserkeyInterested("anyone");
-                service.setCordenades(cordenades);
+                //Log.e("url sss"+(photo.size()-1),photo.get(photo.size()-1));
 
+            upload(title, adress, description);
 
-                service.setPhotos(photo);
-                Log.d(TAG, service.getTitle() + " " + service.getCategory() + " " + service.getKind());
+    }*/
 
-                service.setServiceKey(key);
+    private void uploadCommunity() {
+        community.setKey(key);
+            community.setPublica(sw_public.isChecked());
+            community.setName(et_title.getText().toString());
+            community.setAddress(et_adress.getText().toString());
+            community.setDescription(et_description.getText().toString());
+            community.setCoordinates(cordenades);
+            community.setOwner(userUid);
+            Map<String, Object> servic = community.toMap();
+            Map<String, Object> childUpdates = new HashMap<>();
 
-                Map<String, Object> servic = service.toMap();
-                Map<String, Object> childUpdates = new HashMap<>();
+            childUpdates.put("/communities/" + key, servic);
+            //childUpdates.put("/user-services/" + userUid + "/" + key, servic);
+            mDatabase.updateChildren(childUpdates).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Log.d(TAG, getString(R.string.new_community_toast_service_created));
+                }
+            });
 
-                childUpdates.put("/services/" + key, servic);
-                childUpdates.put("/user-services/" + userUid + "/" + key, servic);
-                mDatabase.updateChildren(childUpdates).addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d(TAG, getString(R.string.new_service_toast_service_created));
-                    }
-                });
+            Toast.makeText(this, getText(R.string.new_community_toast_service_created), Toast.LENGTH_SHORT).show();
+            pd.dismiss();
 
-                pd.dismiss();
-                Toast.makeText(this, getText(R.string.new_service_toast_service_created), Toast.LENGTH_SHORT).show();
-                finish();
-                Intent i = new Intent(this, MainActivity.class);
-                startActivity(i);
-            }
-
+            Intent i = new Intent(this,Communities.class);
+            startActivity(i);
+            finish();
 
     }
 
@@ -350,7 +290,7 @@ public class NewService extends AppCompatActivity {
     private void showImagePicker() {
 
 
-        final boolean result = Utility.checkPermission(NewService.this);
+        final boolean result = Utility.checkPermission(NewComunity.this);
         if (result) {
             CharSequence options[] = new CharSequence[]{"Galery", "Camera"};
 
@@ -378,7 +318,7 @@ public class NewService extends AppCompatActivity {
 
     //Iniciamos un nuevo intent que nos abrira la camara
     private void cameraIntent() {
-        filePathImageCamera = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), key + "/photo" + photos.size() + ".jpg");
+        filePathImageCamera = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), key + "/Community" + key + ".jpg");
         Intent it = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         it.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(filePathImageCamera));
         startActivityForResult(it, CAPTURE_IMAGE);
@@ -397,10 +337,8 @@ public class NewService extends AppCompatActivity {
         Uri selectedImageUri = data.getData();
         if (selectedImageUri != null) {
             //sendFileFirebase(storageRef, selectedImageUri);
-            photos.add(selectedImageUri.toString());
-            adapter = new Images_Adapter(NewService.this, photos);
-            adapter.notifyDataSetChanged();
-            twv_photos.setAdapter(adapter);
+            photo = selectedImageUri.toString();
+            imv_photos.setImageURI(selectedImageUri);
             Log.e("Url", selectedImageUri.toString());
         } else {
             //IS NULL
@@ -414,7 +352,8 @@ public class NewService extends AppCompatActivity {
         if (filePathImageCamera != null && filePathImageCamera.exists()) {
             Uri ImageUri = Uri.fromFile(filePathImageCamera);
             //sendFileFirebase(storageRef, ImageUri);
-            photos.add(ImageUri.toString());
+            imv_photos.setImageURI(ImageUri);
+            uploadCommunity();
             Log.e("Url", ImageUri.toString());
         } else {
             //IS NULL
@@ -434,8 +373,8 @@ public class NewService extends AppCompatActivity {
                         @Override
                         public void onSuccess(Uri uri) {
                             Log.e("Url", uri.toString());
-                            photo.add(uri.toString());
-                            uploadService();
+                            community.setImage(uri.toString());
+                            uploadCommunity();
 
                         }
                     }).addOnFailureListener(new OnFailureListener() {
@@ -489,13 +428,12 @@ public class NewService extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-       // firebase sign out
+
+            // firebase sign out
             finish();
-            Intent i = new Intent(this, MainActivity.class);
+            Intent i = new Intent(this, Communities.class);
             startActivity(i);
 
 
     }
-
-
 }

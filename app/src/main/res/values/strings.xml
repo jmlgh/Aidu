@@ -27,16 +27,33 @@
     <string name="new_service_activity_name">Add new service</string>
     <string name="new_service_hint_title">Title</string>
     <string name="new_service_hint_points">Points: %d</string>
-    <string name="new_service_hint_adress">Adress</string>
+    <string name="new_service_hint_address">Address</string>
     <string name="new_service_hint_Description">Description</string>
     <string name="new_service_text_photo">Photos</string>
     <string name="new_service_button_new">ADD NEW</string>
     <string name="new_service_toast_enterallfields">Please complete all fields to create a new service</string>
+    <string name="new_service_toast_photos">Please select at least one photo for create a new service</string>
     <string name="new_service_toast_service_created">The service was created correctly</string>
     <string name="new_service_photo_selection">Select a picture:</string>
 
+    <string name="new_community_activity_name">Add new service</string>
+    <string name="new_community_hint_name">Name</string>
+    <string name="new_community_text_public">Make it public:</string>
+    <string name="new_community_hint_address">Address</string>
+    <string name="new_community_hint_Description">Description</string>
+    <string name="new_community_text_photo">Photo</string>
+    <string name="new_community_button_new">ADD NEW</string>
+    <string name="new_community_text_swicht_Off">Off</string>
+    <string name="new_community_text_swicht_On">On</string>
+    <string name="new_community_toast_enterallfields">Please complete all fields to create a new community</string>
+    <string name="new_community_toast_photos">Please select an icon or photo for create a new community</string>
+    <string name="new_community_toast_service_created">The Community was created correctly</string>
+    <string name="new_community_photo_selection">Select a picture:</string>
+
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="communities_activity_name">My communities</string>
 
     <string name="action_settings">Settings</string>
     <string name="action_add">Add</string>
@@ -60,4 +77,11 @@
     <string name="mlateral_username">User</string>
     <string name="mlateral_email">Email</string>
     <string name="title_activity_location">Map</string>
+
+    <!-- SERVICE SEARCH -->
+    <string name="menu_action_search">Service Search</string>
+    <string name="label_search_distance">Distance: %d km</string>
+    <string name="label_search_points">Points: %d</string>
+    <string name="label_search_cat">Category</string>
+    <string name="label_search_results">Results</string>
 </resources>
