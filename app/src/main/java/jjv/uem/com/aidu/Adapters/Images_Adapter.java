@@ -53,15 +53,15 @@ public class Images_Adapter extends BaseAdapter {
         if(convertView==null){
             convertView= LayoutInflater.from(contexto).inflate(R.layout.imagelist_item,null);
             holder = new ViewHolder();
-            holder.Image = (ImageView) convertView.findViewById(R.id.img_photo);
+            holder.image = (ImageView) convertView.findViewById(R.id.img_photo);
             convertView.setTag(holder);
 
         }else{
             holder = (ViewHolder) convertView.getTag();
         }
 
-        Picasso.with(contexto).load(photos.get(position)).into(holder.Image);
-
+        //Picasso.with(contexto).load(photos.get(position)).into(holder.image);
+        holder.image.setImageURI(Uri.parse(photos.get(position)));
 
 
 
@@ -71,7 +71,7 @@ public class Images_Adapter extends BaseAdapter {
 
 
     private class ViewHolder{
-        ImageView Image;
+        ImageView image;
 
     }
 }

@@ -1,5 +1,8 @@
 package jjv.uem.com.aidu.Model;
 
+import com.google.android.gms.maps.model.LatLng;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,12 +23,13 @@ public class Service {
     private String category;
     private String kind;
     private Comunity comunity;
-    private String[] photos;
+    private ArrayList<String> photos;
     private String userkeyInterested;
     private String state;
     private String userkey;
     private String userName;
     private String serviceKey;
+    private LatLng cordenades;
 
     /*
     //sustituir por clase usuario mejor
@@ -124,11 +128,11 @@ public class Service {
         this.comunity = comunity;
     }
 
-    public String[] getPhotos() {
+    public ArrayList<String> getPhotos() {
         return photos;
     }
 
-    public void setPhotos(String[] photos) {
+    public void setPhotos(ArrayList<String> photos) {
         this.photos = photos;
     }
 
@@ -172,6 +176,14 @@ public class Service {
         this.serviceKey = serviceKey;
     }
 
+    public LatLng getCordenades() {
+        return cordenades;
+    }
+
+    public void setCordenades(LatLng cordenades) {
+        this.cordenades = cordenades;
+    }
+
     public Map<String, Object> toMap() { //creamos una lista con cada uno de los atibustos del objeto
         HashMap<String, Object> result = new HashMap<>();
         result.put("title", title);
@@ -186,7 +198,9 @@ public class Service {
         result.put("userkeyInterested", userkeyInterested);
         result.put("userkey", userkey);
         result.put("userName", userName);
-        result.put("serviceKey",serviceKey);
+        result.put("serviceKey", serviceKey);
+        result.put("photos", photos);
+        result.put("cordenades", cordenades);
         //TODO put comunities and photos
         return result;
     }
@@ -204,12 +218,12 @@ public class Service {
                 ", category='" + category + '\'' +
                 ", kind='" + kind + '\'' +
                 ", comunity=" + comunity +
-                ", photos=" + Arrays.toString(photos) +
+                ", photos=" + photos.toString() +
                 ", userkeyInterested='" + userkeyInterested + '\'' +
                 ", state='" + state + '\'' +
                 ", userkey='" + userkey + '\'' +
                 ", userName='" + userName + '\'' +
-                ", serviceKey='" + serviceKey + '\'' +
+                ", serviceKey='" +  serviceKey + '\'' +
                 '}';
     }
 }
