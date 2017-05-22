@@ -223,7 +223,7 @@ public class Service {
                 ", state='" + state + '\'' +
                 ", userkey='" + userkey + '\'' +
                 ", userName='" + userName + '\'' +
-                ", serviceKey='" + serviceKey + '\'' +
+                ", serviceKey='" +  serviceKey + '\'' +
                 '}';
     }
 }
