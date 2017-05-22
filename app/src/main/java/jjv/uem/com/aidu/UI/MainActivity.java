@@ -2,7 +2,9 @@ package jjv.uem.com.aidu.UI;
 
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -59,6 +61,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     NavigationView navigationView;
     private FirebaseUser usuarioLogeado;
 
+    @RequiresApi(api = Build.VERSION_CODES.GINGERBREAD)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -127,9 +130,10 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         fabAddNew.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(MainActivity.this,NewService.class);
+                Intent i =new Intent(MainActivity.this,NewService.class);
                 i.putExtra(USERNAME,auth.getCurrentUser().getDisplayName());
                 i.putExtra(USERUID,auth.getCurrentUser().getUid());
+                finish();
                 startActivity(i);
             }
         });
@@ -151,6 +155,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
             database = FirebaseDatabase.getInstance();
             DatabaseReference reference = database.getReference("services");
             reference.addValueEventListener(new ValueEventListener() {
+                @RequiresApi(api = Build.VERSION_CODES.GINGERBREAD)
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     Iterable<DataSnapshot> iterator = dataSnapshot.getChildren();
@@ -227,6 +232,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.GINGERBREAD)
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
@@ -284,6 +290,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         return true;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.GINGERBREAD)
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

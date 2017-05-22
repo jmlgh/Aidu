@@ -73,12 +73,6 @@
     <string name="label_search_results">Results</string>
     <string name="new_service_toast_photos">Please select at least one photo for create a new service</string>
 
-    <!-- SERVICE SEARCH -->
-    <string name="menu_action_search">Service Search</string>
-    <string name="label_search_distance">Distance: %d km</string>
-    <string name="label_search_points">Points: %d</string>
-    <string name="label_search_cat">Category</string>
-    <string name="label_search_results">Results</string>
 
 
     <string name="new_service_photo_selection">Select a picture:</string>
