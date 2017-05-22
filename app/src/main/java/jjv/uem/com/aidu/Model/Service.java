@@ -1,5 +1,7 @@
 package jjv.uem.com.aidu.Model;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -27,7 +29,7 @@ public class Service {
     private String userkey;
     private String userName;
     private String serviceKey;
-    private String cordenades;
+    private LatLng cordenades;
 
     /*
     //sustituir por clase usuario mejor
@@ -174,11 +176,11 @@ public class Service {
         this.serviceKey = serviceKey;
     }
 
-    public String getCordenades() {
+    public LatLng getCordenades() {
         return cordenades;
     }
 
-    public void setCordenades(String cordenades) {
+    public void setCordenades(LatLng cordenades) {
         this.cordenades = cordenades;
     }
 
@@ -216,7 +218,7 @@ public class Service {
                 ", category='" + category + '\'' +
                 ", kind='" + kind + '\'' +
                 ", comunity=" + comunity +
-                ", photos=" + Arrays.toString(photos.toArray()) +
+                ", photos=" + photos.toString() +
                 ", userkeyInterested='" + userkeyInterested + '\'' +
                 ", state='" + state + '\'' +
                 ", userkey='" + userkey + '\'' +

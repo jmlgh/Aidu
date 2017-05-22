@@ -1,5 +1,7 @@
 package jjv.uem.com.aidu.Model;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,7 +32,7 @@ public class Comunity {
     private  String [] members;
     private String owner;
     private String address;
-    private String coordinates;
+    private LatLng coordinates;
 
     public String getName() {
         return name;
@@ -104,11 +106,11 @@ public class Comunity {
         this.address = address;
     }
 
-    public String getCoordinates() {
+    public LatLng getCoordinates() {
         return coordinates;
     }
 
-    public void setCoordinates(String coordinates) {
+    public void setCoordinates(LatLng coordinates) {
         this.coordinates = coordinates;
     }
 

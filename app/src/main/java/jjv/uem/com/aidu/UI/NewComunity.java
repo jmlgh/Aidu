@@ -39,6 +39,7 @@ import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -92,7 +93,7 @@ public class NewComunity extends AppCompatActivity {
 
     private File filePathImageCamera;
     private FirebaseAuth mAuth;
-    private String cordenades;
+    private LatLng cordenades;
     private ProgressDialog pd;
 
     private Boolean subido = false;
@@ -274,8 +275,8 @@ public class NewComunity extends AppCompatActivity {
                 String attributions = (String) place.getAttributions();
                 Log.d(TAG, "Place:" + place + ", name: " + name + ", adress: " + place.getAddress() + ", atributions: " + attributions + "***" + place.getAddress());
                 et_adress.setText(address);
-                cordenades = place.getLatLng().toString();
-                Log.e("cordenadas:  ", cordenades);
+                cordenades = place.getLatLng();
+                Log.e("cordenadas:  ", cordenades.toString());
 
             } else if (requestCode == PICK_IMAGE)
                 onSelectFromGalleryResult(data);
