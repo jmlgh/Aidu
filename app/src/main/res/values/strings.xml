@@ -24,7 +24,12 @@
     <string name="login_googleSignIn_error">Something went wrong with Google login</string>
     <string name="web_client_id">78091639469-gi5hkerek8ojr185uep14df68jl81bmi.apps.googleusercontent.com</string>
 
-    <string name="new_service_activity_name">Add new service</string>
+    <!-- TITLES -->
+    <string name="main_title">Available Services</string>
+    <string name="search_title">Service Search</string>
+    <string name="new_service_title">Add a new service</string>
+
+    <string name="new_service_activity_name">Add a new service</string>
     <string name="new_service_hint_title">Title</string>
     <string name="new_service_hint_points">Points: %d</string>
     <string name="new_service_hint_address">Address</string>
@@ -47,9 +52,9 @@
     <string name="dd_mm_yyyy_hh_mm">DD/MM/YYYY HH:MM</string>
     <string name="location">Location</string>
     <string name="send_message">Send message</string>
+    <string name="toolbar_title_services">\t\t\t\t\t\tAvailable Services</string>
 
-    <string name="toolbar_title_services">Available Services</string>
-
+    <!-- MENU LATERAL -->
     <string name="mlateral_myServices">My Services</string>
     <string name="mlateral_community">Community</string>
     <string name="mlateral_chats">Chats</string>
@@ -60,5 +65,32 @@
     <string name="mlateral_email">Email</string>
     <string name="title_activity_location">Map</string>
 
+    <!-- SERVICE SEARCH -->
     <string name="menu_action_search">Service Search</string>
+    <string name="label_search_distance">Distance: %d km</string>
+    <string name="label_search_points">Points: %d</string>
+    <string name="label_search_cat">Category</string>
+    <string name="label_search_results">Results</string>
+    <string name="new_service_toast_photos">Please select at least one photo for create a new service</string>
+
+
+
+    <string name="new_service_photo_selection">Select a picture:</string>
+
+    <string name="new_community_activity_name">Add new service</string>
+    <string name="new_community_hint_name">Name</string>
+    <string name="new_community_text_public">Make it public:</string>
+    <string name="new_community_hint_address">Address</string>
+    <string name="new_community_hint_Description">Description</string>
+    <string name="new_community_text_photo">Photo</string>
+    <string name="new_community_button_new">ADD NEW</string>
+    <string name="new_community_text_swicht_Off">Off</string>
+    <string name="new_community_text_swicht_On">On</string>
+    <string name="new_community_toast_enterallfields">Please complete all fields to create a new community</string>
+    <string name="new_community_toast_photos">Please select an icon or photo for create a new community</string>
+    <string name="new_community_toast_service_created">The Community was created correctly</string>
+    <string name="new_community_photo_selection">Select a picture:</string>
+
+    <string name="communities_activity_name">My communities</string>
 </resources>
+

@@ -12,6 +12,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -65,15 +66,39 @@
                 android:name="com.google.android.maps.v2.API_KEY"
                 android:value="@string/google_maps_key" />
         </activity>
+
+        <activity
+            android:name=".UI.NewComunity"
+            android:label="@string/new_community_activity_name"
+            android:parentActivityName=".UI.Communities"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="com.google.android.maps.v2.API_KEY"
+                android:value="@string/google_maps_key" />
+        </activity>
         <activity android:name=".UI.ServiceView"
             android:label="Service Details"
+            android:parentActivityName=".UI.MainActivity"
             android:screenOrientation="portrait"/>
+
         <activity
             android:name=".UI.LocationActivity"
             android:label="@string/title_activity_location"
             android:screenOrientation="portrait"/>
+        <activity
+            android:name=".UI.Communities"
+            android:label="@string/communities_activity_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".UI.ServiceSearch"
             android:label="Service Search"
+            android:parentActivityName=".UI.MainActivity"
             android:screenOrientation="portrait"></activity>
     </application>
 
