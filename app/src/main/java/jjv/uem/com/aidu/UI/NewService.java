@@ -17,6 +17,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.AnyRes;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
@@ -166,7 +167,8 @@ public class NewService extends AppCompatActivity {
                 if (photos.size()<MAX_IMAGE+1){
                     showImagePicker();
                 } else {
-                    Toast.makeText(NewService.this,getString(R.string.new_service_toast_no_more_images,MAX_IMAGE),Toast.LENGTH_SHORT);
+                    Log.e("te has pasaoo", getString(R.string.new_service_toast_no_more_images,MAX_IMAGE));
+                    Toast.makeText(NewService.this,getString(R.string.new_service_toast_no_more_images,MAX_IMAGE),Toast.LENGTH_LONG);
                 }
 
             }
