@@ -22,7 +22,7 @@ public class Service {
     private String location;
     private String category;
     private String kind;
-    private Community comunity;
+    private Community community;
     private ArrayList<String> photos;
     private String userkeyInterested;
     private String state;
@@ -227,7 +227,7 @@ public class Service {
                 ", location='" + location + '\'' +
                 ", category='" + category + '\'' +
                 ", kind='" + kind + '\'' +
-                ", comunity=" + community +
+                ", community=" + community +
                 ", photos=" + photos.toString() +
                 ", userkeyInterested='" + userkeyInterested + '\'' +
                 ", state='" + state + '\'' +

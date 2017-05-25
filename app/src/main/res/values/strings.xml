@@ -42,8 +42,6 @@
     <string name="new_service_button_new">ADD NEW</string>
     <string name="new_service_toast_enterallfields">Please complete all fields to create a new service</string>
     <string name="new_service_toast_service_created">The service was created correctly</string>
-    <string name="new_service_photo_selection">Select a picture:</string>
-    <string name="new_service_toast_no_more_images">You can\'t put more than %d images</string>
     <string name="new_service_toast_no_more_images">You can\'t put more than %d images</string>
     <string name="new_service_photo_selection">Select a picture:</string>
 
