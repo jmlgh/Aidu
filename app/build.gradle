@@ -41,7 +41,13 @@ dependencies {
     compile 'com.google.android.gms:play-services-places:10.2.4'
     compile 'org.lucasr.twowayview:twowayview:0.1.4'
     compile 'com.squareup.picasso:picasso:2.5.2'
+
+    //LIBRERIA DE RATING BAR
+    compile 'me.zhanghai.android.materialratingbar:library:1.0.2'
+
+
     testCompile 'junit:junit:4.12'
+
 }
 
 

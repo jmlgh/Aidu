@@ -1,5 +1,10 @@
 package jjv.uem.com.aidu.Model;
 
+import com.google.firebase.auth.FirebaseUser;
+
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by Victor on 16/04/2017.
  */
@@ -8,38 +13,31 @@ public class User {
     private String email;
     private String displayName;
     private String password;
+    private String key;
+    private double numVal;
+    private double media;
 
-    public User(){}
 
-    public User(String email, String name, String password){
-        this.email = email;
-        this.displayName = name;
-        this.password = password;
-
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getDisplayName() {
-        return displayName;
-    }
-
-    public void setDisplayName(String displayName) {
+    public User(FirebaseUser user, String password, String displayName){
+        this.email = user.getEmail();
         this.displayName = displayName;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
         this.password = password;
+        this.key=user.getUid();
+        this.numVal = 0;
+        this.media = 0;
+
+    }
+
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("email",this.email  );
+        result.put("displayName", this.displayName);
+        result.put("password",this.password );
+        result.put("key",this.key );
+        result.put("numVal",this.numVal );
+        result.put("media", this.media);
+
+        return result;
     }
 
     /*

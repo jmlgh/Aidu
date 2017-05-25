@@ -97,5 +97,6 @@
     <string name="new_community_photo_selection">Select a picture:</string>
 
     <string name="communities_activity_name">My communities</string>
+    <string name="new_user_created">User created</string>
 </resources>
 
