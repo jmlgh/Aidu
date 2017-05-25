@@ -79,6 +79,7 @@ public class NewService extends AppCompatActivity {
     private static final int PLACE_PICKER_REQUEST = 1;
     private static final int CAPTURE_IMAGE = 10;
     private static final int PICK_IMAGE = 20;
+    private static final int MAX_IMAGE = 2;
 
 
     FirebaseStorage storage = FirebaseStorage.getInstance();
@@ -160,7 +161,12 @@ public class NewService extends AppCompatActivity {
         twv_photos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                showImagePicker();
+                if (photos.size()<MAX_IMAGE+1){
+                    showImagePicker();
+                } else {
+                    Toast.makeText(NewService.this,getString(R.string.new_service_toast_no_more_images,MAX_IMAGE),Toast.LENGTH_SHORT);
+                }
+
             }
         });
         tv_hour.setText(currentTime);
