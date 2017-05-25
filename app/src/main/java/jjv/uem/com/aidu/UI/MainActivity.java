@@ -2,10 +2,14 @@ package jjv.uem.com.aidu.UI;
 
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -51,11 +55,13 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     private Service_Adapter_RV.OnItemClickListener l;
     private Service_Adapter_RV adapter;
 
+    private FloatingActionButton fabSearch, fabAddNew;
     private TextView navUserName, navUserEmail;
     private View headerView;
     NavigationView navigationView;
     private FirebaseUser usuarioLogeado;
 
+    @RequiresApi(api = Build.VERSION_CODES.GINGERBREAD)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -120,6 +126,27 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
 
         getServices();
 
+        fabAddNew = (FloatingActionButton)findViewById(R.id.fab_new_service);
+        fabAddNew.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i =new Intent(MainActivity.this,NewService.class);
+                i.putExtra(USERNAME,auth.getCurrentUser().getDisplayName());
+                i.putExtra(USERUID,auth.getCurrentUser().getUid());
+                finish();
+                startActivity(i);
+            }
+        });
+
+        fabSearch = (FloatingActionButton)findViewById(R.id.fab_service_search);
+        fabSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, ServiceSearch.class);
+                startActivity(i);
+            }
+        });
+
     }
 
     private void getServices() {
@@ -128,6 +155,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
             database = FirebaseDatabase.getInstance();
             DatabaseReference reference = database.getReference("services");
             reference.addValueEventListener(new ValueEventListener() {
+                @RequiresApi(api = Build.VERSION_CODES.GINGERBREAD)
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     Iterable<DataSnapshot> iterator = dataSnapshot.getChildren();
@@ -204,6 +232,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.GINGERBREAD)
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
@@ -257,10 +286,11 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main2, menu);
+        //getMenuInflater().inflate(R.menu.main2, menu);
         return true;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.GINGERBREAD)
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

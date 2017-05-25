@@ -20,19 +20,17 @@
             android:minHeight="?attr/actionBarSize"
             android:background="@color/colorPrimaryDark"
             app:layout_scrollFlags="scroll|enterAlways"
-            android:elevation="4dp"
-            android:textAlignment="center"
+            android:gravity="center"
             app:titleTextColor="@android:color/white"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light" >
 
             <TextView
-                android:layout_centerInParent="true"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:textSize="25sp"
-                android:text="@string/toolbar_title_services"/>
+                android:layout_centerInParent="true"
+                android:text="@string/toolbar_title_services"
+                android:textSize="25sp" />
         </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
