@@ -17,6 +17,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.AnyRes;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
@@ -79,6 +80,7 @@ public class NewService extends AppCompatActivity {
     private static final int PLACE_PICKER_REQUEST = 1;
     private static final int CAPTURE_IMAGE = 10;
     private static final int PICK_IMAGE = 20;
+    private static final int MAX_IMAGE = 2;
 
 
     FirebaseStorage storage = FirebaseStorage.getInstance();
@@ -105,6 +107,8 @@ public class NewService extends AppCompatActivity {
     private File filePathImageCamera;
     private FirebaseAuth mAuth;
     private LatLng cordenades;
+    private double longitude;
+    private double latitude;
 
 
     private ProgressDialog pd;
@@ -160,7 +164,13 @@ public class NewService extends AppCompatActivity {
         twv_photos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                showImagePicker();
+                if (photos.size()<MAX_IMAGE+1){
+                    showImagePicker();
+                } else {
+                    Log.e("te has pasaoo", getString(R.string.new_service_toast_no_more_images,MAX_IMAGE));
+                    Toast.makeText(NewService.this,getString(R.string.new_service_toast_no_more_images,MAX_IMAGE),Toast.LENGTH_LONG);
+                }
+
             }
         });
         tv_hour.setText(currentTime);
@@ -282,45 +292,46 @@ public class NewService extends AppCompatActivity {
 
     private void uploadService() {
 
-            if (photo.size() == photos.size() - 1) {
-                service.setDescription(et_description.getText().toString());
-                service.setTitle(et_title.getText().toString());
-                service.setLocation(et_adress.getText().toString());
-                service.setPrice_points("" + pricePoints);
-                service.setCategory(sp_category.getSelectedItem().toString());
-                service.setDate(tv_date.getText().toString());
-                service.setHour(tv_hour.getText().toString());
-                service.setKind(sp_kind.getSelectedItem().toString());
-                service.setUserkey(userUid);
-                service.setUserName(userName);
-                service.setState("DISPONIBLE");
-                service.setUserkeyInterested("anyone");
-                service.setCordenades(cordenades);
+        if (photo.size() == photos.size() - 1) {
+            service.setDescription(et_description.getText().toString());
+            service.setTitle(et_title.getText().toString());
+            service.setLocation(et_adress.getText().toString());
+            service.setPrice_points("" + pricePoints);
+            service.setCategory(sp_category.getSelectedItem().toString());
+            service.setDate(tv_date.getText().toString());
+            service.setHour(tv_hour.getText().toString());
+            service.setKind(sp_kind.getSelectedItem().toString());
+            service.setUserkey(userUid);
+            service.setUserName(userName);
+            service.setState("DISPONIBLE");
+            service.setUserkeyInterested("anyone");
+            service.setLatitude(latitude);
+            service.setLongitude(longitude);
 
 
-                service.setPhotos(photo);
-                Log.d(TAG, service.getTitle() + " " + service.getCategory() + " " + service.getKind());
+            service.setPhotos(photo);
+            Log.d(TAG, service.getTitle() + " " + service.getCategory() + " " + service.getKind());
 
-                service.setServiceKey(key);
+            service.setServiceKey(key);
 
-                Map<String, Object> servic = service.toMap();
-                Map<String, Object> childUpdates = new HashMap<>();
+            Map<String, Object> servic = service.toMap();
+            Map<String, Object> childUpdates = new HashMap<>();
 
-                childUpdates.put("/services/" + key, servic);
-                childUpdates.put("/user-services/" + userUid + "/" + key, servic);
-                mDatabase.updateChildren(childUpdates).addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d(TAG, getString(R.string.new_service_toast_service_created));
-                    }
-                });
+            childUpdates.put("/services/" + key, servic);
+            childUpdates.put("/user-services/" + userUid + "/" + key, servic);
+            mDatabase.updateChildren(childUpdates).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Log.d(TAG, getString(R.string.new_service_toast_service_created));
+                }
+            });
 
-                pd.dismiss();
-                Toast.makeText(this, getText(R.string.new_service_toast_service_created), Toast.LENGTH_SHORT).show();
-                finish();
-                Intent i = new Intent(this, MainActivity.class);
-                startActivity(i);
-            }
+            pd.dismiss();
+            Toast.makeText(this, getText(R.string.new_service_toast_service_created), Toast.LENGTH_SHORT).show();
+            finish();
+            Intent i = new Intent(this, MainActivity.class);
+            startActivity(i);
+        }
 
 
     }
@@ -335,7 +346,9 @@ public class NewService extends AppCompatActivity {
                 String attributions = (String) place.getAttributions();
                 Log.d(TAG, "Place:" + place + ", name: " + name + ", adress: " + place.getAddress() + ", atributions: " + attributions + "***" + place.getAddress());
                 et_adress.setText(address);
-                cordenades = place.getLatLng();
+                cordenades = place.getLatLng() ;
+                longitude = cordenades.longitude;
+                latitude = cordenades.latitude;
                 Log.e("cordenadas:  ", cordenades.toString());
 
             } else if (requestCode == PICK_IMAGE)
@@ -490,10 +503,10 @@ public class NewService extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-       // firebase sign out
-            finish();
-            Intent i = new Intent(this, MainActivity.class);
-            startActivity(i);
+        // firebase sign out
+        finish();
+        Intent i = new Intent(this, MainActivity.class);
+        startActivity(i);
 
 
     }

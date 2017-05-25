@@ -9,7 +9,7 @@ import java.util.Map;
  * Created by Victor on 16/04/2017.
  */
 
-public class Comunity {
+public class Community {
 
     /*
     COMUNIDADES - KEY COMUNIDAD

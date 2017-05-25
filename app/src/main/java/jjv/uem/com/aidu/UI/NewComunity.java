@@ -20,8 +20,6 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -52,11 +50,10 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import jjv.uem.com.aidu.Model.Comunity;
+import jjv.uem.com.aidu.Model.Community;
 import jjv.uem.com.aidu.R;
 
 
@@ -82,7 +79,7 @@ public class NewComunity extends AppCompatActivity {
     private Button btn_newCommunity;
     private Switch sw_public;
 
-    private Comunity community = new Comunity();
+    private Community community = new Community();
     private DatabaseReference mDatabase;
     private ActionBar actBar;
     private String userName, userUid;

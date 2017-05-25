@@ -40,8 +40,8 @@
                     android:layout_marginLeft="11dp"
                     android:layout_marginRight="11dp"
                     android:layout_marginTop="11dp"
-                    android:background="@color/colorPrimaryBackground"
-                    android:backgroundTint="@color/colorPrimaryBackground"
+                    android:background="@color/colorPrimaryLight"
+                    android:backgroundTint="@color/colorPrimaryLight"
                     android:padding="5dp"
                     app:cardCornerRadius="10dp">
 

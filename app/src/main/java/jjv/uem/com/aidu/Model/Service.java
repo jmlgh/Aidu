@@ -22,22 +22,19 @@ public class Service {
     private String location;
     private String category;
     private String kind;
-    private Comunity comunity;
+    private Community community;
     private ArrayList<String> photos;
     private String userkeyInterested;
     private String state;
     private String userkey;
     private String userName;
     private String serviceKey;
-    private LatLng cordenades;
+    private double longitude;
+    private double latitude;
 
     /*
     //sustituir por clase usuario mejor
-
     private User user;
-
-
-
 |-ESTADO : DISPONIBLE (Cuando se publica ) / ESPERA (Cuando se esta negociando por
             un servicio) /EN CURSO (Cuando lo a aceptado el que solicita el servicio ) /
     FINALIZADO(Cuando se confirma el servicio y se ha pagado)
@@ -45,7 +42,6 @@ public class Service {
             COMUNIDAD)
 |-LISTA FOTOS SERVICIO |-  LÍMITE:5
             |-URL
-
      */
 
     public String getTitle() {
@@ -120,12 +116,12 @@ public class Service {
         this.kind = kind;
     }
 
-    public Comunity getComunity() {
-        return comunity;
+    public Community getCommunity() {
+        return community;
     }
 
-    public void setComunity(Comunity comunity) {
-        this.comunity = comunity;
+    public void setCommunity(Community comunity) {
+        this.community = comunity;
     }
 
     public ArrayList<String> getPhotos() {
@@ -176,12 +172,20 @@ public class Service {
         this.serviceKey = serviceKey;
     }
 
-    public LatLng getCordenades() {
-        return cordenades;
+    public double getLongitude() {
+        return longitude;
     }
 
-    public void setCordenades(LatLng cordenades) {
-        this.cordenades = cordenades;
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
     }
 
     public Map<String, Object> toMap() { //creamos una lista con cada uno de los atibustos del objeto
@@ -200,7 +204,8 @@ public class Service {
         result.put("userName", userName);
         result.put("serviceKey", serviceKey);
         result.put("photos", photos);
-        result.put("cordenades", cordenades);
+        result.put("longitude", longitude);
+        result.put("latitude", latitude);
         //TODO put comunities and photos
         return result;
     }
@@ -217,7 +222,7 @@ public class Service {
                 ", location='" + location + '\'' +
                 ", category='" + category + '\'' +
                 ", kind='" + kind + '\'' +
-                ", comunity=" + comunity +
+                ", comunity=" + community +
                 ", photos=" + photos.toString() +
                 ", userkeyInterested='" + userkeyInterested + '\'' +
                 ", state='" + state + '\'' +

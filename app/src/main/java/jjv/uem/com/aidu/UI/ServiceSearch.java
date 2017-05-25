@@ -20,8 +20,8 @@ public class ServiceSearch extends AppCompatActivity {
         setContentView(R.layout.activity_service_search);
 
         // configura el titulo de la pantalla para que aparezca centrado
-        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setCustomView(R.layout.abs_layout_service_search_title);
+        //getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        //getSupportActionBar().setCustomView(R.layout.abs_layout_service_search_title);
 
         initViews();
 

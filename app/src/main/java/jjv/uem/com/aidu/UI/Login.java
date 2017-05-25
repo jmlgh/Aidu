@@ -40,10 +40,10 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
     private FirebaseAuth auth;
     private FirebaseAuth.AuthStateListener authStateListener;
-    private TextView tvLogo, tvRegister, tvAltLogin;
+    private TextView tvLogo, tvAltLogin;
     private EditText etUserName, etPwd;
     private ImageView ivGoogleSignInButton;
-    private Button btnLogin;
+    private Button btnLogin, btnRegister;
     private GoogleApiClient googleApiClient;
 
     @Override
@@ -74,7 +74,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         etUserName = (EditText) findViewById(R.id.et_username);
         etPwd = (EditText) findViewById(R.id.et_password);
         tvLogo = (TextView) findViewById(R.id.r_tv_logo);
-        tvRegister = (TextView) findViewById(R.id.tv_register);
+        btnRegister = (Button) findViewById(R.id.btn_register);
         tvAltLogin = (TextView) findViewById(R.id.tv_signinalt);
 
         ivGoogleSignInButton = (ImageView) findViewById(R.id.iv_google_signin_button);
@@ -90,7 +90,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
             }
         });
 
-        tvRegister.setOnClickListener(new View.OnClickListener() {
+        btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(Login.this, Register.class);
@@ -105,7 +105,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     private void setTypeFace() {
         Typeface bubblerFont = Typeface.createFromAsset(getAssets(), "fonts/BubblerOne-Regular.ttf");
         tvLogo.setTypeface(bubblerFont);
-        tvRegister.setTypeface(bubblerFont);
+        btnRegister.setTypeface(bubblerFont);
         etUserName.setTypeface(bubblerFont);
         etPwd.setTypeface(bubblerFont);
         btnLogin.setTypeface(bubblerFont);
