@@ -91,6 +91,8 @@ public class NewComunity extends AppCompatActivity {
     private File filePathImageCamera;
     private FirebaseAuth mAuth;
     private LatLng cordenades;
+    private double longitude;
+    private double latitude;
     private ProgressDialog pd;
 
     private Boolean subido = false;
@@ -239,7 +241,8 @@ public class NewComunity extends AppCompatActivity {
             community.setName(et_title.getText().toString());
             community.setAddress(et_adress.getText().toString());
             community.setDescription(et_description.getText().toString());
-            community.setCoordinates(cordenades);
+            community.setLongitude(longitude);
+            community.setLatitude(latitude);
             community.setOwner(userUid);
             Map<String, Object> servic = community.toMap();
             Map<String, Object> childUpdates = new HashMap<>();
@@ -273,6 +276,8 @@ public class NewComunity extends AppCompatActivity {
                 Log.d(TAG, "Place:" + place + ", name: " + name + ", adress: " + place.getAddress() + ", atributions: " + attributions + "***" + place.getAddress());
                 et_adress.setText(address);
                 cordenades = place.getLatLng();
+                longitude = cordenades.longitude;
+                latitude = cordenades.latitude;
                 Log.e("cordenadas:  ", cordenades.toString());
 
             } else if (requestCode == PICK_IMAGE)

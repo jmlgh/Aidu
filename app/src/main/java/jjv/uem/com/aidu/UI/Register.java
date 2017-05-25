@@ -13,12 +13,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import jjv.uem.com.aidu.Model.User;
 import jjv.uem.com.aidu.R;
 
 public class Register extends AppCompatActivity {
@@ -31,6 +38,8 @@ public class Register extends AppCompatActivity {
     private TextView tvLogo;
     private EditText etEmail, etUserName, etPwd;
     private Button btnRegister;
+    private String password;
+    private String TAG = Register.class.getName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +92,7 @@ public class Register extends AppCompatActivity {
     public void createNewAccount(View v){
         final String userEmail = etEmail.getText().toString();
         final String displayName = etUserName.getText().toString();
-        final String password = etPwd.getText().toString();
+        password = etPwd.getText().toString();
 
         if (userEmail.equals("") || displayName.equals("") || password.equals("")) {
             Toast.makeText(this, getString(R.string.register_toast_enterallfields), Toast.LENGTH_SHORT).show();
@@ -118,6 +127,8 @@ public class Register extends AppCompatActivity {
                                 user.updateProfile(displayNameUpdate);
                                 //FirebaseAuth.getInstance().signOut();
                                 auth.signInWithEmailAndPassword(userEmail, password);
+                                saveUserOnDataBase(user,displayName);
+
                                 Toast.makeText(Register.this, "User created", Toast.LENGTH_SHORT).show();
                             }
                         }
@@ -125,7 +136,26 @@ public class Register extends AppCompatActivity {
         }
     }
 
-    //asigna el listener a la instancia de auth
+    private void saveUserOnDataBase(FirebaseUser user,String displayName) {
+        Map<String, Object> childUpdates = new HashMap<>();
+        User u = new User(user,password,displayName);
+        Map<String, Object> userMap = u.toMap();
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+        childUpdates.put("/user/" + user.getUid() ,  userMap);
+        mDatabase.updateChildren(childUpdates).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Toast.makeText(getBaseContext(), getText(R.string.new_user_created), Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+
+    }
+
+
+
+        //asigna el listener a la instancia de auth
     @Override
     protected void onStart() {
         super.onStart();

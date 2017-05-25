@@ -22,7 +22,7 @@ public class Service {
     private String location;
     private String category;
     private String kind;
-    private Community community;
+    private Community comunity;
     private ArrayList<String> photos;
     private String userkeyInterested;
     private String state;
@@ -34,7 +34,11 @@ public class Service {
 
     /*
     //sustituir por clase usuario mejor
+
     private User user;
+
+
+
 |-ESTADO : DISPONIBLE (Cuando se publica ) / ESPERA (Cuando se esta negociando por
             un servicio) /EN CURSO (Cuando lo a aceptado el que solicita el servicio ) /
     FINALIZADO(Cuando se confirma el servicio y se ha pagado)
@@ -42,6 +46,7 @@ public class Service {
             COMUNIDAD)
 |-LISTA FOTOS SERVICIO |-  LÍMITE:5
             |-URL
+
      */
 
     public String getTitle() {

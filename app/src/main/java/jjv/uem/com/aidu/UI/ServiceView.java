@@ -23,6 +23,8 @@ import jjv.uem.com.aidu.Model.Service;
 import jjv.uem.com.aidu.R;
 
 public class ServiceView extends AppCompatActivity {
+    public static final String LATITUDE = "latitud" ;
+    public static final String LONGITUDE = "longitud";
     private FirebaseDatabase database;
     private FirebaseAuth auth;
     private Service service;
@@ -65,6 +67,8 @@ public class ServiceView extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getBaseContext(),LocationActivity.class);
+                i.putExtra(LONGITUDE,service.getLongitude());
+                i.putExtra(LATITUDE,service.getLatitude());
                 startActivity(i);
             }
         });

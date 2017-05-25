@@ -1,6 +1,7 @@
 package jjv.uem.com.aidu.UI;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
@@ -30,8 +31,9 @@ public class LocationActivity extends FragmentActivity implements OnMapReadyCall
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        lat = 40.5352098;
-        lon = -3.6511253;
+        Intent i = getIntent();
+        lat = i.getDoubleExtra(ServiceView.LATITUDE,0);
+        lon = i.getDoubleExtra(ServiceView.LONGITUDE,0);
     }
 
 
