@@ -106,6 +106,8 @@ public class NewService extends AppCompatActivity {
     private File filePathImageCamera;
     private FirebaseAuth mAuth;
     private LatLng cordenades;
+    private double longitude;
+    private double latitude;
 
 
     private ProgressDialog pd;
@@ -301,7 +303,8 @@ public class NewService extends AppCompatActivity {
                 service.setUserName(userName);
                 service.setState("DISPONIBLE");
                 service.setUserkeyInterested("anyone");
-                service.setCordenades(cordenades);
+                service.setLatitude(latitude);
+                service.setLongitude(longitude);
 
 
                 service.setPhotos(photo);
@@ -341,7 +344,9 @@ public class NewService extends AppCompatActivity {
                 String attributions = (String) place.getAttributions();
                 Log.d(TAG, "Place:" + place + ", name: " + name + ", adress: " + place.getAddress() + ", atributions: " + attributions + "***" + place.getAddress());
                 et_adress.setText(address);
-                cordenades = place.getLatLng();
+                cordenades = place.getLatLng() ;
+                longitude = cordenades.longitude;
+                latitude = cordenades.latitude;
                 Log.e("cordenadas:  ", cordenades.toString());
 
             } else if (requestCode == PICK_IMAGE)

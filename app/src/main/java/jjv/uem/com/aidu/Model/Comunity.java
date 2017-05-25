@@ -32,7 +32,8 @@ public class Comunity {
     private  String [] members;
     private String owner;
     private String address;
-    private LatLng coordinates;
+    private double longitude;
+    private double latitude;
 
     public String getName() {
         return name;
@@ -106,12 +107,20 @@ public class Comunity {
         this.address = address;
     }
 
-    public LatLng getCoordinates() {
-        return coordinates;
+    public double getLongitude() {
+        return longitude;
     }
 
-    public void setCoordinates(LatLng coordinates) {
-        this.coordinates = coordinates;
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
     }
 
     public Map<String, Object> toMap() { //creamos una lista con cada uno de los atibustos del objeto
@@ -124,8 +133,8 @@ public class Comunity {
         result.put("image", image);
         result.put("members", members);
         result.put("owner", owner);
-        result.put("address", address);
-        result.put("coordinates", coordinates);
+        result.put("longitude", longitude);
+        result.put("latitude", latitude);
         //TODO put comunities and photos
         return result;
     }

@@ -29,7 +29,8 @@ public class Service {
     private String userkey;
     private String userName;
     private String serviceKey;
-    private LatLng cordenades;
+    private double longitude;
+    private double latitude;
 
     /*
     //sustituir por clase usuario mejor
@@ -176,12 +177,20 @@ public class Service {
         this.serviceKey = serviceKey;
     }
 
-    public LatLng getCordenades() {
-        return cordenades;
+    public double getLongitude() {
+        return longitude;
     }
 
-    public void setCordenades(LatLng cordenades) {
-        this.cordenades = cordenades;
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
     }
 
     public Map<String, Object> toMap() { //creamos una lista con cada uno de los atibustos del objeto
@@ -200,7 +209,8 @@ public class Service {
         result.put("userName", userName);
         result.put("serviceKey", serviceKey);
         result.put("photos", photos);
-        result.put("cordenades", cordenades);
+        result.put("longitude", longitude);
+        result.put("latitude", latitude);
         //TODO put comunities and photos
         return result;
     }
