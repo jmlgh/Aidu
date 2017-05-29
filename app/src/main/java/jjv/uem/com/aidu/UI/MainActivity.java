@@ -60,7 +60,6 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
 
     GoogleApiClient mGoogleApiClient;
     private CardAdapter cardAdapter;
-
     private FirebaseAuth auth;
     private FirebaseAuth.AuthStateListener authListener;
     private FirebaseDatabase database;
@@ -69,7 +68,6 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     //private Service_Adapter_RV.OnItemClickListener l;
     private CardAdapter.OnItemClickListener l;
     private Service_Adapter_RV adapter;
-
     private FloatingActionButton fabSearch, fabAddNew;
     private TextView navUserName, navUserEmail;
     private View headerView;
