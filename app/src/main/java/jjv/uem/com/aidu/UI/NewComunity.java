@@ -50,6 +50,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -244,6 +245,9 @@ public class NewComunity extends AppCompatActivity {
             community.setLongitude(longitude);
             community.setLatitude(latitude);
             community.setOwner(userUid);
+            ArrayList<String> members = new ArrayList<>();
+            members.add(userUid);
+            community.setMembers( members);
             Map<String, Object> servic = community.toMap();
             Map<String, Object> childUpdates = new HashMap<>();
 
