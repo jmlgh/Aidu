@@ -300,7 +300,6 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         if (id == R.id.nav_my_services) {
             // Handle the camera action
         } else if (id == R.id.nav_communities) {
-
             Intent i = new Intent(this, Communities.class);
             startActivity(i);
             finish();

@@ -21,16 +21,4 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
     </RelativeLayout>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab_new_service"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="280dp"
-        android:layout_marginStart="280dp"
-        android:layout_marginTop="400dp"
-        android:clickable="true"
-        android:src="@drawable/ic_plus"
-        app:fabSize="normal"
-        app:srcCompat="@drawable/boton_redondo" />
-
 </android.support.design.widget.CoordinatorLayout>

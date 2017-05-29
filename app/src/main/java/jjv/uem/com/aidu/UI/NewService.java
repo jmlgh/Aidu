@@ -176,9 +176,9 @@ public class NewService extends AppCompatActivity {
         tv_hour.setText(currentTime);
         tv_date.setText(currentDate);
         tv_points.setText(getString(R.string.new_service_hint_points, pricePoints));
-        ArrayAdapter<String> adapter_category = new ArrayAdapter(this, android.R.layout.simple_spinner_item, categorys);
+        ArrayAdapter<String> adapter_category = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categorys);
         sp_category.setAdapter(adapter_category);
-        ArrayAdapter<String> adapter_kind = new ArrayAdapter(this, android.R.layout.simple_spinner_item, kinds);
+        ArrayAdapter<String> adapter_kind = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, kinds);
         sp_kind.setAdapter(adapter_kind);
 
         tv_date.setOnClickListener(new View.OnClickListener() {
@@ -462,7 +462,7 @@ public class NewService extends AppCompatActivity {
             });
 
         } else {
-//IS NULL
+        //IS NULL
         }
     }
 
