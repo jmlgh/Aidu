@@ -104,15 +104,11 @@
                 android:textSize="17sp"
                 android:text="@string/label_search_results"/>
 
-            <com.google.android.gms.maps.MapView
-                android:id="@+id/mp_results"
+            <fragment
+                android:id="@+id/map"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginStart="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp"
-                android:visibility="visible" />
+                android:name="com.google.android.gms.maps.MapFragment" />
 
         </LinearLayout>
 

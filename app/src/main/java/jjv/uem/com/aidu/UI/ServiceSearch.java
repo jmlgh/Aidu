@@ -1,18 +1,25 @@
 package jjv.uem.com.aidu.UI;
 
-import android.support.v7.app.ActionBar;
+import android.location.LocationManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+
 import jjv.uem.com.aidu.R;
 
-public class ServiceSearch extends AppCompatActivity {
+public class ServiceSearch extends AppCompatActivity implements OnMapReadyCallback {
 
     private TextView tvDistance, tvPoints;
     private SeekBar sbPoints, sbDistance;
     private int distance = 1, points = 1;
+    private GoogleMap mGoogleMap;
+    private LocationManager locManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +31,23 @@ public class ServiceSearch extends AppCompatActivity {
         //getSupportActionBar().setCustomView(R.layout.abs_layout_service_search_title);
 
         initViews();
+        try{
+            initLocation();
+            initMap();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
 
+    }
+
+    private void initLocation() {
+        locManager = (LocationManager)getSystemService(LOCATION_SERVICE);
+    }
+
+    private void initMap() {
+        if(mGoogleMap == null) {
+            ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMapAsync(this);
+        }
     }
 
     private void initViews() {
@@ -79,5 +102,18 @@ public class ServiceSearch extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        this.mGoogleMap = googleMap;
+        try{
+            float zoomLevel = 16;
+            mGoogleMap.setMyLocationEnabled(true);
+            //mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom());
+        }catch(SecurityException e){
+
+        }
+
     }
 }

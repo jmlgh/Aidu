@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -12,8 +12,7 @@
 
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="95dp">
+        android:layout_height="match_parent">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/lstLista"
@@ -26,11 +25,12 @@
         android:id="@+id/fab_new_service"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_marginLeft="260dp"
-        android:layout_marginStart="260dp"
+        android:layout_marginLeft="280dp"
+        android:layout_marginStart="280dp"
+        android:layout_marginTop="400dp"
         android:clickable="true"
         android:src="@drawable/ic_plus"
         app:fabSize="normal"
         app:srcCompat="@drawable/boton_redondo" />
 
-</LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

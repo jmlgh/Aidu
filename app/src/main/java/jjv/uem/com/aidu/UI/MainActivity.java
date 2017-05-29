@@ -89,6 +89,22 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
                 .build();
 
         recyclerView = (RecyclerView) findViewById(R.id.lstLista);
+        recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                if(newState == RecyclerView.SCROLL_STATE_IDLE){
+                    fabAddNew.show();
+                }
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                if(dy > 0 || dy < 0 && fabAddNew.isShown()){
+                    fabAddNew.hide();
+                }
+            }
+        });
         //serviceList = new ArrayList<>();
 
         // configuracion para el display de las service cards

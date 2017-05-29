@@ -503,12 +503,9 @@ public class NewService extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        // firebase sign out
-        finish();
         Intent i = new Intent(this, MainActivity.class);
         startActivity(i);
-
-
+        finish();
     }
 
 
