@@ -50,6 +50,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -61,7 +62,7 @@ public class NewComunity extends AppCompatActivity {
 
     //for the treatmet ofthe images
     public static final String URL_STORAGE_REFERENCE = "gs://aidu-195e7.appspot.com";
-    public static final String FOLDER_STORAGE_IMG = "Images/Userimage";
+    public static final String FOLDER_STORAGE_IMG = "Images/communities";
     private static final String TAG = NewComunity.class.getSimpleName();
     private static final int PLACE_PICKER_REQUEST = 1;
     private static final int CAPTURE_IMAGE = 10;
@@ -125,6 +126,7 @@ public class NewComunity extends AppCompatActivity {
 
         actBar.setDisplayHomeAsUpEnabled(true);
         //actBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#1c313aeg")));
+
         et_title = (EditText) findViewById(R.id.et_title);
         et_adress = (EditText) findViewById(R.id.et_adress);
         et_description = (EditText) findViewById(R.id.et_description);
@@ -238,12 +240,16 @@ public class NewComunity extends AppCompatActivity {
     private void uploadCommunity() {
         community.setKey(key);
             community.setPublica(sw_public.isChecked());
+            community.setIcon(icon);
             community.setName(et_title.getText().toString());
             community.setAddress(et_adress.getText().toString());
             community.setDescription(et_description.getText().toString());
             community.setLongitude(longitude);
             community.setLatitude(latitude);
             community.setOwner(userUid);
+            ArrayList<String> members = new ArrayList<>();
+            members.add(userUid);
+            community.setMembers(members);
             Map<String, Object> servic = community.toMap();
             Map<String, Object> childUpdates = new HashMap<>();
 
@@ -367,7 +373,7 @@ public class NewComunity extends AppCompatActivity {
 
         if (storageReference != null) {
 
-            final StorageReference ref = storageReference.child(userUid + "/" + key + "/" + name);
+            final StorageReference ref = storageReference.child(key + "/" + name);
             Log.e("Url", "entrando en send");
             ref.putFile(file).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                 @Override
@@ -377,6 +383,7 @@ public class NewComunity extends AppCompatActivity {
                         public void onSuccess(Uri uri) {
                             Log.e("Url", uri.toString());
                             community.setImage(uri.toString());
+                            community.setIcon(-1);
                             uploadCommunity();
 
                         }

@@ -22,7 +22,7 @@ public class Service {
     private String location;
     private String category;
     private String kind;
-    private Community community;
+    private String community;
     private ArrayList<String> photos;
     private String userkeyInterested;
     private String state;
@@ -121,11 +121,11 @@ public class Service {
         this.kind = kind;
     }
 
-    public Community getCommunity() {
+    public String getCommunity() {
         return community;
     }
 
-    public void setCommunity(Community comunity) {
+    public void setCommunity(String comunity) {
         this.community = comunity;
     }
 
@@ -211,6 +211,7 @@ public class Service {
         result.put("photos", photos);
         result.put("longitude", longitude);
         result.put("latitude", latitude);
+        result.put("community", community);
         //TODO put comunities and photos
         return result;
     }

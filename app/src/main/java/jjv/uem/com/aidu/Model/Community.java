@@ -2,6 +2,7 @@ package jjv.uem.com.aidu.Model;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,7 +30,7 @@ public class Community {
     private String description;
     private int Icon;
     private String image;
-    private  String [] members;
+    private ArrayList<String> members;
     private String owner;
     private String address;
     private double longitude;
@@ -83,11 +84,11 @@ public class Community {
         this.image = image;
     }
 
-    public String[] getMembers() {
+    public ArrayList<String> getMembers() {
         return members;
     }
 
-    public void setMembers(String[] members) {
+    public void setMembers(ArrayList<String> members) {
         this.members = members;
     }
 

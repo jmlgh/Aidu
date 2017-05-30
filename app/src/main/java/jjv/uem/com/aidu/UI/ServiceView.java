@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,6 +19,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import jjv.uem.com.aidu.Model.Service;
 import jjv.uem.com.aidu.R;
@@ -31,6 +33,7 @@ public class ServiceView extends AppCompatActivity {
 
     Button btnLocation, btnsendMessage;
     TextView tvTypeService , tvUsername , tvPoints ,tvDateTime,tvDetails;
+    ImageView ivphoto;
 
 
     @Override
@@ -44,6 +47,7 @@ public class ServiceView extends AppCompatActivity {
         tvPoints = (TextView) findViewById(R.id.tv_points_service);
         tvDateTime = (TextView) findViewById(R.id.tv_datetime);
         tvDetails = (TextView) findViewById(R.id.tv_description);
+        ivphoto = (ImageView)  findViewById(R.id.iv_photo_service);
 
         setTypeFace();
 
@@ -92,6 +96,7 @@ public class ServiceView extends AppCompatActivity {
                     tvPoints.setText(service.getPrice_points());
                     tvDateTime.setText(service.getHour() + " "+service.getDate());
                     tvDetails.setText(service.getTitle()+": "+service.getDescription());
+                    Picasso.with(ServiceView.this).load(service.getPhotos().get(0)).into(ivphoto);
                 }
 
                 @Override

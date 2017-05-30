@@ -94,7 +94,9 @@ public class NewService extends AppCompatActivity {
     private TwoWayView twv_photos;
     private Button btn_newService;
     private int pricePoints = 5;
-    private String[] categorys = {"Pets", "Plants", "help"};
+    private String[] categorys = {"Cook", "Transport", "Education", "Housekeeping", "Technology",
+            "Shopping", "Pets", "Plants", "Others"};
+
     private String[] kinds = {"Offer", "Request"};
     private Service service = new Service();
     private DatabaseReference mDatabase;
@@ -303,6 +305,7 @@ public class NewService extends AppCompatActivity {
             service.setKind(sp_kind.getSelectedItem().toString());
             service.setUserkey(userUid);
             service.setUserName(userName);
+            service.setCommunity(getString(R.string.new_service_no_community));
             service.setState("DISPONIBLE");
             service.setUserkeyInterested("anyone");
             service.setLatitude(latitude);
