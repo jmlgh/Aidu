@@ -13,7 +13,7 @@ import java.util.Map;
 
 public class Service {
     private String title;
-    private String icon;
+    private int icon;
 
     private String description;
     private String price_points;
@@ -57,11 +57,11 @@ public class Service {
         this.title = title;
     }
 
-    public String getIcon() {
+    public int getIcon() {
         return icon;
     }
 
-    public void setIcon(String icon) {
+    public void setIcon(int icon) {
         this.icon = icon;
     }
 
@@ -199,6 +199,7 @@ public class Service {
         result.put("description", description);
         result.put("category", category);
         result.put("kind", kind);
+        result.put("icon", icon);
         result.put("date", date);
         result.put("hour", hour);
         result.put("price_points", price_points);

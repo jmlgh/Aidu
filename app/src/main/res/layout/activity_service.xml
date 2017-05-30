@@ -37,7 +37,7 @@
                     android:layout_height="60dp"
                     android:layout_weight="1"
                     android:padding="10dp"
-                    android:src="@drawable/ic_service" />
+                    android:src="@drawable/otros" />
 
                 <jjv.uem.com.aidu.util.TextViewCustom
                     android:id="@+id/tv_type_service"

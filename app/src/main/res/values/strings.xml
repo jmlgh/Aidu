@@ -112,5 +112,16 @@
     <string name="card_title">Card Title</string>
     <string name="card_subtitle">Card Sub</string>
     <string name="new_user_created">User created</string>
+    <string name="cocinar">Cook</string>
+    <string name="transporte">Transport</string>
+    <string name="educacion">Education</string>
+    <string name="limpieza">Housekeeping</string>
+    <string name="tecnologia">Technology</string>
+    <string name="compras">Shopping</string>
+    <string name="mascotas">Pets</string>
+    <string name="plantas">Plants</string>
+    <string name="otros">Others</string>
+    <string name="solicita">Apply</string>
+    <string name="ayuda">Supply</string>
 </resources>
 

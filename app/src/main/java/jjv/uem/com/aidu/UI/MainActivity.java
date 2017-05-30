@@ -198,7 +198,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
                     serviceList = new ArrayList<>();
                     for (DataSnapshot ds : iterator){
                         Service s = ds.getValue(Service.class);
-                        Log.i("SERVICE GET:",s.toString());
+                        //Log.i("SERVICE GET:",s.toString());
                         serviceList.add(s);
                     }
                     l = initListener();

@@ -10,6 +10,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -94,8 +95,10 @@ public class NewService extends AppCompatActivity {
     private TwoWayView twv_photos;
     private Button btn_newService;
     private int pricePoints = 5;
-    private String[] categorys = {"Pets", "Plants", "help"};
-    private String[] kinds = {"Offer", "Request"};
+    private String[] categories;
+
+
+    private String[] kinds;
     private Service service = new Service();
     private DatabaseReference mDatabase;
     private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -105,7 +108,6 @@ public class NewService extends AppCompatActivity {
     private String key;
 
     private File filePathImageCamera;
-    private FirebaseAuth mAuth;
     private LatLng cordenades;
     private double longitude;
     private double latitude;
@@ -130,10 +132,33 @@ public class NewService extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_service);
         getUserData();
+
+        initKinds();
+        initCategories();
+
         mDatabase = FirebaseDatabase.getInstance().getReference();
         key = mDatabase.child("service").push().getKey();
         initViews();
         setTypeFace();
+    }
+
+    private void initKinds() {
+        kinds = new String[2];
+        kinds [0]= getString(R.string.solicita);
+        kinds [1]= getString(R.string.ayuda);
+    }
+
+    private void initCategories() {
+        categories = new String[9];
+        categories[0] = getString(R.string.cocinar);
+        categories[1] = getString(R.string.transporte);
+        categories[2] = getString(R.string.educacion);
+        categories[3] = getString(R.string.limpieza);
+        categories[4] = getString(R.string.tecnologia);
+        categories[5] = getString(R.string.compras);
+        categories[6] = getString(R.string.mascotas);
+        categories[7] = getString(R.string.plantas);
+        categories[8] = getString(R.string.otros);
     }
 
     private void initViews() {
@@ -176,7 +201,7 @@ public class NewService extends AppCompatActivity {
         tv_hour.setText(currentTime);
         tv_date.setText(currentDate);
         tv_points.setText(getString(R.string.new_service_hint_points, pricePoints));
-        ArrayAdapter<String> adapter_category = new ArrayAdapter(this, android.R.layout.simple_spinner_item, categorys);
+        ArrayAdapter<String> adapter_category = new ArrayAdapter(this, android.R.layout.simple_spinner_item, categories);
         sp_category.setAdapter(adapter_category);
         ArrayAdapter<String> adapter_kind = new ArrayAdapter(this, android.R.layout.simple_spinner_item, kinds);
         sp_kind.setAdapter(adapter_kind);
@@ -307,6 +332,7 @@ public class NewService extends AppCompatActivity {
             service.setUserkeyInterested("anyone");
             service.setLatitude(latitude);
             service.setLongitude(longitude);
+            service.setIcon(sp_category.getSelectedItemPosition());
 
 
             service.setPhotos(photo);

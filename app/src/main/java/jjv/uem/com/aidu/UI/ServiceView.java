@@ -2,11 +2,13 @@ package jjv.uem.com.aidu.UI;
 
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,9 +30,21 @@ public class ServiceView extends AppCompatActivity {
     private FirebaseDatabase database;
     private FirebaseAuth auth;
     private Service service;
+    private int[]icons={
+            R.drawable.cocina,
+            R.drawable.transporte,
+            R.drawable.educacion,
+            R.drawable.limpieza,
+            R.drawable.tecnologia,
+            R.drawable.compras,
+            R.drawable.mascotas,
+            R.drawable.plantas,
+            R.drawable.otros
+    };
 
     Button btnLocation, btnsendMessage;
     TextView tvTypeService , tvUsername , tvPoints ,tvDateTime,tvDetails;
+    ImageView iv_icon;
 
 
     @Override
@@ -44,6 +58,7 @@ public class ServiceView extends AppCompatActivity {
         tvPoints = (TextView) findViewById(R.id.tv_points_service);
         tvDateTime = (TextView) findViewById(R.id.tv_datetime);
         tvDetails = (TextView) findViewById(R.id.tv_description);
+        iv_icon = (ImageView) findViewById(R.id.iv_icon_service);
 
         setTypeFace();
 
@@ -54,12 +69,6 @@ public class ServiceView extends AppCompatActivity {
         Intent i = getIntent();
         String servicekey = i.getStringExtra(MainActivity.KEY_SERVICE);
         getService(servicekey);
-
-
-
-
-
-
 
 
 
@@ -86,12 +95,15 @@ public class ServiceView extends AppCompatActivity {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     service = dataSnapshot.getValue(Service.class);
-                    Log.i("SERVICE SELECT:",service.toString());
+                    Log.w("SERVICE SELECT:",service.toString());
                     tvTypeService.setText(service.getKind());
                     tvUsername.setText(service.getUserName());
                     tvPoints.setText(service.getPrice_points());
                     tvDateTime.setText(service.getHour() + " "+service.getDate());
                     tvDetails.setText(service.getTitle()+": "+service.getDescription());
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        iv_icon.setImageResource(icons[service.getIcon()]);
+                    }
                 }
 
                 @Override
