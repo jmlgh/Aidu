@@ -134,6 +134,7 @@ public class Community {
         result.put("image", image);
         result.put("members", members);
         result.put("owner", owner);
+        result.put("address", address);
         result.put("longitude", longitude);
         result.put("latitude", latitude);
         //TODO put comunities and photos
