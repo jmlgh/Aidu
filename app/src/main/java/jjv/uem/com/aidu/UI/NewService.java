@@ -10,6 +10,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -94,10 +95,10 @@ public class NewService extends AppCompatActivity {
     private TwoWayView twv_photos;
     private Button btn_newService;
     private int pricePoints = 5;
-    private String[] categorys = {"Cook", "Transport", "Education", "Housekeeping", "Technology",
-            "Shopping", "Pets", "Plants", "Others"};
+    private String[] categories;
 
-    private String[] kinds = {"Offer", "Request"};
+
+    private String[] kinds;
     private Service service = new Service();
     private DatabaseReference mDatabase;
     private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -132,10 +133,33 @@ public class NewService extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_service);
         getUserData();
+
+        initKinds();
+        initCategories();
+
         mDatabase = FirebaseDatabase.getInstance().getReference();
         key = mDatabase.child("service").push().getKey();
         initViews();
         setTypeFace();
+    }
+
+    private void initKinds() {
+        kinds = new String[2];
+        kinds [0]= getString(R.string.solicita);
+        kinds [1]= getString(R.string.ayuda);
+    }
+
+    private void initCategories() {
+        categories = new String[9];
+        categories[0] = getString(R.string.cocinar);
+        categories[1] = getString(R.string.transporte);
+        categories[2] = getString(R.string.educacion);
+        categories[3] = getString(R.string.limpieza);
+        categories[4] = getString(R.string.tecnologia);
+        categories[5] = getString(R.string.compras);
+        categories[6] = getString(R.string.mascotas);
+        categories[7] = getString(R.string.plantas);
+        categories[8] = getString(R.string.otros);
     }
 
     private void initViews() {
@@ -161,7 +185,7 @@ public class NewService extends AppCompatActivity {
         Uri uri = getUriToDrawable(this, R.drawable.addphoto);
         photos.add(uri.toString());
         Log.e("uri del default ", uri.toString());
-        adapter = new Images_Adapter(this, photos);
+        adapter = new Images_Adapter(this, photos,true);
         twv_photos.setAdapter(adapter);
         twv_photos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -178,9 +202,9 @@ public class NewService extends AppCompatActivity {
         tv_hour.setText(currentTime);
         tv_date.setText(currentDate);
         tv_points.setText(getString(R.string.new_service_hint_points, pricePoints));
-        ArrayAdapter<String> adapter_category = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categorys);
+        ArrayAdapter<String> adapter_category = new ArrayAdapter(this, android.R.layout.simple_spinner_item, categories);
         sp_category.setAdapter(adapter_category);
-        ArrayAdapter<String> adapter_kind = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, kinds);
+        ArrayAdapter<String> adapter_kind = new ArrayAdapter(this, android.R.layout.simple_spinner_item, kinds);
         sp_kind.setAdapter(adapter_kind);
 
         tv_date.setOnClickListener(new View.OnClickListener() {
@@ -306,10 +330,12 @@ public class NewService extends AppCompatActivity {
             service.setUserkey(userUid);
             service.setUserName(userName);
             service.setCommunity(getString(R.string.new_service_no_community));
+
             service.setState("DISPONIBLE");
             service.setUserkeyInterested("anyone");
             service.setLatitude(latitude);
             service.setLongitude(longitude);
+            service.setIcon(sp_category.getSelectedItemPosition());
 
 
             service.setPhotos(photo);
@@ -415,7 +441,7 @@ public class NewService extends AppCompatActivity {
         if (selectedImageUri != null) {
             //sendFileFirebase(storageRef, selectedImageUri);
             photos.add(selectedImageUri.toString());
-            adapter = new Images_Adapter(NewService.this, photos);
+            adapter = new Images_Adapter(NewService.this, photos,true);
             adapter.notifyDataSetChanged();
             twv_photos.setAdapter(adapter);
             Log.e("Url", selectedImageUri.toString());
@@ -465,7 +491,7 @@ public class NewService extends AppCompatActivity {
             });
 
         } else {
-        //IS NULL
+//IS NULL
         }
     }
 

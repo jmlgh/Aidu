@@ -44,7 +44,6 @@
     <string name="new_service_toast_service_created">The service was created correctly</string>
     <string name="new_service_toast_no_more_images">You can\'t put more than %d images</string>
     <string name="new_service_photo_selection">Select a picture:</string>
-    <string name="new_service_no_community">no community</string>
 
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -82,10 +81,11 @@
     <string name="label_search_distance">Distance: %d km</string>
     <string name="label_search_points">Points: %d</string>
     <string name="label_search_cat">Category</string>
-    <string name="label_search_results">Best Results</string>
+    <string name="label_search_results">Results</string>
     <string name="new_service_toast_photos">Please select at least one photo for create a new service</string>
 
     <!-- NEW COMMUNITY -->
+
 
 
     <!-- ADD COMMUNITY -->
@@ -116,5 +116,17 @@
     <string name="card_title">Card Title</string>
     <string name="card_subtitle">Card Sub</string>
     <string name="new_user_created">User created</string>
+    <string name="cocinar">Cook</string>
+    <string name="transporte">Transport</string>
+    <string name="educacion">Education</string>
+    <string name="limpieza">Housekeeping</string>
+    <string name="tecnologia">Technology</string>
+    <string name="compras">Shopping</string>
+    <string name="mascotas">Pets</string>
+    <string name="plantas">Plants</string>
+    <string name="otros">Others</string>
+    <string name="solicita">Apply</string>
+    <string name="ayuda">Supply</string>
+    <string name="new_service_no_community">No community</string>
 </resources>
 
