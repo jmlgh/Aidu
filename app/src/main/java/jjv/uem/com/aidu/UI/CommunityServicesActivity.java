@@ -2,17 +2,20 @@ package jjv.uem.com.aidu.UI;
 
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.graphics.Rect;
+import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.annotation.RequiresApi;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
@@ -45,70 +48,85 @@ public class CommunityServicesActivity extends AppCompatActivity {
     private CardAdapter.OnItemClickListener l;
     private Service_Adapter_RV adapter;
     private CardAdapter cardAdapter;
-    private String communityKey;
+    private Community community;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_community_services);
+        initViews();
+
+        getServices();
     }
 
     private void initViews() {
         actBar = getSupportActionBar();
-
         actBar.setDisplayHomeAsUpEnabled(true);
+        Intent i = getIntent();
+        community = i.getParcelableExtra(Communities.KEY_COMMUNITY);
+
+        Typeface titleFont = Typeface.
+                createFromAsset(getApplicationContext().getAssets(), "fonts/BubblerOne-Regular.ttf");
+        SpannableString s = new SpannableString(community.getName());
+        s.setSpan(titleFont, 0, s.length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+
+        actBar.setTitle(s);
+
         //actBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#1c313aeg")));
         recyclerView = (RecyclerView) findViewById(R.id.lstserviceList);
-        Intent i = getIntent();
-        communityKey = i.getStringExtra(Communities.KEY_COMMUNITY);
 
 
     }
 
     private void getServices() {
 
-            database = FirebaseDatabase.getInstance();
-            DatabaseReference reference = database.getReference("services");
-            Query query = reference.orderByChild("community").orderByValue();
-            reference.addValueEventListener(new ValueEventListener() {
-                @RequiresApi(api = Build.VERSION_CODES.GINGERBREAD)
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    Iterable<DataSnapshot> iterator = dataSnapshot.getChildren();
-                    serviceList = new ArrayList<>();
-                    for (DataSnapshot ds : iterator){
-                        Service s = ds.getValue(Service.class);
-                        Log.i("SERVICE GET:",s.toString());
-                        serviceList.add(s);
-                    }
-                    l = initListener();
-                    //adapter = new Service_Adapter_RV(serviceList,l);
-                    cardAdapter = new CardAdapter(CommunityServicesActivity.this, serviceList, l);
-                    RecyclerView.LayoutManager layoutManager = new GridLayoutManager(CommunityServicesActivity.this, 2);
-                    recyclerView.setLayoutManager(layoutManager);
-                    recyclerView.setItemAnimator(new DefaultItemAnimator());
-                    recyclerView.addItemDecoration(new CommunityServicesActivity.GridSpacingItemDecoration(2, dpToPx(10), true));
-                    recyclerView.setAdapter(cardAdapter);
-                    //recyclerView.setHasFixedSize(true);
-                    //recyclerView.setLayoutManager(new LinearLayoutManager(getBaseContext()));
-                    //recyclerView.setAdapter(adapter);
-
+        database = FirebaseDatabase.getInstance();
+        DatabaseReference reference = database.getReference("services");
+        Log.e("communities ser:",community.getKey());
+        Query query = reference.orderByChild("community").equalTo(community.getKey());
+        query.addValueEventListener(new ValueEventListener() {
+            @RequiresApi(api = Build.VERSION_CODES.GINGERBREAD)
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.e("services child: ", "" + dataSnapshot.getChildrenCount());
+                Log.e("services child: ", "" + dataSnapshot.getKey());
+                Iterable<DataSnapshot> iterator = dataSnapshot.getChildren();
+                serviceList = new ArrayList<>();
+                for (DataSnapshot ds : iterator) {
+                    Service s = ds.getValue(Service.class);
+                    Log.i("SERVICE GET:", s.toString());
+                    serviceList.add(s);
                 }
+                l = initListener();
+                //adapter = new Service_Adapter_RV(serviceList,l);
+                cardAdapter = new CardAdapter(CommunityServicesActivity.this, serviceList, l);
+                RecyclerView.LayoutManager layoutManager = new GridLayoutManager(CommunityServicesActivity.this, 2);
+                recyclerView.setLayoutManager(layoutManager);
+                recyclerView.setItemAnimator(new DefaultItemAnimator());
+                recyclerView.addItemDecoration(new CommunityServicesActivity.GridSpacingItemDecoration(2, dpToPx(10), true));
+                recyclerView.setAdapter(cardAdapter);
+                //recyclerView.setHasFixedSize(true);
+                //recyclerView.setLayoutManager(new LinearLayoutManager(getBaseContext()));
+                //recyclerView.setAdapter(adapter);
 
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
+            }
 
-                }
-            });
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
     }
 
-    private CardAdapter.OnItemClickListener initListener(){
+    private CardAdapter.OnItemClickListener initListener() {
         CardAdapter.OnItemClickListener listener = new CardAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Service item) {
-                Intent i = new Intent(getBaseContext(),ServiceView.class);
-                i.putExtra(MainActivity.KEY_SERVICE,item.getServiceKey());
+                Intent i = new Intent(getBaseContext(), ServiceView.class);
+                i.putExtra(MainActivity.KEY_SERVICE, item.getServiceKey());
                 startActivity(i);
             }
         };
@@ -123,7 +141,7 @@ public class CommunityServicesActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if(id == R.id.action_service_search){
+        if (id == R.id.action_chat) {
             Intent i = new Intent(this, ServiceSearch.class);
             startActivity(i);
         }
@@ -134,7 +152,7 @@ public class CommunityServicesActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main2, menu);
+        getMenuInflater().inflate(R.menu.communitiesservices_menu, menu);
         return true;
     }
 
@@ -147,8 +165,13 @@ public class CommunityServicesActivity extends AppCompatActivity {
 
     }*/
 
-
-
+    /**
+     * Converting dp to pixel
+     */
+    private int dpToPx(int dp) {
+        Resources r = getResources();
+        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
+    }
 
     /**
      * RecyclerView item decoration - give equal margin around grid item
@@ -186,13 +209,5 @@ public class CommunityServicesActivity extends AppCompatActivity {
                 }
             }
         }
-    }
-
-    /**
-     * Converting dp to pixel
-     */
-    private int dpToPx(int dp) {
-        Resources r = getResources();
-        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
     }
 }

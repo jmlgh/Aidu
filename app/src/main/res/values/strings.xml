@@ -52,6 +52,10 @@
 
     <string name="action_settings">Settings</string>
     <string name="action_add">Add</string>
+    <string name="action_chat">Chat</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_moreInfo">More Info</string>
+    <string name="action_addmember">Add member</string>
     <string name="service_points">000p</string>
     <string name="type_service">Type Service</string>
     <string name="user_name">User name</string>

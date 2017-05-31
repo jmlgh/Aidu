@@ -193,6 +193,8 @@ public class Service {
         this.latitude = latitude;
     }
 
+
+
     public Map<String, Object> toMap() { //creamos una lista con cada uno de los atibustos del objeto
         HashMap<String, Object> result = new HashMap<>();
         result.put("title", title);
@@ -212,6 +214,7 @@ public class Service {
         result.put("longitude", longitude);
         result.put("latitude", latitude);
         result.put("community", community);
+        result.put("icon", icon);
         //TODO put comunities and photos
         return result;
     }

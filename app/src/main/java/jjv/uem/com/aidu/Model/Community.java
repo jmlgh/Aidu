@@ -39,6 +39,35 @@ public class Community implements Parcelable {
     private double longitude;
     private double latitude;
 
+    public Community() {
+    }
+
+    protected Community(Parcel in) {
+        name = in.readString();
+        key = in.readString();
+        publica = in.readByte() != 0;
+        description = in.readString();
+        Icon = in.readInt();
+        image = in.readString();
+        members = in.createStringArrayList();
+        owner = in.readString();
+        address = in.readString();
+        longitude = in.readDouble();
+        latitude = in.readDouble();
+    }
+
+    public static final Creator<Community> CREATOR = new Creator<Community>() {
+        @Override
+        public Community createFromParcel(Parcel in) {
+            return new Community(in);
+        }
+
+        @Override
+        public Community[] newArray(int size) {
+            return new Community[size];
+        }
+    };
+
     public String getName() {
         return name;
     }
@@ -140,7 +169,6 @@ public class Community implements Parcelable {
         result.put("address", address);
         result.put("longitude", longitude);
         result.put("latitude", latitude);
-        //TODO put comunities and photos
         return result;
     }
 
@@ -154,5 +182,15 @@ public class Community implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(name);
         dest.writeString(key);
+        dest.writeValue(publica);
+        dest.writeString(description);
+        dest.writeInt(Icon);
+        dest.writeString(description);
+        dest.writeList(members);
+        dest.writeString(owner);
+        dest.writeString(address);
+        dest.writeDouble(latitude);
+        dest.writeDouble(longitude);
+
     }
 }

@@ -118,7 +118,7 @@ public class Communities extends AppCompatActivity implements NavigationView.OnN
                         Community c = ds.getValue(Community.class);
                         //Log.i("SERVICE GET:",c.toString());
                         communitiesList.add(c);
-                        Log.e("Comunidad: ", c.toString());
+                        Log.e("Comunidad: ", c.getKey());
                     }
                     l = initListener();
                     //adapter = new Service_Adapter_RV(serviceList,l);
@@ -147,7 +147,9 @@ public class Communities extends AppCompatActivity implements NavigationView.OnN
         CommunitiesCardAdapter.OnItemClickListener listener = new CommunitiesCardAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Community item) {
-
+            Intent i = new Intent(Communities.this,CommunityServicesActivity.class);
+                i.putExtra(KEY_COMMUNITY,item);
+                startActivity(i);
 
             }
         };
