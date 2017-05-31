@@ -108,6 +108,7 @@ public class NewService extends AppCompatActivity {
     private String key;
 
     private File filePathImageCamera;
+    private FirebaseAuth mAuth;
     private LatLng cordenades;
     private double longitude;
     private double latitude;
@@ -328,6 +329,7 @@ public class NewService extends AppCompatActivity {
             service.setKind(sp_kind.getSelectedItem().toString());
             service.setUserkey(userUid);
             service.setUserName(userName);
+            service.setCommunity(getString(R.string.new_service_no_community));
             service.setState("DISPONIBLE");
             service.setUserkeyInterested("anyone");
             service.setLatitude(latitude);

@@ -1,16 +1,24 @@
 package jjv.uem.com.aidu.UI;
 
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Rect;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,17 +26,27 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
+import jjv.uem.com.aidu.Model.Community;
+import jjv.uem.com.aidu.Model.Service;
 import jjv.uem.com.aidu.R;
+import jjv.uem.com.aidu.util.CardAdapter;
+import jjv.uem.com.aidu.util.CommunitiesCardAdapter;
 
 public class Communities extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
 
-
     private static final String TAG = MainActivity.class.getSimpleName();
-    public static final String USERNAME = "username" ;
+    public static final String USERNAME = "username";
     public static final String USERUID = "useruid";
+    public static final String KEY_COMMUNITY = "key_community";
 
     private FirebaseAuth auth;
     private FirebaseAuth.AuthStateListener authListener;
@@ -36,9 +54,12 @@ public class Communities extends AppCompatActivity implements NavigationView.OnN
 
     private TextView navUserName, navUserEmail;
     private View headerView;
-    NavigationView navigationView;
+    private NavigationView navigationView;
+    private RecyclerView cummunitiesrecicler;
     private FirebaseUser usuarioLogeado;
-
+    private ArrayList<Community> communitiesList;
+    private CommunitiesCardAdapter cardAdapter;
+    private CommunitiesCardAdapter.OnItemClickListener l;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,8 +67,10 @@ public class Communities extends AppCompatActivity implements NavigationView.OnN
         setContentView(R.layout.activity_communities);
 
         auth = FirebaseAuth.getInstance();
-        initViews();
 
+
+        initViews();
+        getServices();
 
     }
 
@@ -70,35 +93,45 @@ public class Communities extends AppCompatActivity implements NavigationView.OnN
         // views para el panel lateral
         navUserName = (TextView) headerView.findViewById(R.id.nav_username);
         navUserEmail = (TextView) headerView.findViewById(R.id.nav_usermail);
-
+        cummunitiesrecicler = (RecyclerView) findViewById(R.id.lstCommunities);
 
         // configura el menu lateral con el nombre de usuario y el email
-        if(auth.getCurrentUser() != null){
+        if (auth.getCurrentUser() != null) {
             navUserName.setText(auth.getCurrentUser().getDisplayName());
             navUserEmail.setText(auth.getCurrentUser().getEmail());
         }
     }
 
-    /*private void getServices() {
+    private void getServices() {
         // Acceso a BBDD Firebase
-        if(auth.getCurrentUser() != null){
+        if (auth.getCurrentUser() != null) {
             database = FirebaseDatabase.getInstance();
-            DatabaseReference reference = database.getReference("services");
+            DatabaseReference reference = database.getReference("communities");
             reference.addValueEventListener(new ValueEventListener() {
+                @RequiresApi(api = Build.VERSION_CODES.GINGERBREAD)
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     Iterable<DataSnapshot> iterator = dataSnapshot.getChildren();
-                    services = new ArrayList<Service>();
-                    for (DataSnapshot ds : iterator){
-                        Service s = ds.getValue(Service.class);
-                        Log.i("SERVICE GET:",s.toString());
-                        services.add(s);
+                    Log.e("Comunidad: ", " " + dataSnapshot.getChildrenCount());
+                    communitiesList = new ArrayList<>();
+                    for (DataSnapshot ds : iterator) {
+                        Community c = ds.getValue(Community.class);
+                        //Log.i("SERVICE GET:",c.toString());
+                        communitiesList.add(c);
+                        Log.e("Comunidad: ", c.getKey());
                     }
                     l = initListener();
-                    adapter = new Service_Adapter_RV(services,l);
-                    recyclerView.setHasFixedSize(true);
-                    recyclerView.setLayoutManager(new LinearLayoutManager(getBaseContext()));
-                    recyclerView.setAdapter(adapter);
+                    //adapter = new Service_Adapter_RV(serviceList,l);
+                    cardAdapter = new CommunitiesCardAdapter(Communities.this, communitiesList, l);
+                    RecyclerView.LayoutManager layoutManager = new GridLayoutManager(Communities.this, 2);
+                    cummunitiesrecicler.setLayoutManager(layoutManager);
+                    cummunitiesrecicler.setItemAnimator(new DefaultItemAnimator());
+                    cummunitiesrecicler.addItemDecoration(new Communities.GridSpacingItemDecoration(2, dpToPx(10), true));
+                    cummunitiesrecicler.setAdapter(cardAdapter);
+                    //recyclerView.setHasFixedSize(true);
+                    //recyclerView.setLayoutManager(new LinearLayoutManager(getBaseContext()));
+                    //recyclerView.setAdapter(adapter);
+
 
                 }
 
@@ -108,18 +141,32 @@ public class Communities extends AppCompatActivity implements NavigationView.OnN
                 }
             });
         }
-    }*/
+    }
+
+    private CommunitiesCardAdapter.OnItemClickListener initListener() {
+        CommunitiesCardAdapter.OnItemClickListener listener = new CommunitiesCardAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Community item) {
+            Intent i = new Intent(Communities.this,CommunityServicesActivity.class);
+                i.putExtra(KEY_COMMUNITY,item);
+                startActivity(i);
+
+            }
+        };
+
+        return listener;
+    }
 
     private void applyFont(Toolbar toolbar) {
         Typeface titleFont = Typeface.
                 createFromAsset(getApplicationContext().getAssets(), "fonts/BubblerOne-Regular.ttf");
         TextView tv;
-        for(int i = 0; i < toolbar.getChildCount(); i++){
+        for (int i = 0; i < toolbar.getChildCount(); i++) {
             View view = toolbar.getChildAt(i);
-            if(view instanceof TextView){
+            if (view instanceof TextView) {
                 tv = (TextView) view;
-                if(tv.getText().equals(getString(R.string.communities_activity_name))){
-                    Log.i(TAG, "i value : "+i);
+                if (tv.getText().equals(getString(R.string.communities_activity_name))) {
+                    Log.i(TAG, "i value : " + i);
                     tv.setTypeface(titleFont);
                     break;
 
@@ -154,6 +201,7 @@ public class Communities extends AppCompatActivity implements NavigationView.OnN
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -164,9 +212,9 @@ public class Communities extends AppCompatActivity implements NavigationView.OnN
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_communiti_add) {
             finish();
-            Intent i =new Intent(this,NewComunity.class);
-            i.putExtra(USERNAME,auth.getCurrentUser().getDisplayName());
-            i.putExtra(USERUID,auth.getCurrentUser().getUid());
+            Intent i = new Intent(this, NewComunity.class);
+            i.putExtra(USERNAME, auth.getCurrentUser().getDisplayName());
+            i.putExtra(USERUID, auth.getCurrentUser().getUid());
             startActivity(i);
             finish();
             return true;
@@ -197,5 +245,51 @@ public class Communities extends AppCompatActivity implements NavigationView.OnN
         }
     }
 
+
+    /**
+     * RecyclerView item decoration - give equal margin around grid item
+     */
+    public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
+
+        private int spanCount;
+        private int spacing;
+        private boolean includeEdge;
+
+        public GridSpacingItemDecoration(int spanCount, int spacing, boolean includeEdge) {
+            this.spanCount = spanCount;
+            this.spacing = spacing;
+            this.includeEdge = includeEdge;
+        }
+
+        @Override
+        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+            int position = parent.getChildAdapterPosition(view); // item position
+            int column = position % spanCount; // item column
+
+            if (includeEdge) {
+                outRect.left = spacing - column * spacing / spanCount; // spacing - column * ((1f / spanCount) * spacing)
+                outRect.right = (column + 1) * spacing / spanCount; // (column + 1) * ((1f / spanCount) * spacing)
+
+                if (position < spanCount) { // top edge
+                    outRect.top = spacing;
+                }
+                outRect.bottom = spacing; // item bottom
+            } else {
+                outRect.left = column * spacing / spanCount; // column * ((1f / spanCount) * spacing)
+                outRect.right = spacing - (column + 1) * spacing / spanCount; // spacing - (column + 1) * ((1f /    spanCount) * spacing)
+                if (position >= spanCount) {
+                    outRect.top = spacing; // item top
+                }
+            }
+        }
+    }
+
+    /**
+     * Converting dp to pixel
+     */
+    private int dpToPx(int dp) {
+        Resources r = getResources();
+        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
+    }
 
 }

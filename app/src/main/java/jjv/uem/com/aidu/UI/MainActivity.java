@@ -60,7 +60,6 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
 
     GoogleApiClient mGoogleApiClient;
     private CardAdapter cardAdapter;
-
     private FirebaseAuth auth;
     private FirebaseAuth.AuthStateListener authListener;
     private FirebaseDatabase database;
@@ -69,7 +68,6 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     //private Service_Adapter_RV.OnItemClickListener l;
     private CardAdapter.OnItemClickListener l;
     private Service_Adapter_RV adapter;
-
     private FloatingActionButton fabSearch, fabAddNew;
     private TextView navUserName, navUserEmail;
     private View headerView;
@@ -198,7 +196,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
                     serviceList = new ArrayList<>();
                     for (DataSnapshot ds : iterator){
                         Service s = ds.getValue(Service.class);
-                        //Log.i("SERVICE GET:",s.toString());
+                        Log.i("SERVICE GET:",s.toString());
                         serviceList.add(s);
                     }
                     l = initListener();
@@ -300,7 +298,6 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         if (id == R.id.nav_my_services) {
             // Handle the camera action
         } else if (id == R.id.nav_communities) {
-
             Intent i = new Intent(this, Communities.class);
             startActivity(i);
             finish();

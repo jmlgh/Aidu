@@ -22,7 +22,7 @@ public class Service {
     private String location;
     private String category;
     private String kind;
-    private Community community;
+    private String community;
     private ArrayList<String> photos;
     private String userkeyInterested;
     private String state;
@@ -121,11 +121,11 @@ public class Service {
         this.kind = kind;
     }
 
-    public Community getCommunity() {
+    public String getCommunity() {
         return community;
     }
 
-    public void setCommunity(Community comunity) {
+    public void setCommunity(String comunity) {
         this.community = comunity;
     }
 
@@ -193,13 +193,14 @@ public class Service {
         this.latitude = latitude;
     }
 
+
+
     public Map<String, Object> toMap() { //creamos una lista con cada uno de los atibustos del objeto
         HashMap<String, Object> result = new HashMap<>();
         result.put("title", title);
         result.put("description", description);
         result.put("category", category);
         result.put("kind", kind);
-        result.put("icon", icon);
         result.put("date", date);
         result.put("hour", hour);
         result.put("price_points", price_points);
@@ -212,6 +213,8 @@ public class Service {
         result.put("photos", photos);
         result.put("longitude", longitude);
         result.put("latitude", latitude);
+        result.put("community", community);
+        result.put("icon", icon);
         //TODO put comunities and photos
         return result;
     }

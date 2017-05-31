@@ -1,7 +1,11 @@
 package jjv.uem.com.aidu.Model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.android.gms.maps.model.LatLng;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,7 +13,7 @@ import java.util.Map;
  * Created by Victor on 16/04/2017.
  */
 
-public class Community {
+public class Community implements Parcelable {
 
     /*
     COMUNIDADES - KEY COMUNIDAD
@@ -29,11 +33,40 @@ public class Community {
     private String description;
     private int Icon;
     private String image;
-    private  String [] members;
+    private ArrayList<String> members;
     private String owner;
     private String address;
     private double longitude;
     private double latitude;
+
+    public Community() {
+    }
+
+    protected Community(Parcel in) {
+        name = in.readString();
+        key = in.readString();
+        publica = in.readByte() != 0;
+        description = in.readString();
+        Icon = in.readInt();
+        image = in.readString();
+        members = in.createStringArrayList();
+        owner = in.readString();
+        address = in.readString();
+        longitude = in.readDouble();
+        latitude = in.readDouble();
+    }
+
+    public static final Creator<Community> CREATOR = new Creator<Community>() {
+        @Override
+        public Community createFromParcel(Parcel in) {
+            return new Community(in);
+        }
+
+        @Override
+        public Community[] newArray(int size) {
+            return new Community[size];
+        }
+    };
 
     public String getName() {
         return name;
@@ -83,11 +116,11 @@ public class Community {
         this.image = image;
     }
 
-    public String[] getMembers() {
+    public ArrayList<String> getMembers() {
         return members;
     }
 
-    public void setMembers(String[] members) {
+    public void setMembers(ArrayList<String> members) {
         this.members = members;
     }
 
@@ -133,12 +166,31 @@ public class Community {
         result.put("image", image);
         result.put("members", members);
         result.put("owner", owner);
+        result.put("address", address);
         result.put("longitude", longitude);
         result.put("latitude", latitude);
-        //TODO put comunities and photos
         return result;
     }
 
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
 
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(name);
+        dest.writeString(key);
+        dest.writeValue(publica);
+        dest.writeString(description);
+        dest.writeInt(Icon);
+        dest.writeString(description);
+        dest.writeList(members);
+        dest.writeString(owner);
+        dest.writeString(address);
+        dest.writeDouble(latitude);
+        dest.writeDouble(longitude);
+
+    }
 }

@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:map="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryLight"
@@ -11,7 +12,7 @@
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="10dp"
+        android:layout_margin="@dimen/cardview_margin"
         android:padding="10dp"
         app:cardCornerRadius="10dp">
 
@@ -73,43 +74,27 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
-                android:layout_marginLeft="5dp"
-                android:layout_weight="1" />
-
-            <TextView
-                android:id="@+id/tv_search_community"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="5dp"
-                android:textSize="17sp"
-                android:text="@string/mlateral_community"/>
-
-            <Spinner
-                android:id="@+id/sp_search_community"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:layout_marginLeft="5dp"
-                android:layout_weight="1" />
+                android:layout_marginLeft="5dp" />
 
             <TextView
                 android:id="@+id/tv_search_locResults"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
                 android:layout_marginBottom="5dp"
-                android:textSize="17sp"
-                android:text="@string/label_search_results"/>
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"
+                android:text="@string/label_search_results"
+                android:textAlignment="center"
+                android:textSize="20sp" />
 
             <fragment
                 android:id="@+id/map"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:name="com.google.android.gms.maps.MapFragment" />
-
+                android:layout_margin="10dp"
+                android:layout_marginTop="2dp"
+                tools:context=".UI.ServiceSearch"
+                android:name="com.google.android.gms.maps.SupportMapFragment" />
         </LinearLayout>
 
     </android.support.v7.widget.CardView>
