@@ -1,5 +1,8 @@
 package jjv.uem.com.aidu.Model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
@@ -10,7 +13,7 @@ import java.util.Map;
  * Created by Victor on 16/04/2017.
  */
 
-public class Community {
+public class Community implements Parcelable {
 
     /*
     COMUNIDADES - KEY COMUNIDAD
@@ -142,5 +145,13 @@ public class Community {
     }
 
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
 
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+
+    }
 }
