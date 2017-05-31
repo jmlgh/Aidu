@@ -9,9 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -21,6 +19,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.lucasr.twowayview.TwoWayView;
+
+import java.util.ArrayList;
+
+import jjv.uem.com.aidu.Adapters.Images_Adapter;
 import jjv.uem.com.aidu.Model.Service;
 import jjv.uem.com.aidu.R;
 
@@ -30,6 +33,7 @@ public class ServiceView extends AppCompatActivity {
     private FirebaseDatabase database;
     private FirebaseAuth auth;
     private Service service;
+    private TwoWayView twv_photos;
     private int[]icons={
             R.drawable.cocina,
             R.drawable.transporte,
@@ -59,6 +63,7 @@ public class ServiceView extends AppCompatActivity {
         tvDateTime = (TextView) findViewById(R.id.tv_datetime);
         tvDetails = (TextView) findViewById(R.id.tv_description);
         iv_icon = (ImageView) findViewById(R.id.iv_icon_service);
+        twv_photos = (TwoWayView) findViewById(R.id.twv_photos_service);
 
         setTypeFace();
 
@@ -92,6 +97,9 @@ public class ServiceView extends AppCompatActivity {
         if(auth.getCurrentUser() != null){
             DatabaseReference reference = database.getReference("services/"+servicekey);
             reference.addValueEventListener(new ValueEventListener() {
+
+                ArrayList<String> photos;
+                Images_Adapter adapter;
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     service = dataSnapshot.getValue(Service.class);
@@ -104,18 +112,16 @@ public class ServiceView extends AppCompatActivity {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         iv_icon.setImageResource(icons[service.getIcon()]);
                     }
+                    photos= service.getPhotos();
+                    adapter = new Images_Adapter(getBaseContext(), photos,false);
+                    twv_photos.setAdapter(adapter);
                 }
 
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
-
                 }
             });
         }
-
-
-
-
     }
 
     private void setTypeFace() {

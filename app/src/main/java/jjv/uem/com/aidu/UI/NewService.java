@@ -184,7 +184,7 @@ public class NewService extends AppCompatActivity {
         Uri uri = getUriToDrawable(this, R.drawable.addphoto);
         photos.add(uri.toString());
         Log.e("uri del default ", uri.toString());
-        adapter = new Images_Adapter(this, photos);
+        adapter = new Images_Adapter(this, photos,true);
         twv_photos.setAdapter(adapter);
         twv_photos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -438,7 +438,7 @@ public class NewService extends AppCompatActivity {
         if (selectedImageUri != null) {
             //sendFileFirebase(storageRef, selectedImageUri);
             photos.add(selectedImageUri.toString());
-            adapter = new Images_Adapter(NewService.this, photos);
+            adapter = new Images_Adapter(NewService.this, photos,true);
             adapter.notifyDataSetChanged();
             twv_photos.setAdapter(adapter);
             Log.e("Url", selectedImageUri.toString());

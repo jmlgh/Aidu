@@ -8,12 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.TextView;
-
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import com.squareup.picasso.Picasso;
 
@@ -25,11 +19,13 @@ public class Images_Adapter extends BaseAdapter {
 
     Context contexto;
     ArrayList<String> photos;
+    boolean guardando;
 
 
-    public Images_Adapter(Context contexto, ArrayList<String> photos) {
+    public Images_Adapter(Context contexto, ArrayList<String> photos,boolean guardando) {
         this.contexto = contexto;
         this.photos = photos;
+        this.guardando = guardando;
     }
 
     @Override
@@ -60,8 +56,13 @@ public class Images_Adapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        //Picasso.with(contexto).load(photos.get(position)).into(holder.image);
-        holder.image.setImageURI(Uri.parse(photos.get(position)));
+
+        if(this.guardando){
+            holder.image.setImageURI(Uri.parse(photos.get(position)));
+        }else{
+            Picasso.with(contexto).load(photos.get(position)).into(holder.image);
+        }
+
 
 
 
