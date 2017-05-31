@@ -127,5 +127,6 @@
     <string name="otros">Others</string>
     <string name="solicita">Apply</string>
     <string name="ayuda">Supply</string>
+    <string name="new_service_no_community">No community</string>
 </resources>
 

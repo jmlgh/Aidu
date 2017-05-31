@@ -330,6 +330,7 @@ public class NewService extends AppCompatActivity {
             service.setUserkey(userUid);
             service.setUserName(userName);
             service.setCommunity(getString(R.string.new_service_no_community));
+
             service.setState("DISPONIBLE");
             service.setUserkeyInterested("anyone");
             service.setLatitude(latitude);
