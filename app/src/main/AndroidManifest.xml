@@ -88,15 +88,17 @@
             android:name=".UI.Communities"
             android:label="@string/communities_activity_name"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".UI.ServiceSearch"
             android:label="Service Search"
             android:parentActivityName=".UI.MainActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".UI.CommunityServicesActivity"
+        <activity
+            android:name=".UI.CommunityServicesActivity"
             android:parentActivityName=".UI.Communities"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
+        <activity android:name=".UI.CommunityInfo"></activity>
     </application>
 
 </manifest>
