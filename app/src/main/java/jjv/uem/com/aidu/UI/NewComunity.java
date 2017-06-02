@@ -136,7 +136,7 @@ public class NewComunity extends AppCompatActivity {
         tv_public = (TextView) findViewById(R.id.tv_public);
         sw_public = (Switch) findViewById(R.id.sw_public);
 
-        btn_newCommunity = (Button) findViewById(R.id.btn_new_community);
+        btn_newCommunity = (Button) findViewById(R.id.btn_viewmembers);
         imv_photos = (ImageView) findViewById(R.id.imgv_photo);
 
 
