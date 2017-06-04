@@ -70,18 +70,18 @@
                     android:text="TextView"
                     android:textSize="@dimen/new_service_text_size" />
 
-                <fragment
-                    android:id="@+id/commap"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="10dp"
-                    android:layout_marginTop="2dp"
-                    tools:context=".UI.ServiceSearch"
-                    android:name="com.google.android.gms.maps.SupportMapFragment" />
             </LinearLayout>
 
 
-
+            <fragment
+                android:id="@+id/commap"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_above="@+id/btn_viewmembers"
+                android:layout_margin="10dp"
+                android:layout_marginTop="2dp"
+                tools:context=".UI.ServiceSearch" />
 
             <Button
                 android:id="@+id/btn_viewmembers"
@@ -90,7 +90,7 @@
                 android:layout_alignParentBottom="true"
                 android:layout_margin="10dp"
                 android:background="@drawable/boton_redondo_oscuro"
-                android:text="@string/new_service_button_new"
+                android:text="@string/communityInfo_btn_vewmembers"
                 android:textColor="@android:color/white"
                 android:textSize="20sp"
                 android:onClick="addCommunity"/>

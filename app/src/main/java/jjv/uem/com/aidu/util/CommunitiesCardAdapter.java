@@ -7,6 +7,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
@@ -27,6 +28,7 @@ public class CommunitiesCardAdapter extends RecyclerView.Adapter<CommunitiesCard
     private Context mContext;
     private List<Community> communities;
     private OnItemClickListener listener;
+    private OnItemLongClickListener longlistener;
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
         public TextView title, author;
@@ -38,19 +40,27 @@ public class CommunitiesCardAdapter extends RecyclerView.Adapter<CommunitiesCard
             thumbnnail = (ImageView)v.findViewById(R.id.imv_community_thumbnail);
         }
 
-        public void bind(final Community item, final OnItemClickListener listener) {
+        public void bind(final Community item, final OnItemClickListener listener, final OnItemLongClickListener longlistener) {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View v) {
                     listener.onItemClick(item);
                 }
             });
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    longlistener.OnItemLongClickListener(item);
+                    return true;
+                }
+            });
         }
     }
 
-    public CommunitiesCardAdapter(Context mContext, List<Community> communities, OnItemClickListener listener){
+    public CommunitiesCardAdapter(Context mContext, List<Community> communities, OnItemClickListener listener, OnItemLongClickListener longlistener){
         this.mContext = mContext;
         this.communities = communities;
         this.listener = listener;
+        this.longlistener = longlistener;
     }
 
     @Override
@@ -65,7 +75,7 @@ public class CommunitiesCardAdapter extends RecyclerView.Adapter<CommunitiesCard
     public void onBindViewHolder(final MyViewHolder holder, int position) {
         Community communityCard = communities.get(position);
         holder.title.setText(communityCard.getName());
-        holder.bind(communities.get(position),listener);
+        holder.bind(communities.get(position),listener,longlistener);
 
         // loading album cover using Glide library
         Glide.with(mContext).load(communityCard.getImage()).into(holder.thumbnnail);
@@ -88,9 +98,12 @@ public class CommunitiesCardAdapter extends RecyclerView.Adapter<CommunitiesCard
     public interface OnItemClickListener {
         void onItemClick(Community item);
     }
-
+    public interface OnItemLongClickListener {
+        void OnItemLongClickListener(Community item);
+    }
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
     }
+
 }

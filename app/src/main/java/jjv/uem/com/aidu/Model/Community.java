@@ -42,19 +42,7 @@ public class Community implements Parcelable {
     public Community() {
     }
 
-    protected Community(Parcel in) {
-        name = in.readString();
-        key = in.readString();
-        publica = in.readByte() != 0;
-        description = in.readString();
-        Icon = in.readInt();
-        image = in.readString();
-        members = in.createStringArrayList();
-        owner = in.readString();
-        address = in.readString();
-        longitude = in.readDouble();
-        latitude = in.readDouble();
-    }
+
 
     public static final Creator<Community> CREATOR = new Creator<Community>() {
         @Override
@@ -160,7 +148,6 @@ public class Community implements Parcelable {
         HashMap<String, Object> result = new HashMap<>();
         result.put("name", name);
         result.put("key", key);
-        result.put("publica", publica);
         result.put("description", description);
         result.put("Icon", Icon);
         result.put("image", image);
@@ -169,6 +156,7 @@ public class Community implements Parcelable {
         result.put("address", address);
         result.put("longitude", longitude);
         result.put("latitude", latitude);
+        result.put("publica", publica);
         return result;
     }
 
@@ -182,15 +170,31 @@ public class Community implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(name);
         dest.writeString(key);
-        dest.writeValue(publica);
+
         dest.writeString(description);
         dest.writeInt(Icon);
-        dest.writeString(description);
+        dest.writeString(image);
         dest.writeList(members);
         dest.writeString(owner);
         dest.writeString(address);
         dest.writeDouble(latitude);
         dest.writeDouble(longitude);
+        dest.writeValue(publica);
 
+    }
+
+    protected Community(Parcel in) {
+        name = in.readString();
+        key = in.readString();
+
+        description = in.readString();
+        Icon = in.readInt();
+        image = in.readString();
+        members = in.createStringArrayList();
+        owner = in.readString();
+        address = in.readString();
+        longitude = in.readDouble();
+        latitude = in.readDouble();
+        publica = in.readByte() != 0;
     }
 }

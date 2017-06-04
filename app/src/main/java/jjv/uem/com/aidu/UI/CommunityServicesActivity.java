@@ -21,6 +21,7 @@ import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -48,7 +49,7 @@ public class CommunityServicesActivity extends AppCompatActivity {
     private CardAdapter.OnItemClickListener l;
     private Service_Adapter_RV adapter;
     private CardAdapter cardAdapter;
-    private Community community;
+    private Community community = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,6 +135,14 @@ public class CommunityServicesActivity extends AppCompatActivity {
         return listener;
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.communitiesservices_menu, menu);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -142,19 +151,31 @@ public class CommunityServicesActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_chat) {
-            Intent i = new Intent(this, ServiceSearch.class);
+            Log.d("accion ","chat");
+
+
+        }
+        if (id == R.id.action_moreInfo) {
+            Log.d("accion ","mas informacion");
+
+            Intent i = new Intent(CommunityServicesActivity.this,CommunityInfo.class);
+
+            i.putExtra(Communities.KEY_COMMUNITY,community);
             startActivity(i);
+        }
+
+        if (id == R.id.action_addmember) {
+            Log.d("accion ","añadir miembro");
+
+        }
+        if (id == R.id.action_delete) {
+            Log.d("accion ","borrar");
+
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.communitiesservices_menu, menu);
-        return true;
-    }
 
     /*@RequiresApi(api = Build.VERSION_CODES.GINGERBREAD)
     @Override
@@ -209,5 +230,15 @@ public class CommunityServicesActivity extends AppCompatActivity {
                 }
             }
         }
+    }
+    @Override
+    public void onBackPressed() {
+
+        // firebase sign out
+        finish();
+        Intent i = new Intent(this, Communities.class);
+        startActivity(i);
+
+
     }
 }

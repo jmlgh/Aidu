@@ -88,7 +88,7 @@
 
 
     <!-- ADD COMMUNITY -->
-    <string name="new_community_activity_name">Add new service</string>
+    <string name="new_community_activity_name">Add new Community</string>
     <string name="new_community_hint_name">Name</string>
     <string name="new_community_text_public">Make it public:</string>
     <string name="new_community_hint_address">Address</string>
@@ -103,9 +103,14 @@
     <string name="new_community_photo_selection">Select a picture:</string>
 
     <string name="communities_activity_name">My communities</string>
+    <string name="communities_Options_dialog">My Select an option</string>
+
+
     <string name="msg_dialog_salir">Sure you want to go?</string>
     <string name="yes">Of course!</string>
     <string name="no">No</string>
+
+    <string name="communityInfo_btn_vewmembers">VIEW MEMBERS</string>
 
     <!-- CARD OPTIONS -->
     <string name="action_more_info">More info</string>

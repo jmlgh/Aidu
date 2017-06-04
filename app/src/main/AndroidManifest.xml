@@ -98,7 +98,11 @@
             android:name=".UI.CommunityServicesActivity"
             android:parentActivityName=".UI.Communities"
             android:screenOrientation="portrait" />
-        <activity android:name=".UI.CommunityInfo"></activity>
+        <activity android:name=".UI.CommunityInfo"
+            android:parentActivityName=".UI.CommunityServicesActivity"
+            android:screenOrientation="portrait">
+
+        </activity>
     </application>
 
 </manifest>

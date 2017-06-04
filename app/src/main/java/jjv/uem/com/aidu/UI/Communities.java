@@ -1,5 +1,6 @@
 package jjv.uem.com.aidu.UI;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Rect;
@@ -11,6 +12,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -60,6 +62,7 @@ public class Communities extends AppCompatActivity implements NavigationView.OnN
     private ArrayList<Community> communitiesList;
     private CommunitiesCardAdapter cardAdapter;
     private CommunitiesCardAdapter.OnItemClickListener l;
+    private CommunitiesCardAdapter.OnItemLongClickListener lc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,8 +124,9 @@ public class Communities extends AppCompatActivity implements NavigationView.OnN
                         Log.e("Comunidad: ", c.getKey());
                     }
                     l = initListener();
+                    lc = initlongListener();
                     //adapter = new Service_Adapter_RV(serviceList,l);
-                    cardAdapter = new CommunitiesCardAdapter(Communities.this, communitiesList, l);
+                    cardAdapter = new CommunitiesCardAdapter(Communities.this, communitiesList, l,lc);
                     RecyclerView.LayoutManager layoutManager = new GridLayoutManager(Communities.this, 2);
                     cummunitiesrecicler.setLayoutManager(layoutManager);
                     cummunitiesrecicler.setItemAnimator(new DefaultItemAnimator());
@@ -150,7 +154,41 @@ public class Communities extends AppCompatActivity implements NavigationView.OnN
             Intent i = new Intent(Communities.this,CommunityServicesActivity.class);
                 i.putExtra(KEY_COMMUNITY,item);
                 startActivity(i);
+                finish();
 
+            }
+        };
+
+        return listener;
+    }
+
+    private CommunitiesCardAdapter.OnItemLongClickListener initlongListener() {
+        CommunitiesCardAdapter.OnItemLongClickListener listener = new CommunitiesCardAdapter.OnItemLongClickListener() {
+            @Override
+            public void OnItemLongClickListener(final Community item) {
+                CharSequence options[] = new CharSequence[]{getString(R.string.action_moreInfo), getString(R.string.action_addmember),getString(R.string.action_delete)};
+
+                AlertDialog.Builder picker = new AlertDialog.Builder(Communities.this);
+                picker.setTitle(getString(R.string.communities_Options_dialog));
+
+
+                picker.setCancelable(true);
+                picker.setItems(options, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (which == 0) {//more info
+                            Intent i = new Intent(Communities.this,CommunityInfo.class);
+
+                            i.putExtra(Communities.KEY_COMMUNITY,item);
+                            startActivity(i);
+                        } else if (which == 1) {//add member
+
+                        } else {//delete community
+
+                        }
+                    }
+                });
+                picker.show();
             }
         };
 
@@ -219,6 +257,8 @@ public class Communities extends AppCompatActivity implements NavigationView.OnN
             finish();
             return true;
         }
+
+
 
 
         return super.onOptionsItemSelected(item);
@@ -291,5 +331,7 @@ public class Communities extends AppCompatActivity implements NavigationView.OnN
         Resources r = getResources();
         return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
     }
+
+
 
 }
