@@ -32,6 +32,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -51,7 +52,6 @@ public class Communities extends AppCompatActivity implements NavigationView.OnN
     public static final String KEY_COMMUNITY = "key_community";
 
     private FirebaseAuth auth;
-    private FirebaseAuth.AuthStateListener authListener;
     private FirebaseDatabase database;
 
     private TextView navUserName, navUserEmail;
@@ -110,6 +110,7 @@ public class Communities extends AppCompatActivity implements NavigationView.OnN
         if (auth.getCurrentUser() != null) {
             database = FirebaseDatabase.getInstance();
             DatabaseReference reference = database.getReference("communities");
+            //Query query = reference.orderByChild("members").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
             reference.addValueEventListener(new ValueEventListener() {
                 @RequiresApi(api = Build.VERSION_CODES.GINGERBREAD)
                 @Override
