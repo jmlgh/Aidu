@@ -51,7 +51,10 @@ import jjv.uem.com.aidu.R;
 import jjv.uem.com.aidu.util.CardAdapter;
 
 
-public class MainActivity extends AppCompatActivity  implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener{
+public class MainActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener,
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener{
 
     private static final String TAG = MainActivity.class.getSimpleName();
     public static final String USERNAME = "username" ;
@@ -200,7 +203,6 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
                         serviceList.add(s);
                     }
                     l = initListener();
-                    //adapter = new Service_Adapter_RV(serviceList,l);
                     cardAdapter = new CardAdapter(MainActivity.this, serviceList, l);
                     RecyclerView.LayoutManager layoutManager = new GridLayoutManager(MainActivity.this, 2);
                     recyclerView.setLayoutManager(layoutManager);
@@ -296,11 +298,11 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         int id = item.getItemId();
 
         if (id == R.id.nav_my_services) {
-            // Handle the camera action
+            Intent i = new Intent(this, MyServices.class);
+            startActivity(i);
         } else if (id == R.id.nav_communities) {
             Intent i = new Intent(this, Communities.class);
             startActivity(i);
-            finish();
         } else if (id == R.id.nav_chats) {
 
         } else if (id == R.id.nav_settings) {
@@ -400,7 +402,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     /**
      * RecyclerView item decoration - give equal margin around grid item
      */
-    public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
+    public static class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
 
         private int spanCount;
         private int spacing;

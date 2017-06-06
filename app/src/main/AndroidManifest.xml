@@ -80,6 +80,11 @@
             android:label="Service Details"
             android:parentActivityName=".UI.MainActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".UI.MyServices"
+            android:label="My Services"
+            android:parentActivityName=".UI.MainActivity"
+            android:screenOrientation="portrait"/>
+
         <activity
             android:name=".UI.LocationActivity"
             android:label="@string/title_activity_location"
@@ -98,11 +103,11 @@
             android:name=".UI.CommunityServicesActivity"
             android:parentActivityName=".UI.Communities"
             android:screenOrientation="portrait" />
-        <activity android:name=".UI.CommunityInfo"
+        <activity
+            android:name=".UI.CommunityInfo"
             android:parentActivityName=".UI.CommunityServicesActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"></activity>
 
-        </activity>
     </application>
 
 </manifest>

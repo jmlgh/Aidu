@@ -149,8 +149,6 @@ public class Register extends AppCompatActivity {
 
             }
         });
-
-
     }
 
         //asigna el listener a la instancia de auth

@@ -209,7 +209,6 @@ public class Communities extends AppCompatActivity implements NavigationView.OnN
                     Log.i(TAG, "i value : " + i);
                     tv.setTypeface(titleFont);
                     break;
-
                 }
             }
         }
