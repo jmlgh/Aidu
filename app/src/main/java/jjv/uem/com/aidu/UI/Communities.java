@@ -167,9 +167,14 @@ public class Communities extends AppCompatActivity implements NavigationView.OnN
         CommunitiesCardAdapter.OnItemLongClickListener listener = new CommunitiesCardAdapter.OnItemLongClickListener() {
             @Override
             public void OnItemLongClickListener(final Community item) {
-                CharSequence options[] = new CharSequence[]{getString(R.string.action_moreInfo), getString(R.string.action_addmember),getString(R.string.action_delete)};
+                CharSequence options[];
+                if (item.getOwner()==auth.getCurrentUser().getUid()){
+                    options = new CharSequence[]{getString(R.string.action_moreInfo), getString(R.string.action_addmember),getString(R.string.action_delete)};
+                } else {
+                    options = new CharSequence[]{getString(R.string.action_moreInfo), getString(R.string.action_addmember)};
+                }
 
-                AlertDialog.Builder picker = new AlertDialog.Builder(Communities.this);
+                 AlertDialog.Builder picker = new AlertDialog.Builder(Communities.this);
                 picker.setTitle(getString(R.string.communities_Options_dialog));
 
 
@@ -332,6 +337,8 @@ public class Communities extends AppCompatActivity implements NavigationView.OnN
         Resources r = getResources();
         return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
     }
+
+
 
 
 
