@@ -48,8 +48,8 @@ public class CommunityServicesActivity extends AppCompatActivity {
     private Service_Adapter_RV adapter;
     private CardAdapter cardAdapter;
 
-    private Intent i = getIntent();
-    private Community community = i.getParcelableExtra(Communities.KEY_COMMUNITY);
+
+    private Community community ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +63,9 @@ public class CommunityServicesActivity extends AppCompatActivity {
     private void initViews() {
         actBar = getSupportActionBar();
         actBar.setDisplayHomeAsUpEnabled(true);
+        Intent i = getIntent();
+        community = i.getParcelableExtra(Communities.KEY_COMMUNITY);
+        Log.e("crear actividad",""+community.getName()+" "+ community.getOwner());
 
         Typeface titleFont = Typeface.
                 createFromAsset(getApplicationContext().getAssets(), "fonts/BubblerOne-Regular.ttf");
@@ -137,8 +140,6 @@ public class CommunityServicesActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
 
-
-        Log.e("crear menu", community.getOwner());
         if (community.getOwner().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
             getMenuInflater().inflate(R.menu.communitiesservices_menu_admin, menu);
         } else {
@@ -175,7 +176,7 @@ public class CommunityServicesActivity extends AppCompatActivity {
 
         }
         if (id == R.id.action_change_admin) {
-            Log.d("accion ","borrar");
+            Log.d("accion ","change asmin");
 
         }
 

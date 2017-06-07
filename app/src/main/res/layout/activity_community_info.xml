@@ -93,7 +93,7 @@
                 android:text="@string/communityInfo_btn_vewmembers"
                 android:textColor="@android:color/white"
                 android:textSize="20sp"
-                android:onClick="addCommunity"/>
+                android:onClick="viewMembers"/>
 
 
         </RelativeLayout>
