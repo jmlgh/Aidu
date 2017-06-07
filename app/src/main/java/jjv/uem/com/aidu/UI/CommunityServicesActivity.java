@@ -2,10 +2,8 @@ package jjv.uem.com.aidu.UI;
 
 import android.content.Intent;
 import android.content.res.Resources;
-import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.Typeface;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
@@ -21,8 +19,8 @@ import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -49,7 +47,9 @@ public class CommunityServicesActivity extends AppCompatActivity {
     private CardAdapter.OnItemClickListener l;
     private Service_Adapter_RV adapter;
     private CardAdapter cardAdapter;
-    private Community community = null;
+
+    private Intent i = getIntent();
+    private Community community = i.getParcelableExtra(Communities.KEY_COMMUNITY);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,8 +63,6 @@ public class CommunityServicesActivity extends AppCompatActivity {
     private void initViews() {
         actBar = getSupportActionBar();
         actBar.setDisplayHomeAsUpEnabled(true);
-        Intent i = getIntent();
-        community = i.getParcelableExtra(Communities.KEY_COMMUNITY);
 
         Typeface titleFont = Typeface.
                 createFromAsset(getApplicationContext().getAssets(), "fonts/BubblerOne-Regular.ttf");
@@ -138,7 +136,15 @@ public class CommunityServicesActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.communitiesservices_menu, menu);
+
+
+        Log.e("crear menu", community.getOwner());
+        if (community.getOwner().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
+            getMenuInflater().inflate(R.menu.communitiesservices_menu_admin, menu);
+        } else {
+            getMenuInflater().inflate(R.menu.communitiesservices_menu, menu);
+        }
+
         return true;
     }
 
@@ -168,6 +174,11 @@ public class CommunityServicesActivity extends AppCompatActivity {
             Log.d("accion ","añadir miembro");
 
         }
+        if (id == R.id.action_change_admin) {
+            Log.d("accion ","borrar");
+
+        }
+
         if (id == R.id.action_delete) {
             Log.d("accion ","borrar");
 

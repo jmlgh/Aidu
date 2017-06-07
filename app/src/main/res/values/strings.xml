@@ -53,6 +53,7 @@
     <string name="action_add">Add</string>
     <string name="action_chat">Chat</string>
     <string name="action_delete">Delete</string>
+    <string name="action_change_admin">Change Admin</string>
     <string name="action_moreInfo">More Info</string>
     <string name="action_addmember">Add member</string>
     <string name="service_points">000p</string>

@@ -168,7 +168,7 @@ public class Communities extends AppCompatActivity implements NavigationView.OnN
             @Override
             public void OnItemLongClickListener(final Community item) {
                 CharSequence options[];
-                if (item.getOwner()==auth.getCurrentUser().getUid()){
+                if (item.getOwner().equals(auth.getCurrentUser().getUid())){
                     options = new CharSequence[]{getString(R.string.action_moreInfo), getString(R.string.action_addmember),getString(R.string.action_delete)};
                 } else {
                     options = new CharSequence[]{getString(R.string.action_moreInfo), getString(R.string.action_addmember)};
