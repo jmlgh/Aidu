@@ -17,12 +17,14 @@ import java.util.List;
 
 import jjv.uem.com.aidu.Model.Service;
 import jjv.uem.com.aidu.R;
+import jjv.uem.com.aidu.UI.MyServices;
 
 /**
  * Created by javi_ on 24/05/2017.
  */
 
 public class CardAdapter extends RecyclerView.Adapter<CardAdapter.MyViewHolder> {
+    private static final int LONGITUD_CARD = 14;
     private Context mContext;
     private List<Service> serviceList;
     private OnItemClickListener listener;
@@ -56,61 +58,87 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.MyViewHolder> 
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.card_service_alt, parent, false);
+        View itemView;
+        if(mContext.getClass().equals(MyServices.class)){
+            itemView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.card_service_dots, parent, false);
+        }else{
+            itemView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.card_service_alt, parent, false);
+        }
+
 
         return new MyViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(final MyViewHolder holder, int position) {
+    public void onBindViewHolder(final MyViewHolder holder, final int position) {
         Service serviceCard = serviceList.get(position);
-        holder.title.setText(serviceCard.getTitle());
-        holder.author.setText(serviceCard.getUserName());
+        String title = serviceCard.getTitle();
+        String author = serviceCard.getUserName();
+
+        if(title.length()>LONGITUD_CARD){
+            title = serviceCard.getTitle().substring(0,LONGITUD_CARD)+"...";
+        }
+
+
+        if(author.length()>LONGITUD_CARD){
+            author = serviceCard.getTitle().substring(0,LONGITUD_CARD)+"...";
+        }
+
+        holder.title.setText(title);
+        holder.author.setText(author);
         holder.bind(serviceList.get(position),listener);
 
         // loading album cover using Glide library
         Glide.with(mContext).load(serviceCard.getPhotos().get(0)).into(holder.thumbnnail);
-
-        holder.dots.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showPopupMenu(holder.dots);
-            }
-        });
-    }
-
-    private void showPopupMenu(View view) {
-        // inflate menu
-        PopupMenu popup = new PopupMenu(mContext, view);
-        MenuInflater inflater = popup.getMenuInflater();
-        inflater.inflate(R.menu.card_options, popup.getMenu());
-        popup.setOnMenuItemClickListener(new MyMenuItemClickListener());
-        popup.show();
-    }
-
-    /**
-     * Click listener for popup menu items
-     */
-    class MyMenuItemClickListener implements PopupMenu.OnMenuItemClickListener {
-
-        public MyMenuItemClickListener() {
+        if(mContext.getClass().equals(MyServices.class)){
+            holder.dots.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    showPopupMenu(holder.dots,serviceList.get(position).getServiceKey());
+                }
+            });
         }
+
+    }
+
+     class MyMenuItemClickListener implements PopupMenu.OnMenuItemClickListener {
+        private String key ;
+
+         public MyMenuItemClickListener(String serviceKey) {
+             this.key = serviceKey;
+         }
 
         @Override
         public boolean onMenuItemClick(MenuItem menuItem) {
+
             switch (menuItem.getItemId()) {
                 case R.id.action_more_info:
-                    Toast.makeText(mContext, "Add to favourite", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, "Add to favourite "+key, Toast.LENGTH_SHORT).show();
                     return true;
-                case R.id.action_subscribe:
-                    Toast.makeText(mContext, "Play next", Toast.LENGTH_SHORT).show();
+                case R.id.action_delete:
+                    Toast.makeText(mContext, "Delete "+key, Toast.LENGTH_SHORT).show();
                     return true;
                 default:
             }
             return false;
         }
+
+     }
+
+    private void showPopupMenu(View view, String serviceKey) {
+        // inflate menu
+        PopupMenu popup = new PopupMenu(mContext, view);
+        MenuInflater inflater = popup.getMenuInflater();
+        inflater.inflate(R.menu.card_options, popup.getMenu());
+        popup.setOnMenuItemClickListener(new MyMenuItemClickListener(serviceKey));
+        popup.show();
     }
+
+
+
+
 
     @Override
     public int getItemCount() {
