@@ -1,7 +1,10 @@
 package jjv.uem.com.aidu.util;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -13,6 +16,14 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.List;
 
 import jjv.uem.com.aidu.Model.Service;
@@ -116,9 +127,67 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.MyViewHolder> 
             switch (menuItem.getItemId()) {
                 case R.id.action_more_info:
                     Toast.makeText(mContext, "Add to favourite "+key, Toast.LENGTH_SHORT).show();
+
+
                     return true;
                 case R.id.action_delete:
-                    Toast.makeText(mContext, "Delete "+key, Toast.LENGTH_SHORT).show();
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                    builder.setCancelable(true);
+                    builder.setTitle(mContext.getString(R.string.atention));
+                    builder.setMessage(mContext.getString(R.string.message_atention));
+                    builder.setPositiveButton(mContext.getString(R.string.action_delete),
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Toast.makeText(mContext, "delete: "+key, Toast.LENGTH_SHORT).show();
+                                    DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+                                    Query query = ref.child("services").orderByChild("serviceKey").equalTo(key);
+                                    Query queryTwo = ref.child("user-services/"
+                                            + FirebaseAuth.getInstance().getCurrentUser().getUid()
+                                    ).orderByChild("serviceKey").equalTo(key);
+
+
+                                    ValueEventListener vee = new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                            Service s = dataSnapshot.getValue(Service.class);
+                                            if(s.getUserkey().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
+                                                for (DataSnapshot ds: dataSnapshot.getChildren()) {
+                                                    ds.getRef().removeValue();
+                                                }
+                                            }else{
+                                                /*TODO probar cuando se hagan reservas de servicios que no se hayan creado
+                                                s.setUserkeyInterested("");
+                                                dataSnapshot.getRef().setValue(s);*/
+                                            }
+
+
+
+                                        }
+
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
+                                            Toast.makeText(mContext, mContext.getString(R.string.error_standar), Toast.LENGTH_SHORT).show();
+                                        }
+                                    };
+
+                                    query.addListenerForSingleValueEvent(vee);
+                                    queryTwo.addListenerForSingleValueEvent(vee);
+
+
+
+                                }
+                            });
+                    builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                        }
+                    });
+
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
                     return true;
                 default:
             }

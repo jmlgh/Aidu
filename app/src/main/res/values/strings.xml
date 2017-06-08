@@ -133,5 +133,8 @@
     <string name="ayuda">Supply</string>
     <string name="new_service_no_community">No community</string>
     <string name="toolbar_title_my_services">My Services</string>
+    <string name="atention">Atention</string>
+    <string name="message_atention">Continue with the deletion?</string>
+    <string name="error_standar">Error, try again</string>
 </resources>
 
