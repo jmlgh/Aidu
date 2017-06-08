@@ -10,12 +10,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     tools:context="jjv.uem.com.aidu.UI.ServiceView"
-    android:background="@color/colorPrimary">
+    android:background="@color/colorPrimaryLight">
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardCornerRadius="10dp"
-        android:layout_margin="10dp"
+        android:layout_margin="@dimen/cardview_margin"
         android:id="@+id/cardView">
 
         <LinearLayout

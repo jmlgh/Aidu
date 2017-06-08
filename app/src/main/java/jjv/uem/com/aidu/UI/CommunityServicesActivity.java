@@ -238,7 +238,5 @@ public class CommunityServicesActivity extends AppCompatActivity {
         finish();
         Intent i = new Intent(this, Communities.class);
         startActivity(i);
-
-
     }
 }
