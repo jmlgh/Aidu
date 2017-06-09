@@ -136,5 +136,11 @@
     <string name="atention">Atention</string>
     <string name="message_atention">Continue with the deletion?</string>
     <string name="error_standar">Error, try again</string>
+    <string name="title_search_activity">Search</string>
+    <string name="title_activity_chat_conversation">Talk!</string>
+    <string name="chat_hint">Say something!</string>
+    <string name="Decline">Decline</string>
+    <string name="Accept">Accept</string>
+    <string name="error_service_yours">This service is yours!</string>
 </resources>
 

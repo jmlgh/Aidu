@@ -80,11 +80,11 @@
             android:label="Service Details"
             android:parentActivityName=".UI.MainActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".UI.MyServices"
+        <activity
+            android:name=".UI.MyServices"
             android:label="My Services"
             android:parentActivityName=".UI.MainActivity"
-            android:screenOrientation="portrait"/>
-
+            android:screenOrientation="portrait" />
         <activity
             android:name=".UI.LocationActivity"
             android:label="@string/title_activity_location"
@@ -96,7 +96,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".UI.ServiceSearch"
-            android:label="Service Search"
+            android:label="@string/title_search_activity"
             android:parentActivityName=".UI.MainActivity"
             android:screenOrientation="portrait" />
         <activity
@@ -106,8 +106,11 @@
         <activity
             android:name=".UI.CommunityInfo"
             android:parentActivityName=".UI.CommunityServicesActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".UI.ChatConversation"
+            android:label="@string/title_activity_chat_conversation"
+            android:parentActivityName=".UI.MainActivity"
             android:screenOrientation="portrait"></activity>
-
     </application>
 
 </manifest>
