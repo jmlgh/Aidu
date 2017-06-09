@@ -469,8 +469,8 @@ public class ServiceSearch extends AppCompatActivity
     private Dialog createDialog(final Service service, Marker marker) {
         AlertDialog.Builder builder = new AlertDialog.Builder(ServiceSearch.this);
         builder.setCancelable(false);
-        builder.setMessage("Open details for this service?");
-        builder.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+        builder.setMessage(getString(R.string.alert_open_details));
+        builder.setPositiveButton(getString(R.string.alert_yes), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Intent i = new Intent(getBaseContext(),ServiceView.class);

@@ -83,6 +83,8 @@
     <string name="label_search_cat">Category</string>
     <string name="label_search_results">Results</string>
     <string name="new_service_toast_photos">Please select at least one photo for create a new service</string>
+    <string name="alert_yes">Yes</string>
+    <string name="alert_open_details">Open details for this service?</string>
 
     <!-- NEW COMMUNITY -->
 
