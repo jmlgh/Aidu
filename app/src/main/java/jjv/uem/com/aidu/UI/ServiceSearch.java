@@ -1,7 +1,9 @@
 package jjv.uem.com.aidu.UI;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
@@ -50,6 +52,8 @@ import java.util.Random;
 import jjv.uem.com.aidu.Model.Service;
 import jjv.uem.com.aidu.R;
 import jjv.uem.com.aidu.util.ServiceFilter;
+
+import static jjv.uem.com.aidu.UI.MainActivity.KEY_SERVICE;
 
 public class ServiceSearch extends AppCompatActivity
                            implements OnMapReadyCallback, LocationListener,
@@ -196,6 +200,7 @@ public class ServiceSearch extends AppCompatActivity
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.mGoogleMap = googleMap;
+        mGoogleMap.setOnMarkerClickListener(this);
         //Initialize Google Play Services
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(this,
@@ -444,9 +449,43 @@ public class ServiceSearch extends AppCompatActivity
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        if(marker.equals(currentServiceMarker)){
-
+        LatLng tmpLatLng;
+        double lat, lon;
+        for(final Service service : serviceList){
+            // Si los titulos son iguales, sigue comprobando
+            if (service.getTitle().equals(marker.getTitle())){
+                lat = service.getLatitude();
+                lon = service.getLongitude();
+                tmpLatLng = new LatLng(lat, lon);
+                // comprueba que es el mismo servicio comparando las posiciones
+                if(tmpLatLng.equals(marker.getPosition())){
+                    createDialog(service, marker).show();
+                }
+            }
         }
         return false;
+    }
+
+    private Dialog createDialog(final Service service, Marker marker) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(ServiceSearch.this);
+        builder.setCancelable(false);
+        builder.setMessage("Open details for this service?");
+        builder.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent i = new Intent(getBaseContext(),ServiceView.class);
+                i.putExtra(KEY_SERVICE, service.getServiceKey());
+                startActivity(i);
+            }
+        });
+
+        builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        return builder.create();
     }
 }
