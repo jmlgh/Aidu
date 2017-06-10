@@ -28,20 +28,22 @@ import jjv.uem.com.aidu.Adapters.ChatAdapter;
 import jjv.uem.com.aidu.Model.MensajeChat;
 import jjv.uem.com.aidu.Model.Service;
 import jjv.uem.com.aidu.R;
+import jjv.uem.com.aidu.util.Constants;
 
 public class ChatConversation extends AppCompatActivity {
 
     private FirebaseDatabase database;
+
     private String serviceKey;
     private String keyUserProp;
     private String userNameProp;
     private DatabaseReference ref;
-    private Button btnEnviar;
+    private Button btnEnviar,btnFinalizar,btnAceptar,btnDenegar;
     private EditText etMensaje;
     private FirebaseUser usuarioLogueado;
     private RecyclerView listaMensajes;
     private ChatAdapter chatAdapter;
-    private Service sModificado;
+    private String estate;
 
 
     @Override
@@ -52,23 +54,69 @@ public class ChatConversation extends AppCompatActivity {
         serviceKey =i.getStringExtra(ServiceView.SERVICE_KEY);
         userNameProp = i.getStringExtra(ServiceView.SERVICE_USERNAME);
         keyUserProp = i.getStringExtra(ServiceView.SERVICE_USER_KEY);
+        estate = i.getStringExtra(ServiceView.SERVICE_STATE);
         etMensaje = (EditText) findViewById(R.id.et_msg);
         btnEnviar = (Button) findViewById(R.id.btn_enviar);
+        btnAceptar = (Button) findViewById(R.id.btnAccept);
+        btnDenegar = (Button) findViewById(R.id.btnDecline);
+        btnFinalizar = (Button) findViewById(R.id.btnFinal);
+
+
         listaMensajes = (RecyclerView) findViewById(R.id.lista_msgs);
 
         initDatabase();
-        String estate = "ESPERA";
-        changeStateService(estate);
+
+        //changeStateService(estate);
+
+        setButtonsVisibility();
 
 
+
+        btnAceptar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(usuarioLogueado.getUid().equals(keyUserProp)){
+                    changeStateService(Constants.EN_CURSO);
+                    estate = Constants.EN_CURSO;
+                    setButtonsVisibility();
+                    sendMessage(getString(R.string.service_message_confirm));
+                }else{
+                    changeStateService(Constants.ESPERA);
+                    estate = Constants.ESPERA;
+                    setButtonsVisibility();
+                    sendMessage(getString(R.string.service_message_interested));
+                }
+
+
+            }
+        });
+        btnDenegar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                changeStateService(Constants.DISPONIBLE);
+                estate = Constants.DISPONIBLE;
+                setButtonsVisibility();
+                sendMessage(getString(R.string.service_denegated));
+
+            }
+        });
+
+        btnFinalizar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeStateService(Constants.FINALIZADO);
+                estate = Constants.FINALIZADO;
+                setButtonsVisibility();
+            }
+        });
 
         btnEnviar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String horaFormateada = formatearHora(new Date().getTime());
-                MensajeChat msgChat = new MensajeChat(etMensaje.getText().toString(), usuarioLogueado.getDisplayName(), usuarioLogueado.getEmail(), horaFormateada);
-                // push mensaje a la bd
-                ref.push().setValue(msgChat);
+                String mensaje = etMensaje.getText().toString();
+                sendMessage(mensaje);
                 etMensaje.setText("");
                 etMensaje.setHint(getString(R.string.chat_hint));
                 etMensaje.clearFocus();
@@ -79,9 +127,61 @@ public class ChatConversation extends AppCompatActivity {
 
     }
 
-    private void changeStateService(final String estate) {
+    private void sendMessage(String mensaje) {
+        String horaFormateada = formatearHora(new Date().getTime());
+        MensajeChat msgChat = new MensajeChat(mensaje, usuarioLogueado.getDisplayName(), usuarioLogueado.getEmail(), horaFormateada);
+        // push mensaje a la bd
+        ref.push().setValue(msgChat);
+    }
+
+    private void setButtonsVisibility() {
+
+        if(estate.equals(Constants.FINALIZADO)){
+            btnAceptar.setVisibility(View.INVISIBLE);
+            btnDenegar.setVisibility(View.INVISIBLE);
+            btnFinalizar.setVisibility(View.INVISIBLE);
+        }else{
+            if(!usuarioLogueado.getUid().equals(keyUserProp)){
+
+                if(estate.equals(Constants.DISPONIBLE)){
+                    btnDenegar.setVisibility(View.INVISIBLE);
+                    btnAceptar.setVisibility(View.VISIBLE);
+                }else if(estate.equals(Constants.FINALIZADO)) {
+                    btnDenegar.setVisibility(View.INVISIBLE);
+                    btnAceptar.setVisibility(View.INVISIBLE);
+                }else{
+                    btnDenegar.setVisibility(View.VISIBLE);
+                    btnAceptar.setVisibility(View.INVISIBLE);
+                }
+
+                btnFinalizar.setVisibility(View.INVISIBLE);
+
+            }else {
+                if (estate.equals(Constants.ESPERA)) {
+                    btnDenegar.setVisibility(View.VISIBLE);
+                    btnAceptar.setVisibility(View.VISIBLE);
+                    btnFinalizar.setVisibility(View.INVISIBLE);
+                } else if (estate.equals(Constants.EN_CURSO)) {
+                    btnDenegar.setVisibility(View.VISIBLE);
+                    btnAceptar.setVisibility(View.INVISIBLE);
+                    btnFinalizar.setVisibility(View.VISIBLE);
+                } else{
+                    btnDenegar.setVisibility(View.INVISIBLE);
+                    btnAceptar.setVisibility(View.INVISIBLE);
+                    btnFinalizar.setVisibility(View.INVISIBLE);
+                }
+            }
+        }
+
+
+
+
+    }
+
+    private void changeStateService(final String stat) {
 
         database = FirebaseDatabase.getInstance();
+        estate=stat;
 
 
         DatabaseReference dbref = database.getReference("services/"+serviceKey);
@@ -90,8 +190,15 @@ public class ChatConversation extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Service sModificado = dataSnapshot.getValue(Service.class);
-                sModificado.setState(estate);
+                sModificado.setState(stat);
+                if(stat.equals(Constants.ESPERA)){
+                    sModificado.setUserkeyInterested(usuarioLogueado.getUid());
+                }else if(stat.equals(Constants.DISPONIBLE)){
+                    sModificado.setUserkeyInterested("");
+                }
                 dataSnapshot.getRef().setValue(sModificado);
+
+                setButtonsVisibility();
             }
 
             @Override

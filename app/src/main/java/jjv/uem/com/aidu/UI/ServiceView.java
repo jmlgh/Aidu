@@ -35,6 +35,7 @@ public class ServiceView extends AppCompatActivity {
     public static final String SERVICE_KEY = "serviceKey";
     public static final String SERVICE_USER_KEY ="userkey" ;
     public static final String SERVICE_USERNAME ="username" ;
+    public static final String SERVICE_STATE ="estado" ;
     private FirebaseDatabase database;
     private FirebaseAuth auth;
     private Service service;
@@ -106,6 +107,7 @@ public class ServiceView extends AppCompatActivity {
                     i.putExtra(SERVICE_KEY,service.getServiceKey());
                     i.putExtra(SERVICE_USER_KEY,service.getUserkey());
                     i.putExtra(SERVICE_USERNAME,service.getUserName());
+                    i.putExtra(SERVICE_STATE,service.getState());
                     startActivity(i);
                 }
 

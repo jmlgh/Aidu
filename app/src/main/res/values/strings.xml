@@ -143,6 +143,11 @@
     <string name="chat_hint">Say something</string>
     <string name="Decline">Decline</string>
     <string name="Accept">Accept</string>
+    <string name="Final">End service</string>
+    <string name="error_service_yours">This service is yours!</string>
+    <string name="service_denegated">AUTO AIDU: SERVICE CANCELED</string>
+    <string name="service_message_interested">AUTO AIDU: I AM INTERESTED</string>
+    <string name="service_message_confirm">AUTO AIDU: AGREE!</string>
     <string name="error_service_yours">This service is yours</string>
 
     <!-- CHAT CONVERSATION WINDOW -->
