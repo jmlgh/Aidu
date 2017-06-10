@@ -80,8 +80,8 @@ public class Chats extends AppCompatActivity {
                         Service s = ds.getValue(Service.class);
                         // si el usuario ha creado el servicio o ha aceptado hacerlo
                         // muestra una sala de chat
-                        if(s.getUserkey() == fUser.getUid()
-                                || s.getUserkeyInterested() == fUser.getUid()){
+                        if(s.getUserkey().equals(fUser.getUid())
+                                || s.getUserkeyInterested().equals(fUser.getUid())){
                             serviceList.add(s);
                         }
                         Log.i("chats:",s.toString());
