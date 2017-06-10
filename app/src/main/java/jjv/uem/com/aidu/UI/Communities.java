@@ -228,7 +228,10 @@ public class Communities extends AppCompatActivity implements NavigationView.OnN
 
         } else if (id == R.id.nav_chats) {
 
-        } else if (id == R.id.nav_settings) {
+        } else if (id == R.id.nav_home) {
+            finish();
+            Intent i = new Intent(this, MainActivity.class);
+            startActivity(i);
 
         } else if (id == R.id.nav_about_us) {
 
