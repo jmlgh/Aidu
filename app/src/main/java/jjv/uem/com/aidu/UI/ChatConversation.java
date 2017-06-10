@@ -191,6 +191,11 @@ public class ChatConversation extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Service sModificado = dataSnapshot.getValue(Service.class);
                 sModificado.setState(stat);
+                if(stat.equals(Constants.ESPERA)){
+                    sModificado.setUserkeyInterested(usuarioLogueado.getUid());
+                }else if(stat.equals(Constants.DISPONIBLE)){
+                    sModificado.setUserkeyInterested("");
+                }
                 dataSnapshot.getRef().setValue(sModificado);
 
                 setButtonsVisibility();
