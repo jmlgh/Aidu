@@ -179,7 +179,7 @@ public class MainActivity extends AppCompatActivity
                 Intent i =new Intent(MainActivity.this,NewService.class);
                 i.putExtra(USERNAME,auth.getCurrentUser().getDisplayName());
                 i.putExtra(USERUID,auth.getCurrentUser().getUid());
-                finish();
+                //finish();
                 startActivity(i);
             }
         });
