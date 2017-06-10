@@ -51,6 +51,7 @@ public class Communities extends AppCompatActivity implements NavigationView.OnN
     public static final String USERUID = "useruid";
     public static final String KEY_COMMUNITY = "key_community";
 
+
     private FirebaseAuth auth;
     private FirebaseDatabase database;
 
