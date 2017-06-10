@@ -206,9 +206,6 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.MyViewHolder> 
     }
 
 
-
-
-
     @Override
     public int getItemCount() {
         return serviceList.size();

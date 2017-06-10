@@ -304,7 +304,8 @@ public class MainActivity extends AppCompatActivity
             Intent i = new Intent(this, Communities.class);
             startActivity(i);
         } else if (id == R.id.nav_chats) {
-
+            Intent i = new Intent(this, Chats.class);
+            startActivity(i);
         } else if (id == R.id.nav_settings) {
 
         } else if (id == R.id.nav_about_us) {

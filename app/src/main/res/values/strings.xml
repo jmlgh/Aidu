@@ -139,10 +139,16 @@
     <string name="message_atention">Continue with the deletion?</string>
     <string name="error_standar">Error, try again</string>
     <string name="title_search_activity">Search</string>
-    <string name="title_activity_chat_conversation">Talk!</string>
-    <string name="chat_hint">Say something!</string>
+    <string name="title_activity_chat_conversation">Talk</string>
+    <string name="chat_hint">Say something</string>
     <string name="Decline">Decline</string>
     <string name="Accept">Accept</string>
-    <string name="error_service_yours">This service is yours!</string>
+    <string name="error_service_yours">This service is yours</string>
+
+    <!-- CHAT CONVERSATION WINDOW -->
+    <string name="label_chat_window">Chats</string>
+    <string name="tv_chat_service_name">Service: %s</string>
+    <string name="tv_chat_service_author">Author: %s</string>
+
 </resources>
 

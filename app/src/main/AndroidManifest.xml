@@ -36,7 +36,9 @@
             android:name=".UI.Login"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".UI.Chats" />
+        <activity android:name=".UI.Chats"
+            android:label="@string/label_chat_window"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".UI.Register"
             android:screenOrientation="portrait"
