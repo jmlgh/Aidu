@@ -145,8 +145,8 @@
     <string name="Accept">Accept</string>
     <string name="Final">End service</string>
     <string name="error_service_yours">This service is yours!</string>
-    <string name="service_denegated">Service denegated</string>
-    <string name="service_message_interested">I am interested in this</string>
-    <string name="service_message_confirm">Agree!</string>
+    <string name="service_denegated">AUTO AIDU: SERVICE CANCELED</string>
+    <string name="service_message_interested">AUTO AIDU: I AM INTERESTED</string>
+    <string name="service_message_confirm">AUTO AIDU: AGREE!</string>
 </resources>
 
