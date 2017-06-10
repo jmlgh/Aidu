@@ -1,5 +1,6 @@
 package jjv.uem.com.aidu.UI;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.annotation.NonNull;
@@ -127,7 +128,7 @@ public class Register extends AppCompatActivity {
                                 user.updateProfile(displayNameUpdate);
                                 //FirebaseAuth.getInstance().signOut();
                                 auth.signInWithEmailAndPassword(userEmail, password);
-                                saveUserOnDataBase(user,displayName);
+                                saveUserOnDataBase(user,displayName,password,getBaseContext());
 
                                 Toast.makeText(Register.this, "User created", Toast.LENGTH_SHORT).show();
                             }
@@ -136,7 +137,8 @@ public class Register extends AppCompatActivity {
         }
     }
 
-    private void saveUserOnDataBase(FirebaseUser user,String displayName) {
+    public static void saveUserOnDataBase(FirebaseUser user, String displayName, String password, final Context context
+    ) {
         Map<String, Object> childUpdates = new HashMap<>();
         User u = new User(user,password,displayName);
         Map<String, Object> userMap = u.toMap();
@@ -145,7 +147,7 @@ public class Register extends AppCompatActivity {
         mDatabase.updateChildren(childUpdates).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                Toast.makeText(getBaseContext(), getText(R.string.new_user_created), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(context, context.getResources().getText(R.string.new_user_created), Toast.LENGTH_SHORT).show();
 
             }
         });

@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,6 +31,9 @@ import jjv.uem.com.aidu.R;
 public class ServiceView extends AppCompatActivity {
     public static final String LATITUDE = "latitud" ;
     public static final String LONGITUDE = "longitud";
+    public static final String SERVICE_KEY = "serviceKey";
+    public static final String SERVICE_USER_KEY ="userkey" ;
+    public static final String SERVICE_USERNAME ="username" ;
     private FirebaseDatabase database;
     private FirebaseAuth auth;
     private Service service;
@@ -84,6 +88,24 @@ public class ServiceView extends AppCompatActivity {
                 i.putExtra(LONGITUDE,service.getLongitude());
                 i.putExtra(LATITUDE,service.getLatitude());
                 startActivity(i);
+            }
+        });
+
+
+        btnsendMessage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(service.getUserkey().equals(auth.getCurrentUser().getUid())){
+                    Toast.makeText(getBaseContext(),R.string.error_service_yours,Toast.LENGTH_SHORT).show();
+                }else{
+                    Intent i = new Intent(getBaseContext(),ChatConversation.class);
+                    i.putExtra(SERVICE_KEY,service.getServiceKey());
+                    i.putExtra(SERVICE_USER_KEY,service.getUserkey());
+                    i.putExtra(SERVICE_USERNAME,service.getUserName());
+                    startActivity(i);
+                }
+
             }
         });
 
