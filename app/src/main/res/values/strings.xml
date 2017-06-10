@@ -105,6 +105,7 @@
 
     <string name="communities_activity_name">My communities</string>
     <string name="communities_Options_dialog">My Select an option</string>
+    <string name="communities_members">Members</string>
 
 
     <string name="msg_dialog_salir">Sure you want to go?</string>

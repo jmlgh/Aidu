@@ -170,12 +170,12 @@ public class Community implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(name);
         dest.writeString(key);
-
         dest.writeString(description);
+        dest.writeString(owner);
         dest.writeInt(Icon);
         dest.writeString(image);
         dest.writeList(members);
-        dest.writeString(owner);
+
         dest.writeString(address);
         dest.writeDouble(latitude);
         dest.writeDouble(longitude);
@@ -186,12 +186,12 @@ public class Community implements Parcelable {
     protected Community(Parcel in) {
         name = in.readString();
         key = in.readString();
-
         description = in.readString();
+        owner = in.readString();
         Icon = in.readInt();
         image = in.readString();
         members = in.createStringArrayList();
-        owner = in.readString();
+
         address = in.readString();
         longitude = in.readDouble();
         latitude = in.readDouble();

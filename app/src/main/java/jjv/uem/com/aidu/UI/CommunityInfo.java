@@ -2,18 +2,24 @@ package jjv.uem.com.aidu.UI;
 
 import android.Manifest;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.SeekBar;
@@ -33,10 +39,21 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+
 import jjv.uem.com.aidu.Model.Community;
+import jjv.uem.com.aidu.Model.Service;
+import jjv.uem.com.aidu.Model.User;
 import jjv.uem.com.aidu.R;
+import jjv.uem.com.aidu.util.CardAdapter;
 
 public class CommunityInfo extends AppCompatActivity implements OnMapReadyCallback, LocationListener,
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener  {
@@ -51,6 +68,7 @@ public class CommunityInfo extends AppCompatActivity implements OnMapReadyCallba
     private Location mLastLocation;
     private Marker mCurrLocationMarker;
     private LocationManager locManager;
+    private FirebaseDatabase database;
 
 
     @Override
@@ -79,6 +97,49 @@ public class CommunityInfo extends AppCompatActivity implements OnMapReadyCallba
 
     }
 
+    public void viewMembers(View v){
+
+        database = FirebaseDatabase.getInstance();
+        DatabaseReference reference = database.getReference("user");
+        //Query query = reference.orderByChild("community").equalTo(community.getKey());
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @RequiresApi(api = Build.VERSION_CODES.GINGERBREAD)
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.e("services child: ", "" + dataSnapshot.getChildrenCount());
+                Log.e("services child: ", "" + dataSnapshot.getKey());
+                Iterable<DataSnapshot> iterator = dataSnapshot.getChildren();
+                CharSequence members[] = new CharSequence[(int) dataSnapshot.getChildrenCount()];
+                User u;
+                int i = 0;
+                for (DataSnapshot ds : iterator) {
+                    u = ds.getValue(User.class);
+                    members[i] = u.getDisplayName();
+                }
+                AlertDialog.Builder picker = new AlertDialog.Builder(CommunityInfo.this);
+                picker.setTitle(getString(R.string.communities_members));
+                picker.setCancelable(true);
+                picker.setItems(members, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                picker.show();
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+
+
+
+    }
 
 
     private void initMap() {
