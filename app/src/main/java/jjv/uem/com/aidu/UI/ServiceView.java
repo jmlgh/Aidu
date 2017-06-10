@@ -31,7 +31,9 @@ import jjv.uem.com.aidu.R;
 public class ServiceView extends AppCompatActivity {
     public static final String LATITUDE = "latitud" ;
     public static final String LONGITUDE = "longitud";
-    private static final String SERVICE_KEY = "serviceKey";
+    public static final String SERVICE_KEY = "serviceKey";
+    public static final String SERVICE_USER_KEY ="userkey" ;
+    public static final String SERVICE_USERNAME ="username" ;
     private FirebaseDatabase database;
     private FirebaseAuth auth;
     private Service service;
@@ -99,6 +101,8 @@ public class ServiceView extends AppCompatActivity {
                 }else{
                     Intent i = new Intent(getBaseContext(),ChatConversation.class);
                     i.putExtra(SERVICE_KEY,service.getServiceKey());
+                    i.putExtra(SERVICE_USER_KEY,service.getUserkey());
+                    i.putExtra(SERVICE_USERNAME,service.getUserName());
                     startActivity(i);
                 }
 
