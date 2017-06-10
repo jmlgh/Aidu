@@ -178,9 +178,10 @@ public class ChatConversation extends AppCompatActivity {
 
     }
 
-    private void changeStateService(final String estate) {
+    private void changeStateService(final String stat) {
 
         database = FirebaseDatabase.getInstance();
+        estate=stat;
 
 
         DatabaseReference dbref = database.getReference("services/"+serviceKey);
@@ -189,8 +190,10 @@ public class ChatConversation extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Service sModificado = dataSnapshot.getValue(Service.class);
-                sModificado.setState(estate);
+                sModificado.setState(stat);
                 dataSnapshot.getRef().setValue(sModificado);
+
+                setButtonsVisibility();
             }
 
             @Override
