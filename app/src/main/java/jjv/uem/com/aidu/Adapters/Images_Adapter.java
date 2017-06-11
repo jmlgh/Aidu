@@ -56,14 +56,7 @@ public class Images_Adapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-
-        if(this.guardando){
-            Picasso.with(contexto).load(photos.get(position)).into(holder.image);
-        }else{
-            Picasso.with(contexto).load(photos.get(position)).into(holder.image);
-        }
-
-
+        Picasso.with(contexto).load(photos.get(position)).into(holder.image);
 
 
         return convertView;

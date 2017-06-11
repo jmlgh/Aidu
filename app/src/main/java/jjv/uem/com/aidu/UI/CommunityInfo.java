@@ -24,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -91,7 +92,8 @@ public class CommunityInfo extends AppCompatActivity implements OnMapReadyCallba
         btn_viewMembers = (Button)findViewById(R.id.btn_viewmembers);
 
         tv_name.setText(community.getName());
-        Picasso.with(CommunityInfo.this).load(community.getImage()).into(image);
+        //Picasso.with(CommunityInfo.this).load(community.getImage()).into(image);
+        Glide.with(CommunityInfo.this).load(community.getImage()).into(image);
         tv_description.setText(community.getDescription());
 
         try{
