@@ -59,7 +59,7 @@
     <string name="service_points">%s points</string>
     <string name="action_leavecommunity">Leave community</string>
 
-    <string name="service_points">000p</string>
+
     <string name="type_service">Type Service</string>
     <string name="user_name">Created by: %s</string>
     <string name="details">Details</string>
@@ -112,7 +112,7 @@
     <string name="new_community_photo_selection">Select a picture:</string>
 
     <string name="communities_activity_name">My communities</string>
-    <string name="communities_Options_dialog">My Select an option</string>
+    <string name="communities_Options_dialog">Select an option</string>
     <string name="communities_members">Members</string>
 
 

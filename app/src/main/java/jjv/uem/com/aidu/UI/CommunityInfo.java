@@ -167,6 +167,7 @@ public class CommunityInfo extends AppCompatActivity implements OnMapReadyCallba
             mGoogleMap.setMyLocationEnabled(true);
         }
         LatLng loc = new LatLng(community.getLatitude(),community.getLongitude());
+        mGoogleMap.addMarker(new MarkerOptions().position(loc).title("YOU"));
 
     }
 

@@ -516,12 +516,5 @@ public class CommunityServicesActivity extends AppCompatActivity {
             }
         }
     }
-    @Override
-    public void onBackPressed() {
 
-        // firebase sign out
-        finish();
-        Intent i = new Intent(this, Communities.class);
-        startActivity(i);
-    }
 }

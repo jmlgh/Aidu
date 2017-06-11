@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
@@ -327,10 +328,15 @@ public class NewComunity extends AppCompatActivity {
 
     //Iniciamos un nuevo intent que nos abrira la camara
     private void cameraIntent() {
-        filePathImageCamera = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), key + "/Community" + key + ".jpg");
+        /*filePathImageCamera = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), key + "/Community" + key + ".jpg");
         Intent it = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         it.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(filePathImageCamera));
-        startActivityForResult(it, CAPTURE_IMAGE);
+        startActivityForResult(it, CAPTURE_IMAGE);*/
+
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, CAPTURE_IMAGE);
+        }
 
     }
 
@@ -358,7 +364,7 @@ public class NewComunity extends AppCompatActivity {
 
     private void onCaptureImageResult(Intent data) {
 
-        if (filePathImageCamera != null && filePathImageCamera.exists()) {
+        /*if (filePathImageCamera != null && filePathImageCamera.exists()) {
             Uri ImageUri = Uri.fromFile(filePathImageCamera);
             //sendFileFirebase(storageRef, ImageUri);
             imv_photos.setImageURI(ImageUri);
@@ -366,7 +372,10 @@ public class NewComunity extends AppCompatActivity {
             Log.e("Url", ImageUri.toString());
         } else {
             //IS NULL
-        }
+        }*/
+        Bundle extras = data.getExtras();
+        Bitmap imageBitmap = (Bitmap) extras.get("data");
+        imv_photos.setImageBitmap(imageBitmap);
     }
 
     public void sendFileFirebase(final StorageReference storageReference, final Uri file, String name) {
