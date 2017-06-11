@@ -373,6 +373,7 @@ public class NewComunity extends AppCompatActivity {
         } else {
             //IS NULL
         }*/
+
         Bundle extras = data.getExtras();
         Bitmap imageBitmap = (Bitmap) extras.get("data");
         imv_photos.setImageBitmap(imageBitmap);
