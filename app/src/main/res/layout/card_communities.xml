@@ -11,7 +11,7 @@
         android:layout_gravity="center"
         android:layout_margin="@dimen/card_margin"
         android:elevation="3dp"
-        card_view:cardCornerRadius="@dimen/card_communities_radius">
+        card_view:cardCornerRadius="0dp">
 
         <RelativeLayout
             android:layout_width="match_parent"

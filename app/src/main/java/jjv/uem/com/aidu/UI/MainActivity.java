@@ -3,7 +3,6 @@ package jjv.uem.com.aidu.UI;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.os.Build;
@@ -309,7 +308,6 @@ public class MainActivity extends AppCompatActivity
             Intent i = new Intent(this, Chats.class);
             startActivity(i);
         } else if (id == R.id.nav_home) {
-            finish();
             Intent i = new Intent(this, MainActivity.class);
             startActivity(i);
         } else if (id == R.id.nav_about_us) {

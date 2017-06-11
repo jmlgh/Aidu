@@ -61,8 +61,8 @@
 
 
     <string name="type_service">Type Service</string>
-    <string name="user_name">Created by: %s</string>
-    <string name="details">Details</string>
+    <string name="user_name">Owner: %s</string>
+    <string name="service_title">%s</string>
     <string name="no_service_details">No service details</string>
     <string name="dd_mm_yyyy_hh_mm">DD/MM/YYYY || HH:MM</string>
     <string name="location">Location</string>
@@ -183,7 +183,7 @@
     <string name="tv_chat_service_name">Service: %s</string>
     <string name="tv_chat_service_author">Author: %s</string>
     <string name="app_version">Version: %s</string>
-    <string name="info_creacion">Created by:</string>
+    <string name="info_creacion">Owner:\t</string>
 
 </resources>
 
