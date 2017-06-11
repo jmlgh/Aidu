@@ -119,7 +119,7 @@ public class NewComunity extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         key = mDatabase.child("communyty").push().getKey();
         initViews();
-        setTypeFace();
+        //setTypeFace();
     }
 
     private void initViews() {

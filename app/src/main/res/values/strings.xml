@@ -186,5 +186,16 @@
     <string name="app_version">Version: %s</string>
     <string name="info_creacion">Owner:\t</string>
 
+    <!-- TUTORIAL -->
+    <string name="tutorial_title_1">Need help with something?</string>
+    <string name="tutorial_description_1">Create a new service and just wait. We guarantee someone will help you!</string>
+    <string name="tutorial_title_2">Help other users</string>
+    <string name="tutorial_description_2">Search for services and accept the ones you like. Help others and they\'ll help you</string>
+    <string name="tutorial_title_3">Communities</string>
+    <string name="tutorial_description_3">Create or join communities with friends, co-workers or neighbors</string>
+    <string name="tutorial_title_4">Chat</string>
+    <string name="tutorial_description_4">Yes, we also have chats! All your communication needs are met!</string>
+
+
 </resources>
 
