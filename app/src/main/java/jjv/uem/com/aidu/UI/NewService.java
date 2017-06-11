@@ -30,6 +30,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -229,20 +230,17 @@ public class NewService extends AppCompatActivity {
         et_adress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                esconderTecladoDe(NewService.this,v);
+                showPlacepicker();
+            }
+        });
 
-                try {
-
-                    PlacePicker.IntentBuilder intentBuilder =
-                            new PlacePicker.IntentBuilder();
-                    //intentBuilder.setLatLngBounds(BOUNDS_MOUNTAIN_VIEW);
-                    Intent intent = intentBuilder.build(NewService.this);
-                    startActivityForResult(intent, PLACE_PICKER_REQUEST);
-
-                } catch (GooglePlayServicesRepairableException
-                        | GooglePlayServicesNotAvailableException e) {
-                    e.printStackTrace();
-                } catch (Exception e){
-                    e.printStackTrace();
+        et_adress.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                esconderTecladoDe(NewService.this,v);
+                if (hasFocus){
+                    showPlacepicker();
                 }
             }
         });
@@ -265,6 +263,23 @@ public class NewService extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void showPlacepicker() {
+        try {
+
+            PlacePicker.IntentBuilder intentBuilder =
+                    new PlacePicker.IntentBuilder();
+            //intentBuilder.setLatLngBounds(BOUNDS_MOUNTAIN_VIEW);
+            Intent intent = intentBuilder.build(NewService.this);
+            startActivityForResult(intent, PLACE_PICKER_REQUEST);
+
+        } catch (GooglePlayServicesRepairableException
+                | GooglePlayServicesNotAvailableException e) {
+            e.printStackTrace();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     private void setTypeFace() {
@@ -568,6 +583,23 @@ public class NewService extends AppCompatActivity {
             }
         }
     }
+
+    private void setFocuListener(final TextView tv) {
+        View.OnFocusChangeListener focusListener = new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                esconderTecladoDe(NewService.this, tv);
+            }
+        };
+
+        tv.setOnFocusChangeListener(focusListener);
+    }
+
+    public static void esconderTecladoDe(Context context, View view) {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
 
     @Override
     public void onBackPressed() {

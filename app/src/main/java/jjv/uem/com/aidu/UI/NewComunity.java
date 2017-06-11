@@ -27,6 +27,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -153,18 +154,17 @@ public class NewComunity extends AppCompatActivity {
         et_adress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                esconderTecladoDe(NewComunity.this,v);
+                showPlacepicker();
+            }
+        });
 
-                try {
-
-                    PlacePicker.IntentBuilder intentBuilder =
-                            new PlacePicker.IntentBuilder();
-                    //intentBuilder.setLatLngBounds(BOUNDS_MOUNTAIN_VIEW);
-                    Intent intent = intentBuilder.build(NewComunity.this);
-                    startActivityForResult(intent, PLACE_PICKER_REQUEST);
-
-                } catch (GooglePlayServicesRepairableException
-                        | GooglePlayServicesNotAvailableException e) {
-                    e.printStackTrace();
+        et_adress.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                esconderTecladoDe(NewComunity.this,v);
+                if (hasFocus){
+                    showPlacepicker();
                 }
             }
         });
@@ -203,6 +203,29 @@ public class NewComunity extends AppCompatActivity {
         TextView myTextView = new TextView(this);
         myTextView.setTypeface(bubblerFont);
         actBar.setCustomView(myTextView);
+    }
+
+
+    private void showPlacepicker() {
+        try {
+
+            PlacePicker.IntentBuilder intentBuilder =
+                    new PlacePicker.IntentBuilder();
+            //intentBuilder.setLatLngBounds(BOUNDS_MOUNTAIN_VIEW);
+            Intent intent = intentBuilder.build(NewComunity.this);
+            startActivityForResult(intent, PLACE_PICKER_REQUEST);
+
+        } catch (GooglePlayServicesRepairableException
+                | GooglePlayServicesNotAvailableException e) {
+            e.printStackTrace();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public static void esconderTecladoDe(Context context, View view) {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
     public void getUserData() {
