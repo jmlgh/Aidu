@@ -1,21 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:fillViewport="true">
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     tools:context="jjv.uem.com.aidu.UI.ServiceView"
-    android:background="@color/colorPrimary">
+    android:background="@color/colorPrimaryLight">
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         app:cardCornerRadius="10dp"
-        android:layout_margin="10dp"
+        android:layout_margin="@dimen/cardview_margin"
         android:id="@+id/cardView">
 
         <LinearLayout
@@ -27,116 +22,116 @@
             <LinearLayout
                 android:id="@+id/linear_header"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
                 android:orientation="horizontal">
 
                 <ImageView
                     android:id="@+id/iv_icon_service"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
+                    android:layout_gravity="center"
                     android:layout_weight="1"
                     android:padding="10dp"
                     android:src="@drawable/otros" />
 
-                <jjv.uem.com.aidu.util.TextViewCustom
-                    android:id="@+id/tv_type_service"
-                    android:layout_width="wrap_content"
+                <android.support.v7.widget.CardView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_weight="1"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="2dp"
+                    app:cardCornerRadius="10dp">
+
+                    <ImageView
+                        android:id="@+id/twv_photos_service"
+                        android:layout_width="145dp"
+                        android:layout_height="145dp"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:padding="10dp" />
+                </android.support.v7.widget.CardView>
+
+                <TextView
+                    android:id="@+id/tv_points_service"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="3"
                     android:gravity="center"
-                    android:padding="10dp"
-                    android:text="@string/type_service"
-                    android:textSize="34sp"
-                    android:textStyle="bold" />
-
-                <jjv.uem.com.aidu.util.TextViewCustom
-                    android:id="@+id/tv_points_service"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:padding="10dp"
+                    android:paddingLeft="15dp"
+                    android:paddingTop="15dp"
                     android:text="@string/service_points"
-                    android:textStyle="bold" />
+                    android:textSize="25sp" />
             </LinearLayout>
-
-            <android.support.v7.widget.CardView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:cardCornerRadius="30dp">
-
-                <org.lucasr.twowayview.TwoWayView
-                    style="@style/TwoWayView"
-                    android:id="@+id/twv_photos_service"
-                    android:drawSelectorOnTop="false"
-                    android:layout_width="200dp"
-                    android:layout_height="150dp"
-                    android:layout_centerHorizontal="true"
-                    android:padding="15dp"
-                    android:layout_margin="5dp"/>
-            </android.support.v7.widget.CardView>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center">
-
-                <jjv.uem.com.aidu.util.TextViewCustom
-                    android:id="@+id/tv_username"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
-                    android:padding="10dp"
-                    android:text="@string/user_name"
-                    android:textAlignment="center"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-
-                <me.zhanghai.android.materialratingbar.MaterialRatingBar
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/ratingBar"
-                    android:layout_weight="1"
-                    android:numStars="5"
-                    android:stepSize="0.5"
-                    style="@style/Widget.MaterialRatingBar.RatingBar"
-                    android:visibility="invisible"/>
-
-            </LinearLayout>
-
-
 
             <jjv.uem.com.aidu.util.TextViewCustom
-                android:layout_width="wrap_content"
+                android:id="@+id/tv_username"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:layout_marginTop="10dp"
-                android:text="@string/details"
-                android:textSize="33sp"
+                android:layout_marginBottom="50dp"
+                android:layout_weight="1"
+                android:text="@string/user_name"
+                android:textAlignment="center"
+                android:textSize="30sp"
                 android:textStyle="bold" />
 
-            <jjv.uem.com.aidu.util.TextViewCustom
-                android:id="@+id/tv_datetime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="@string/dd_mm_yyyy_hh_mm" />
-
-            <jjv.uem.com.aidu.util.TextViewCustom
-                android:id="@+id/tv_description"
+            <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="30dp"
-                android:text="@string/no_service_details" />
+                android:layout_height="150dp"
+                android:layout_marginBottom="5dp"
+                app:cardCornerRadius="10dp"
+                android:layout_margin="@dimen/cardview_margin">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:layout_weight="1"
+                        android:layout_marginTop="10dp"
+                        android:text="@string/details"
+                        android:textSize="30sp" />
+
+                    <TextView
+                        android:id="@+id/tv_datetime"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:paddingLeft="15dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="20dp"
+                        android:layout_weight="1"
+                        android:textSize="20sp"
+                        android:text="@string/dd_mm_yyyy_hh_mm" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="3dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="50dp"
+                    android:padding="20dp"
+                    android:text="@string/no_service_details"
+                    android:textAlignment="center"
+                    android:textSize="15sp" />
+            </android.support.v7.widget.CardView>
 
             <Button
                 android:id="@+id/btn_location"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="30dp"
                 android:background="@drawable/boton_redondo_oscuro"
                 android:text="@string/location"
                 android:textAllCaps="false"
@@ -148,9 +143,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginBottom="20dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp"
                 android:background="@drawable/boton_redondo_oscuro"
                 android:text="@string/send_message"
                 android:textAllCaps="false"
@@ -159,4 +154,3 @@
         </LinearLayout>
     </android.support.v7.widget.CardView>
 </RelativeLayout>
-</ScrollView>

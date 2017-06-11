@@ -56,14 +56,15 @@
     <string name="action_change_admin">Change Admin</string>
     <string name="action_moreInfo">More Info</string>
     <string name="action_addmember">Add member</string>
+    <string name="service_points">%s points</string>
     <string name="action_leavecommunity">Leave community</string>
 
     <string name="service_points">000p</string>
     <string name="type_service">Type Service</string>
-    <string name="user_name">User name</string>
+    <string name="user_name">Created by: %s</string>
     <string name="details">Details</string>
     <string name="no_service_details">No service details</string>
-    <string name="dd_mm_yyyy_hh_mm">DD/MM/YYYY HH:MM</string>
+    <string name="dd_mm_yyyy_hh_mm">DD/MM/YYYY || HH:MM</string>
     <string name="location">Location</string>
     <string name="send_message">Send message</string>
     <string name="toolbar_title_services">\t\t\t\t\t\tAvailable Services</string>
@@ -72,12 +73,15 @@
     <string name="mlateral_myServices">My Services</string>
     <string name="mlateral_community">Communities</string>
     <string name="mlateral_chats">Chats</string>
+    <string name="mlateral_home">Home</string>
     <string name="mlateral_settings">Settings</string>
     <string name="mlateral_about_us">About us</string>
     <string name="mlateral_exit">Exit</string>
     <string name="mlateral_username">User</string>
     <string name="mlateral_email">Email</string>
     <string name="title_activity_location">Map</string>
+    <string name="alert_about">About us</string>
+
 
     <!-- SERVICE SEARCH -->
     <string name="menu_action_search">Service Search</string>
@@ -86,6 +90,8 @@
     <string name="label_search_cat">Category</string>
     <string name="label_search_results">Results</string>
     <string name="new_service_toast_photos">Please select at least one photo for create a new service</string>
+    <string name="alert_yes">Yes</string>
+    <string name="alert_open_details">Open details for this service?</string>
 
     <!-- NEW COMMUNITY -->
 
@@ -157,5 +163,27 @@
     <string name="solicita">Apply</string>
     <string name="ayuda">Supply</string>
     <string name="new_service_no_community">No community</string>
+    <string name="toolbar_title_my_services">My Services</string>
+    <string name="atention">Atention</string>
+    <string name="message_atention">Continue with the deletion?</string>
+    <string name="error_standar">Error, try again</string>
+    <string name="title_search_activity">Search</string>
+    <string name="title_activity_chat_conversation">Talk</string>
+    <string name="chat_hint">Say something</string>
+    <string name="Decline">Decline</string>
+    <string name="Accept">Accept</string>
+    <string name="Final">End service</string>
+    <string name="service_denegated">AUTO AIDU: SERVICE CANCELED</string>
+    <string name="service_message_interested">AUTO AIDU: I AM INTERESTED</string>
+    <string name="service_message_confirm">AUTO AIDU: AGREE!</string>
+    <string name="error_service_yours">This service is yours</string>
+
+    <!-- CHAT CONVERSATION WINDOW -->
+    <string name="label_chat_window">Chats</string>
+    <string name="tv_chat_service_name">Service: %s</string>
+    <string name="tv_chat_service_author">Author: %s</string>
+    <string name="app_version">Version: %s</string>
+    <string name="info_creacion">Created by:</string>
+
 </resources>
 

@@ -238,6 +238,8 @@ public class NewService extends AppCompatActivity {
                 } catch (GooglePlayServicesRepairableException
                         | GooglePlayServicesNotAvailableException e) {
                     e.printStackTrace();
+                } catch (Exception e){
+                    e.printStackTrace();
                 }
             }
         });
@@ -373,12 +375,12 @@ public class NewService extends AppCompatActivity {
                 final CharSequence name = place.getName();
                 final CharSequence address = place.getAddress();
                 String attributions = (String) place.getAttributions();
-                Log.d(TAG, "Place:" + place + ", name: " + name + ", adress: " + place.getAddress() + ", atributions: " + attributions + "***" + place.getAddress());
+                //Log.d(TAG, "Place:" + place + ", name: " + name + ", adress: " + place.getAddress() + ", atributions: " + attributions + "***" + place.getAddress());
                 et_adress.setText(address);
                 cordenades = place.getLatLng() ;
                 longitude = cordenades.longitude;
                 latitude = cordenades.latitude;
-                Log.e("cordenadas:  ", cordenades.toString());
+                //Log.e("cordenadas:  ", cordenades.toString());
 
             } else if (requestCode == PICK_IMAGE)
                 onSelectFromGalleryResult(data);

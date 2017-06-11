@@ -51,12 +51,16 @@ import jjv.uem.com.aidu.R;
 import jjv.uem.com.aidu.util.CardAdapter;
 
 
-public class MainActivity extends AppCompatActivity  implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener{
+public class MainActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener,
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener{
 
     private static final String TAG = MainActivity.class.getSimpleName();
     public static final String USERNAME = "username" ;
     public static final String USERUID = "useruid";
     public static final String KEY_SERVICE = "KEY_SERVICE";
+    private static final Object APP_VERSION = 1;
 
     GoogleApiClient mGoogleApiClient;
     private CardAdapter cardAdapter;
@@ -176,7 +180,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
                 Intent i =new Intent(MainActivity.this,NewService.class);
                 i.putExtra(USERNAME,auth.getCurrentUser().getDisplayName());
                 i.putExtra(USERUID,auth.getCurrentUser().getUid());
-                finish();
+                //finish();
                 startActivity(i);
             }
         });
@@ -200,12 +204,11 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
                         serviceList.add(s);
                     }
                     l = initListener();
-                    //adapter = new Service_Adapter_RV(serviceList,l);
                     cardAdapter = new CardAdapter(MainActivity.this, serviceList, l);
                     RecyclerView.LayoutManager layoutManager = new GridLayoutManager(MainActivity.this, 2);
                     recyclerView.setLayoutManager(layoutManager);
                     recyclerView.setItemAnimator(new DefaultItemAnimator());
-                    recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
+                    //recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
                     recyclerView.setAdapter(cardAdapter);
                     //recyclerView.setHasFixedSize(true);
                     //recyclerView.setLayoutManager(new LinearLayoutManager(getBaseContext()));
@@ -296,17 +299,21 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         int id = item.getItemId();
 
         if (id == R.id.nav_my_services) {
-            // Handle the camera action
+            finish();
+            Intent i = new Intent(this, MyServices.class);
+            startActivity(i);
         } else if (id == R.id.nav_communities) {
             Intent i = new Intent(this, Communities.class);
             startActivity(i);
-            finish();
         } else if (id == R.id.nav_chats) {
-
-        } else if (id == R.id.nav_settings) {
-
+            Intent i = new Intent(this, Chats.class);
+            startActivity(i);
+        } else if (id == R.id.nav_home) {
+            finish();
+            Intent i = new Intent(this, MainActivity.class);
+            startActivity(i);
         } else if (id == R.id.nav_about_us) {
-
+            mostrarInfoAlert();
         } else if (id == R.id.nav_exit) {
             crearDialogo().show();
         }
@@ -400,7 +407,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     /**
      * RecyclerView item decoration - give equal margin around grid item
      */
-    public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
+    public static class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
 
         private int spanCount;
         private int spacing;
@@ -435,11 +442,23 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         }
     }
 
-    /**
-     * Converting dp to pixel
-     */
-    private int dpToPx(int dp) {
-        Resources r = getResources();
-        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
+    private boolean mostrarInfoAlert() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this)
+                .setTitle(getString(R.string.alert_about))
+                .setIcon(android.R.drawable.ic_dialog_info)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                })
+                .setMessage( getString(R.string.app_version, APP_VERSION) +
+                        "\n" +
+                        "\n"+ getString(R.string.info_creacion) +
+                        "\nJavier Martinez" +
+                        "\nVictor Muñoz" +
+                        "\nJavier Lozano");
+        builder.create().show();
+        return true;
     }
 }

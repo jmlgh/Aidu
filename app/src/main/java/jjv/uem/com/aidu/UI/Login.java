@@ -187,6 +187,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
                             Intent i = new Intent(Login.this, MainActivity.class);
+                            Register.saveUserOnDataBase(auth.getCurrentUser(),auth.getCurrentUser().getDisplayName(),"PASSWORD GOOGLE UNKNOWN",getBaseContext());
                             startActivity(i);
                         }else{
                             Toast.makeText(Login.this, "Authentication failed.",

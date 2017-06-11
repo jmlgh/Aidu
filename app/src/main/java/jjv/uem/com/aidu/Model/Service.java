@@ -31,6 +31,7 @@ public class Service {
     private String serviceKey;
     private double longitude;
     private double latitude;
+    private int distanceFromUser;
 
     /*
     //sustituir por clase usuario mejor
@@ -196,7 +197,13 @@ public class Service {
         this.latitude = latitude;
     }
 
+    public int getDistanceFromUser() {
+        return distanceFromUser;
+    }
 
+    public void setDistanceFromUser(int distanceFromUser) {
+        this.distanceFromUser = distanceFromUser;
+    }
 
     public Map<String, Object> toMap() { //creamos una lista con cada uno de los atibustos del objeto
         HashMap<String, Object> result = new HashMap<>();

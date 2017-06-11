@@ -1,18 +1,24 @@
 package jjv.uem.com.aidu.UI;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.SeekBar;
 import android.widget.Spinner;
@@ -32,12 +38,27 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.maps.android.SphericalUtil;
 
+import java.util.ArrayList;
+import java.util.Random;
+
+import jjv.uem.com.aidu.Model.Service;
 import jjv.uem.com.aidu.R;
+import jjv.uem.com.aidu.util.ServiceFilter;
+
+import static jjv.uem.com.aidu.UI.MainActivity.KEY_SERVICE;
 
 public class ServiceSearch extends AppCompatActivity
                            implements OnMapReadyCallback, LocationListener,
-                            GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+                            GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
+                            GoogleMap.OnMarkerClickListener{
 
     private TextView tvDistance, tvPoints;
     private Spinner spCategories;
@@ -49,8 +70,16 @@ public class ServiceSearch extends AppCompatActivity
     private GoogleApiClient mGoogleApiClient;
     private Location mLastLocation;
     private Marker mCurrLocationMarker;
+    private FirebaseAuth auth;
+    private FirebaseDatabase database;
+    private ArrayList<Service>serviceList;
+    private ServiceFilter serviceFilter;
+    private ArrayList<MarkerOptions> markerOptionsArrayList;
+    private int currentSelectedCategoryIndex = 0;
+    private Marker currentServiceMarker;
+    //private ArrayList<Service>markerServiceList;
 
-    private String[] categoryList = {"Cook", "Transport", "Education", "Housekeeping", "Technology",
+    private final String[] categoryList = {"All", "Cook", "Transport", "Education", "Housekeeping", "Technology",
                                   "Shopping", "Pets", "Plants", "Others"};
 
     private LocationManager locManager;
@@ -64,6 +93,10 @@ public class ServiceSearch extends AppCompatActivity
         //getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         //getSupportActionBar().setCustomView(R.layout.abs_layout_service_search_title);
 
+        //markerServiceList = new ArrayList<>();
+        serviceFilter = new ServiceFilter();
+        auth = FirebaseAuth.getInstance();
+        getServices();
         initViews();
         try{
             initLocation();
@@ -108,7 +141,7 @@ public class ServiceSearch extends AppCompatActivity
                     points = 1;
                 }
                 tvPoints.setText(getString(R.string.label_search_points, points));
-
+                serviceFilter.setPoints(points);
             }
 
             @Override
@@ -118,7 +151,8 @@ public class ServiceSearch extends AppCompatActivity
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-
+                // configura el service para mostrarlo en el mapa
+                placeServiceMarkers(serviceFilter);
             }
         });
 
@@ -130,6 +164,7 @@ public class ServiceSearch extends AppCompatActivity
                     distance = 1;
                 }
                 tvDistance.setText(getString(R.string.label_search_distance, distance));
+                serviceFilter.setDistance(distance);
             }
 
             @Override
@@ -139,6 +174,24 @@ public class ServiceSearch extends AppCompatActivity
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
+                placeServiceMarkers(serviceFilter);
+            }
+        });
+
+        spCategories.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(position != currentSelectedCategoryIndex){
+                    serviceFilter.setCategory(categoryList[position]);
+                    placeServiceMarkers(serviceFilter);
+                    currentSelectedCategoryIndex = position;
+                } else {
+                    serviceFilter.setCategory(categoryList[position]);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
@@ -147,6 +200,7 @@ public class ServiceSearch extends AppCompatActivity
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.mGoogleMap = googleMap;
+        mGoogleMap.setOnMarkerClickListener(this);
         //Initialize Google Play Services
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(this,
@@ -155,6 +209,7 @@ public class ServiceSearch extends AppCompatActivity
                 //Location Permission already granted
                 buildGoogleApiClient();
                 mGoogleMap.setMyLocationEnabled(true);
+                mGoogleMap.getUiSettings().setZoomControlsEnabled(true);
             } else {
                 //Request Location Permission
                 checkLocationPermission();
@@ -163,8 +218,59 @@ public class ServiceSearch extends AppCompatActivity
         else {
             buildGoogleApiClient();
             mGoogleMap.setMyLocationEnabled(true);
+            mGoogleMap.getUiSettings().setZoomControlsEnabled(true);
         }
 
+    }
+
+    private void placeServiceMarkers(ServiceFilter filter) {
+        int distance = 0;
+        LatLng pos = null;
+        MarkerOptions serviceMarker = null;
+        mGoogleMap.clear();
+
+        markerOptionsArrayList = new ArrayList<>();
+        // calculate distance from user
+        for(Service service : serviceList){
+            pos = new LatLng(service.getLatitude(), service.getLongitude());
+            distance = (int)SphericalUtil.computeDistanceBetween(pos, mCurrLocationMarker.getPosition());
+            // transform distance to km
+            distance = distance / 1000;
+            service.setDistanceFromUser(distance);
+            Log.i("Marker:", distance+"");
+
+            if(filter.getCategory().equals("All")){
+                if(Integer.parseInt(service.getPrice_points()) >= filter.getPoints() && service.getDistanceFromUser() <= filter.getDistance()) {
+                    serviceMarker = new MarkerOptions();
+                    serviceMarker.position(pos);
+                    serviceMarker.title(service.getTitle());
+                    serviceMarker.icon(BitmapDescriptorFactory.defaultMarker(getMarkerColor()));
+
+                    markerOptionsArrayList.add(serviceMarker);
+                }
+            }else{
+                if(filter.getCategory().equals(service.getCategory())){
+                    if(Integer.parseInt(service.getPrice_points()) >= filter.getPoints() && service.getDistanceFromUser() <= filter.getDistance()) {
+                        serviceMarker = new MarkerOptions();
+                        serviceMarker.position(pos);
+                        serviceMarker.title(service.getTitle());
+                        serviceMarker.icon(BitmapDescriptorFactory.defaultMarker(getMarkerColor()));
+
+                        markerOptionsArrayList.add(serviceMarker);
+                    }
+                }
+            }
+        }
+
+        // since we are clearing the map at the beginning of the method, show user current location again
+        Location myLoc = mGoogleMap.getMyLocation();
+        LatLng current = new LatLng(myLoc.getLatitude(),myLoc.getLongitude());
+
+        mGoogleMap.addMarker(new MarkerOptions().position(current).title("YOU"));
+        for(MarkerOptions markerOption : markerOptionsArrayList){
+            currentServiceMarker = mGoogleMap.addMarker(markerOption);
+            Log.i("MO:", markerOption.getTitle());
+        }
     }
 
     protected synchronized void buildGoogleApiClient() {
@@ -198,20 +304,33 @@ public class ServiceSearch extends AppCompatActivity
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(latLng);
         markerOptions.title("Current Position");
-        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
+        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
         mCurrLocationMarker = mGoogleMap.addMarker(markerOptions);
 
         //move map camera
-        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,15));
+        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,8));
 
 
+    }
+
+    private float getMarkerColor(){
+        // lista de colores para marcadores en el mapa
+        float[] markerColors = {BitmapDescriptorFactory.HUE_GREEN, BitmapDescriptorFactory.HUE_MAGENTA, BitmapDescriptorFactory.HUE_ROSE,
+                BitmapDescriptorFactory.HUE_VIOLET, BitmapDescriptorFactory.HUE_AZURE, BitmapDescriptorFactory.HUE_YELLOW,
+                BitmapDescriptorFactory.HUE_RED, BitmapDescriptorFactory.HUE_CYAN, BitmapDescriptorFactory.HUE_ORANGE};
+        Random colorRandom = new Random();
+
+        int randColor =  colorRandom.nextInt(markerColors.length);
+        float chosenColor = markerColors[randColor];
+        return chosenColor;
     }
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
         mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(1000);
-        mLocationRequest.setFastestInterval(1000);
+        // get current location every 10 seconds
+        //mLocationRequest.setInterval(10000);
+        //mLocationRequest.setFastestInterval(300*1000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION)
@@ -300,5 +419,73 @@ public class ServiceSearch extends AppCompatActivity
             // other 'case' lines to check for other
             // permissions this app might request
         }
+    }
+
+    private void getServices() {
+        // Acceso a BBDD Firebase
+        if(auth.getCurrentUser() != null){
+            database = FirebaseDatabase.getInstance();
+            DatabaseReference reference = database.getReference("services");
+            reference.addValueEventListener(new ValueEventListener() {
+                @RequiresApi(api = Build.VERSION_CODES.GINGERBREAD)
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    Iterable<DataSnapshot> iterator = dataSnapshot.getChildren();
+                    serviceList = new ArrayList<>();
+                    for (DataSnapshot ds : iterator){
+                        Service s = ds.getValue(Service.class);
+                        Log.i("service search:",s.toString());
+                        serviceList.add(s);
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        LatLng tmpLatLng;
+        double lat, lon;
+        for(final Service service : serviceList){
+            // Si los titulos son iguales, sigue comprobando
+            if (service.getTitle().equals(marker.getTitle())){
+                lat = service.getLatitude();
+                lon = service.getLongitude();
+                tmpLatLng = new LatLng(lat, lon);
+                // comprueba que es el mismo servicio comparando las posiciones
+                if(tmpLatLng.equals(marker.getPosition())){
+                    createDialog(service, marker).show();
+                }
+            }
+        }
+        return false;
+    }
+
+    private Dialog createDialog(final Service service, Marker marker) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(ServiceSearch.this);
+        builder.setCancelable(false);
+        builder.setMessage(getString(R.string.alert_open_details));
+        builder.setPositiveButton(getString(R.string.alert_yes), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent i = new Intent(getBaseContext(),ServiceView.class);
+                i.putExtra(KEY_SERVICE, service.getServiceKey());
+                startActivity(i);
+            }
+        });
+
+        builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        return builder.create();
     }
 }

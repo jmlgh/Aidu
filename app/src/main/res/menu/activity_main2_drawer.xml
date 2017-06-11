@@ -5,6 +5,11 @@
         android:id="@+id/nav_top"
         android:checkableBehavior="single">
         <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_home"
+            android:title="@string/mlateral_home" />
+
+        <item
             android:id="@+id/nav_my_services"
             android:icon="@drawable/ic_my_services"
             android:title="@string/mlateral_myServices" />
@@ -16,10 +21,6 @@
             android:id="@+id/nav_chats"
             android:icon="@drawable/ic_chats"
             android:title="@string/mlateral_chats" />
-        <item
-            android:id="@+id/nav_settings"
-            android:icon="@drawable/ic_settings"
-            android:title="@string/mlateral_settings" />
     </group>
 
     <group

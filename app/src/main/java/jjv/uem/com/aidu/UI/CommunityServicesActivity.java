@@ -4,8 +4,10 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
@@ -114,11 +116,9 @@ public class CommunityServicesActivity extends AppCompatActivity {
                 Iterable<DataSnapshot> iterator = dataSnapshot.getChildren();
                 serviceList = new ArrayList<>();
                 for (DataSnapshot ds : iterator) {
-
                     Service s = ds.getValue(Service.class);
                     Log.i("SERVICE GET:", s.toString());
                     serviceList.add(s);
-
                 }
                 l = initListener();
                 //adapter = new Service_Adapter_RV(serviceList,l);
@@ -515,5 +515,13 @@ public class CommunityServicesActivity extends AppCompatActivity {
                 }
             }
         }
+    }
+    @Override
+    public void onBackPressed() {
+
+        // firebase sign out
+        finish();
+        Intent i = new Intent(this, Communities.class);
+        startActivity(i);
     }
 }

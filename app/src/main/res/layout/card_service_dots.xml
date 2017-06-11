@@ -10,7 +10,7 @@
         android:layout_gravity="center"
         android:layout_margin="@dimen/card_margin"
         android:elevation="3dp"
-        card_view:cardCornerRadius="0dp">
+        card_view:cardCornerRadius="@dimen/card_album_radius">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -44,6 +44,16 @@
                 android:paddingLeft="@dimen/card_title_padding"
                 android:paddingRight="@dimen/card_title_padding"
                 android:textSize="@dimen/card_author"/>
+
+            <ImageView
+                android:id="@+id/card_dots"
+                android:layout_width="@dimen/ic_dots_overflow_width"
+                android:layout_height="@dimen/ic_dots_overflow_height"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/card_thumbnail"
+                android:layout_marginTop="@dimen/ic_dots_overflow_margin_top"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_dots"/>
 
         </RelativeLayout>
 
