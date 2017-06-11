@@ -20,5 +20,10 @@
         android:orderInCategory="90"
         android:title="@string/action_addmember"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/action_leavecommunity"
+        android:orderInCategory="80"
+        android:title="@string/action_leavecommunity"
+        app:showAsAction="never" />
 
 </menu>

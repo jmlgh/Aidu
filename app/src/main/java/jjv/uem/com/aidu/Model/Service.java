@@ -49,6 +49,9 @@ public class Service {
 
      */
 
+    public Service() {
+    }
+
     public String getTitle() {
         return title;
     }

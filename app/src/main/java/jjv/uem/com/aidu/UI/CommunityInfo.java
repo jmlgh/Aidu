@@ -2,11 +2,11 @@ package jjv.uem.com.aidu.UI;
 
 import android.Manifest;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
@@ -14,15 +14,10 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,21 +38,19 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
 import jjv.uem.com.aidu.Model.Community;
-import jjv.uem.com.aidu.Model.Service;
 import jjv.uem.com.aidu.Model.User;
 import jjv.uem.com.aidu.R;
-import jjv.uem.com.aidu.util.CardAdapter;
 
 public class CommunityInfo extends AppCompatActivity implements OnMapReadyCallback, LocationListener,
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener  {
     private Community community;
+    private String communityKey;
     private TextView tv_name, tv_description;
     private ImageView image;
     private Button btn_viewMembers;
@@ -71,21 +64,20 @@ public class CommunityInfo extends AppCompatActivity implements OnMapReadyCallba
     private FirebaseDatabase database;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d("info", "en ventana");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_community_info);
-        initVew();
-        try{
-            initMap();
-        }catch(Exception e){
-            e.printStackTrace();
-        }
+        communityKey = getIntent().getStringExtra(Communities.KEY_COMMUNITY);
+        database = FirebaseDatabase.getInstance();
+        getComunity(communityKey);
+
     }
 
     private void initVew() {
-        community = getIntent().getParcelableExtra(Communities.KEY_COMMUNITY);
+
         tv_description = (TextView)findViewById(R.id.tv_comdescription);
         tv_name = (TextView)findViewById(R.id.tv_comname);
         image = (ImageView) findViewById(R.id.imgv_comphoto);
@@ -94,6 +86,12 @@ public class CommunityInfo extends AppCompatActivity implements OnMapReadyCallba
         tv_name.setText(community.getName());
         Picasso.with(CommunityInfo.this).load(community.getImage()).into(image);
         tv_description.setText(community.getDescription());
+
+        try{
+            initMap();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
 
     }
 
@@ -106,16 +104,17 @@ public class CommunityInfo extends AppCompatActivity implements OnMapReadyCallba
             @RequiresApi(api = Build.VERSION_CODES.GINGERBREAD)
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.e("services child: ", "" + dataSnapshot.getChildrenCount());
-                Log.e("services child: ", "" + dataSnapshot.getKey());
                 Iterable<DataSnapshot> iterator = dataSnapshot.getChildren();
-                CharSequence members[] = new CharSequence[(int) dataSnapshot.getChildrenCount()];
+                CharSequence members[] = new CharSequence[community.getMembers().size()];
                 User u;
                 int i = 0;
                 for (DataSnapshot ds : iterator) {
                     u = ds.getValue(User.class);
+                    if (community.getMembers().contains(u.getKey())){
                     members[i] = u.getDisplayName();
+                    i++;}
                 }
+
                 AlertDialog.Builder picker = new AlertDialog.Builder(CommunityInfo.this);
                 picker.setTitle(getString(R.string.communities_members));
                 picker.setCancelable(true);
@@ -306,4 +305,27 @@ public class CommunityInfo extends AppCompatActivity implements OnMapReadyCallba
             // permissions this app might request
         }
     }
+
+
+
+
+    public void getComunity(final String key){
+
+            DatabaseReference reference = database.getReference("communities/"+key);
+            reference.addListenerForSingleValueEvent(new ValueEventListener() {
+
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    community = dataSnapshot.getValue(Community.class);
+                    initVew();
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                }
+            });
+
+        }
+
+
 }
