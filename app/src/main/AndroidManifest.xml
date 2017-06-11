@@ -31,16 +31,12 @@
                 android:resource="@xml/file_paths"></meta-data>
         </provider>
 
+
         <activity
             android:name=".UI.MainActivity"
             android:label="Aidu"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".UI.Login"
