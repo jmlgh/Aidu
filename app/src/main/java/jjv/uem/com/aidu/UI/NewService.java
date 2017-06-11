@@ -22,6 +22,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -57,6 +58,7 @@ import com.google.firebase.storage.UploadTask;
 import org.lucasr.twowayview.TwoWayView;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -81,7 +83,7 @@ public class NewService extends AppCompatActivity {
     private static final int PLACE_PICKER_REQUEST = 1;
     private static final int CAPTURE_IMAGE = 10;
     private static final int PICK_IMAGE = 20;
-    private static final int MAX_IMAGE = 2;
+    private static final int MAX_IMAGE = 3;
 
 
     FirebaseStorage storage = FirebaseStorage.getInstance();
@@ -423,11 +425,43 @@ public class NewService extends AppCompatActivity {
 
     //Iniciamos un nuevo intent que nos abrira la camara
     private void cameraIntent() {
-        filePathImageCamera = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), key + "/photo" + photos.size() + ".jpg");
-        Intent it = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        it.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(filePathImageCamera));
-        startActivityForResult(it, CAPTURE_IMAGE);
 
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Ensure that there's a camera activity to handle the intent
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            // Create the File where the photo should go
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                // Error occurred while creating the File
+
+            }
+            // Continue only if the File was successfully created
+            if (photoFile != null) {
+                Uri photoURI = FileProvider.getUriForFile(this,
+                        "com.example.android.fileprovider",
+                        photoFile);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                startActivityForResult(takePictureIntent, CAPTURE_IMAGE);
+            }
+        }
+    }
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        filePathImageCamera = image;
+        return image;
     }
 
     private void galleryIntent() {

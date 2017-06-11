@@ -58,7 +58,7 @@ public class Images_Adapter extends BaseAdapter {
 
 
         if(this.guardando){
-            holder.image.setImageURI(Uri.parse(photos.get(position)));
+            Picasso.with(contexto).load(photos.get(position)).into(holder.image);
         }else{
             Picasso.with(contexto).load(photos.get(position)).into(holder.image);
         }

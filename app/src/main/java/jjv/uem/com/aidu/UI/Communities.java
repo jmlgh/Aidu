@@ -30,6 +30,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -69,6 +73,8 @@ public class Communities extends AppCompatActivity implements NavigationView.OnN
     private CommunitiesCardAdapter.OnItemClickListener l;
     private CommunitiesCardAdapter.OnItemLongClickListener lc;
     private DatabaseReference mDatabase;
+
+    GoogleApiClient mGoogleApiClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -162,7 +168,6 @@ public class Communities extends AppCompatActivity implements NavigationView.OnN
                 Intent i = new Intent(Communities.this, CommunityServicesActivity.class);
                 i.putExtra(KEY_COMMUNITY, item.getKey());
                 startActivity(i);
-                finish();
 
             }
         };
@@ -428,27 +433,81 @@ public class Communities extends AppCompatActivity implements NavigationView.OnN
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
+
         if (id == R.id.nav_my_services) {
             finish();
-            Intent i = new Intent(this, MainActivity.class);
+            Intent i = new Intent(this, MyServices.class);
             startActivity(i);
         } else if (id == R.id.nav_communities) {
-
+            Intent i = new Intent(this, Communities.class);
+            startActivity(i);
         } else if (id == R.id.nav_chats) {
-
+            Intent i = new Intent(this, Chats.class);
+            startActivity(i);
         } else if (id == R.id.nav_home) {
             finish();
             Intent i = new Intent(this, MainActivity.class);
             startActivity(i);
-
         } else if (id == R.id.nav_about_us) {
-
+            mostrarInfoAlert();
         } else if (id == R.id.nav_exit) {
-
+            crearDialogo().show();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+    private Dialog crearDialogo() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(Communities.this);
+        builder.setCancelable(false);
+        builder.setMessage(getString(R.string.msg_dialog_salir));
+        builder.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // firebase sign out
+                FirebaseAuth.getInstance().signOut();
+                auth.signOut();
+                /*Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(new ResultCallback<Status>() {
+                    @Override
+                    public void onResult(@NonNull Status status) {
+                        mGoogleApiClient.disconnect();
+                    }
+                });
+                // google sign out
+                if(mGoogleApiClient.isConnected()){
+
+                }*/
+            }
+        });
+        builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        return builder.create();
+    }
+
+    private boolean mostrarInfoAlert() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(Communities.this)
+                .setTitle(getString(R.string.alert_about))
+                .setIcon(android.R.drawable.ic_dialog_info)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                })
+                .setMessage( getString(R.string.app_version, MainActivity.APP_VERSION) +
+                        "\n" +
+                        "\n"+ getString(R.string.info_creacion) +
+                        "\nJavier Martinez" +
+                        "\nVictor Muñoz" +
+                        "\nJavier Lozano");
+        builder.create().show();
         return true;
     }
 

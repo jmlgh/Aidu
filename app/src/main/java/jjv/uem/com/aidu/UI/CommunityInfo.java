@@ -11,10 +11,13 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.NavUtils;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -54,6 +57,7 @@ public class CommunityInfo extends AppCompatActivity implements OnMapReadyCallba
     private TextView tv_name, tv_description;
     private ImageView image;
     private Button btn_viewMembers;
+    private ActionBar actBar;
 
     private GoogleMap mGoogleMap;
     private LocationRequest mLocationRequest;
@@ -77,6 +81,9 @@ public class CommunityInfo extends AppCompatActivity implements OnMapReadyCallba
     }
 
     private void initVew() {
+        actBar = getSupportActionBar();
+
+        actBar.setDisplayHomeAsUpEnabled(true);
 
         tv_description = (TextView)findViewById(R.id.tv_comdescription);
         tv_name = (TextView)findViewById(R.id.tv_comname);
@@ -93,6 +100,18 @@ public class CommunityInfo extends AppCompatActivity implements OnMapReadyCallba
             e.printStackTrace();
         }
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home:
+
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public void viewMembers(View v){

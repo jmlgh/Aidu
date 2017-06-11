@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity
     public static final String USERNAME = "username" ;
     public static final String USERUID = "useruid";
     public static final String KEY_SERVICE = "KEY_SERVICE";
-    private static final Object APP_VERSION = 1;
+    public static final Object APP_VERSION = 1;
 
     GoogleApiClient mGoogleApiClient;
     private CardAdapter cardAdapter;

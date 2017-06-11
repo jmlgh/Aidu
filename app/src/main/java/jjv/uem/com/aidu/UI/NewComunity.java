@@ -9,18 +9,19 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.support.annotation.AnyRes;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -34,6 +35,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
@@ -49,9 +51,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -91,6 +97,7 @@ public class NewComunity extends AppCompatActivity {
 
 
     private File filePathImageCamera;
+    private Uri imageToUploadUri;
     private FirebaseAuth mAuth;
     private LatLng cordenades;
     private double longitude;
@@ -114,6 +121,8 @@ public class NewComunity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
         setContentView(R.layout.activity_new_comunity);
         getUserData();
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -131,17 +140,14 @@ public class NewComunity extends AppCompatActivity {
         et_title = (EditText) findViewById(R.id.et_title);
         et_adress = (EditText) findViewById(R.id.et_adress);
         et_description = (EditText) findViewById(R.id.et_description);
-        til_title= (TextInputLayout) findViewById(R.id.input_layout_title);
-        til_address= (TextInputLayout) findViewById(R.id.input_layout_adress);
-        til_description= (TextInputLayout) findViewById(R.id.input_layout_description);
+        til_title = (TextInputLayout) findViewById(R.id.input_layout_title);
+        til_address = (TextInputLayout) findViewById(R.id.input_layout_adress);
+        til_description = (TextInputLayout) findViewById(R.id.input_layout_description);
         tv_public = (TextView) findViewById(R.id.tv_public);
         sw_public = (Switch) findViewById(R.id.sw_public);
 
         btn_newCommunity = (Button) findViewById(R.id.btn_viewmembers);
         imv_photos = (ImageView) findViewById(R.id.imgv_photo);
-
-
-
 
 
         et_adress.setOnClickListener(new View.OnClickListener() {
@@ -166,9 +172,9 @@ public class NewComunity extends AppCompatActivity {
         sw_public.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked){
+                if (isChecked) {
                     sw_public.setText(getString(R.string.new_community_text_swicht_On));
-                }else{
+                } else {
                     sw_public.setText(getString(R.string.new_community_text_swicht_Off));
                 }
             }
@@ -206,7 +212,6 @@ public class NewComunity extends AppCompatActivity {
     }
 
 
-
     public void addCommunity(View v) {
         String title = et_title.getText().toString();
         String adress = et_adress.getText().toString();
@@ -215,7 +220,7 @@ public class NewComunity extends AppCompatActivity {
 
         if (title.equals("") || adress.equals("") || description.equals("")) {
             Toast.makeText(this, getText(R.string.new_service_toast_enterallfields), Toast.LENGTH_SHORT).show();
-        } else if (photo == null && icon ==-1 ) {
+        } else if (photo == null && icon == -1) {
             Toast.makeText(this, getText(R.string.new_service_toast_photos), Toast.LENGTH_SHORT).show();
         } else {
             pd = new ProgressDialog(NewComunity.this);
@@ -240,41 +245,41 @@ public class NewComunity extends AppCompatActivity {
 
     private void uploadCommunity() {
         community.setKey(key);
-            community.setPublica(sw_public.isChecked());
-            community.setIcon(icon);
-            community.setName(et_title.getText().toString());
-            community.setAddress(et_adress.getText().toString());
-            community.setDescription(et_description.getText().toString());
-            community.setLongitude(longitude);
-            community.setLatitude(latitude);
-            community.setOwner(userUid);
-            ArrayList<String> members = new ArrayList<>();
-            members.add(userUid);
-            community.setMembers(members);
-            Map<String, Object> servic = community.toMap();
-            Map<String, Object> childUpdates = new HashMap<>();
+        community.setPublica(sw_public.isChecked());
+        community.setIcon(icon);
+        community.setName(et_title.getText().toString());
+        community.setAddress(et_adress.getText().toString());
+        community.setDescription(et_description.getText().toString());
+        community.setLongitude(longitude);
+        community.setLatitude(latitude);
+        community.setOwner(userUid);
+        ArrayList<String> members = new ArrayList<>();
+        members.add(userUid);
+        community.setMembers(members);
+        Map<String, Object> servic = community.toMap();
+        Map<String, Object> childUpdates = new HashMap<>();
 
-            childUpdates.put("/communities/" + key, servic);
-            //childUpdates.put("/user-services/" + userUid + "/" + key, servic);
-            mDatabase.updateChildren(childUpdates).addOnSuccessListener(new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void aVoid) {
-                    Log.d(TAG, getString(R.string.new_community_toast_service_created));
-                }
-            });
+        childUpdates.put("/communities/" + key, servic);
+        //childUpdates.put("/user-services/" + userUid + "/" + key, servic);
+        mDatabase.updateChildren(childUpdates).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.d(TAG, getString(R.string.new_community_toast_service_created));
+            }
+        });
 
-            Toast.makeText(this, getText(R.string.new_community_toast_service_created), Toast.LENGTH_SHORT).show();
-            pd.dismiss();
+        Toast.makeText(this, getText(R.string.new_community_toast_service_created), Toast.LENGTH_SHORT).show();
+        pd.dismiss();
 
-            Intent i = new Intent(this,Communities.class);
-            startActivity(i);
-            finish();
+        Intent i = new Intent(this, Communities.class);
+        startActivity(i);
+        finish();
 
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
-            Log.d(TAG, "vuelta del placepicker " + resultCode);
+            Log.d(TAG, "vuelta del placepicker " + requestCode);
             if (requestCode == PLACE_PICKER_REQUEST) {
                 final Place place = PlacePicker.getPlace(this, data);
                 final CharSequence name = place.getName();
@@ -328,16 +333,43 @@ public class NewComunity extends AppCompatActivity {
 
     //Iniciamos un nuevo intent que nos abrira la camara
     private void cameraIntent() {
-        /*filePathImageCamera = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), key + "/Community" + key + ".jpg");
-        Intent it = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        it.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(filePathImageCamera));
-        startActivityForResult(it, CAPTURE_IMAGE);*/
 
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Ensure that there's a camera activity to handle the intent
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(takePictureIntent, CAPTURE_IMAGE);
-        }
+            // Create the File where the photo should go
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                // Error occurred while creating the File
 
+            }
+            // Continue only if the File was successfully created
+            if (photoFile != null) {
+                Uri photoURI = FileProvider.getUriForFile(this,
+                        "com.example.android.fileprovider",
+                        photoFile);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                startActivityForResult(takePictureIntent, CAPTURE_IMAGE);
+            }
+        }
+    }
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        filePathImageCamera = image;
+        return image;
     }
 
     private void galleryIntent() {
@@ -353,6 +385,8 @@ public class NewComunity extends AppCompatActivity {
         if (selectedImageUri != null) {
             //sendFileFirebase(storageRef, selectedImageUri);
             photo = selectedImageUri.toString();
+            Picasso.with(this).load(selectedImageUri).into(imv_photos);
+            Glide.with(this).load(photo).into(imv_photos);
             imv_photos.setImageURI(selectedImageUri);
             Log.e("Url", selectedImageUri.toString());
         } else {
@@ -364,18 +398,16 @@ public class NewComunity extends AppCompatActivity {
 
     private void onCaptureImageResult(Intent data) {
 
-        /*if (filePathImageCamera != null && filePathImageCamera.exists()) {
+        if (filePathImageCamera != null && filePathImageCamera.exists()) {
             Uri ImageUri = Uri.fromFile(filePathImageCamera);
             //sendFileFirebase(storageRef, ImageUri);
-            imv_photos.setImageURI(ImageUri);
-            uploadCommunity();
+            Picasso.with(this).load(ImageUri).into(imv_photos);
+            photo = ImageUri.toString();
             Log.e("Url", ImageUri.toString());
         } else {
             //IS NULL
-        }*/
-        Bundle extras = data.getExtras();
-        Bitmap imageBitmap = (Bitmap) extras.get("data");
-        imv_photos.setImageBitmap(imageBitmap);
+        }
+
     }
 
     public void sendFileFirebase(final StorageReference storageReference, final Uri file, String name) {
@@ -410,6 +442,16 @@ public class NewComunity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+
+        // firebase sign out
+        finish();
+        Intent i = new Intent(this, Communities.class);
+        startActivity(i);
+
+
+    }
 
     public static class Utility {
         public static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 123;
@@ -443,16 +485,5 @@ public class NewComunity extends AppCompatActivity {
                 return true;
             }
         }
-    }
-
-    @Override
-    public void onBackPressed() {
-
-            // firebase sign out
-            finish();
-            Intent i = new Intent(this, Communities.class);
-            startActivity(i);
-
-
     }
 }
