@@ -186,5 +186,10 @@
     <string name="app_version">Version: %s</string>
     <string name="info_creacion">Owner:\t</string>
 
+    <string name="title_activity_splash">Splash</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="enter">ENTER</string>
+
 </resources>
 
