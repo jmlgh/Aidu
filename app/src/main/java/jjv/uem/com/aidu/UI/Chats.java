@@ -74,7 +74,7 @@ public class Chats extends AppCompatActivity {
         // Acceso a BBDD Firebase
         if(auth.getCurrentUser() != null){
             database = FirebaseDatabase.getInstance();
-            DatabaseReference reference = database.getReference("user-services/" + fUser.getUid());
+            DatabaseReference reference = database.getReference("services");
             reference.addValueEventListener(new ValueEventListener() {
                 @RequiresApi(api = Build.VERSION_CODES.GINGERBREAD)
                 @Override
@@ -89,7 +89,7 @@ public class Chats extends AppCompatActivity {
                                 || s.getUserkeyInterested().equals(fUser.getUid())){
                             serviceList.add(s);
                         }
-                        Log.i("chats:",s.toString());
+                        Log.i("chats R:",s.toString());
                     }
                     ChatServiceAdapter.OnItemClickListener l = initListener();
                     ChatServiceAdapter chatCardAdapter = new ChatServiceAdapter(Chats.this, serviceList, l);

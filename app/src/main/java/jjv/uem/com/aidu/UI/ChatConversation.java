@@ -27,6 +27,7 @@ import java.util.TimeZone;
 import jjv.uem.com.aidu.Adapters.ChatAdapter;
 import jjv.uem.com.aidu.Model.MensajeChat;
 import jjv.uem.com.aidu.Model.Service;
+import jjv.uem.com.aidu.Model.User;
 import jjv.uem.com.aidu.R;
 import jjv.uem.com.aidu.util.Constants;
 
@@ -99,6 +100,7 @@ public class ChatConversation extends AppCompatActivity {
                 estate = Constants.DISPONIBLE;
                 setButtonsVisibility();
                 sendMessage(getString(R.string.service_denegated));
+                ref.removeValue();
 
             }
         });
@@ -108,7 +110,13 @@ public class ChatConversation extends AppCompatActivity {
             public void onClick(View v) {
                 changeStateService(Constants.FINALIZADO);
                 estate = Constants.FINALIZADO;
+                sendMessage(getString(R.string.service_finished));
                 setButtonsVisibility();
+                ref.removeValue();
+
+                Intent i = new Intent(getBaseContext(),MainActivity.class);
+                startActivity(i);
+                finish();
             }
         });
 
@@ -126,6 +134,8 @@ public class ChatConversation extends AppCompatActivity {
 
 
     }
+
+
 
     private void sendMessage(String mensaje) {
         String horaFormateada = formatearHora(new Date().getTime());
@@ -191,12 +201,19 @@ public class ChatConversation extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Service sModificado = dataSnapshot.getValue(Service.class);
                 sModificado.setState(stat);
-                if(stat.equals(Constants.ESPERA)){
-                    sModificado.setUserkeyInterested(usuarioLogueado.getUid());
-                }else if(stat.equals(Constants.DISPONIBLE)){
+                if(stat.equals(Constants.FINALIZADO)){
+                    updatePointsUser(sModificado.getUserkeyInterested(),sModificado.getPrice_points());
                     sModificado.setUserkeyInterested("");
+                    dataSnapshot.getRef().removeValue();
+                }else{
+                    if(stat.equals(Constants.ESPERA)){
+                        sModificado.setUserkeyInterested(usuarioLogueado.getUid());
+                    }else if(stat.equals(Constants.DISPONIBLE)){
+                        sModificado.setUserkeyInterested("");
+                    }
+                    dataSnapshot.getRef().setValue(sModificado);
                 }
-                dataSnapshot.getRef().setValue(sModificado);
+
 
                 setButtonsVisibility();
             }
@@ -211,6 +228,24 @@ public class ChatConversation extends AppCompatActivity {
         dbref.addListenerForSingleValueEvent(ve);
 
 
+    }
+
+    private void updatePointsUser(String userkeyInterested, final String price_points) {
+
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("user/"+userkeyInterested);
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User userMod = dataSnapshot.getValue(User.class);
+                userMod.addPoints(Integer.parseInt(price_points));
+                dataSnapshot.getRef().setValue(userMod);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     public static void esconderTeclado(Activity activity) {
