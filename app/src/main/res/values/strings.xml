@@ -182,6 +182,7 @@
     <string name="label_chat_window">Chats</string>
     <string name="tv_chat_service_name">Service: %s</string>
     <string name="tv_chat_service_author">Author: %s</string>
+    <string name="service_finished">AUTO AIDU: SERVICE FINISHED</string>
     <string name="app_version">Version: %s</string>
     <string name="info_creacion">Owner:\t</string>
 
