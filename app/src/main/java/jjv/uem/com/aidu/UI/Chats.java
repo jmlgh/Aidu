@@ -57,9 +57,14 @@ public class Chats extends AppCompatActivity {
     private ChatServiceAdapter.OnItemClickListener initListener() {
         ChatServiceAdapter.OnItemClickListener listener = new ChatServiceAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(Service item) {
+            public void onItemClick(Service service) {
                 // ABRIR VENTANA DE CHAT
-                Toast.makeText(Chats.this, "Abrir ventana de conversacion", Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(getBaseContext(),ChatConversation.class);
+                i.putExtra(ServiceView.SERVICE_KEY,service.getServiceKey());
+                i.putExtra(ServiceView.SERVICE_USER_KEY,service.getUserkey());
+                i.putExtra(ServiceView.SERVICE_USERNAME,service.getUserName());
+                i.putExtra(ServiceView.SERVICE_STATE,service.getState());
+                startActivity(i);
             }
         };
         return listener;
@@ -69,7 +74,7 @@ public class Chats extends AppCompatActivity {
         // Acceso a BBDD Firebase
         if(auth.getCurrentUser() != null){
             database = FirebaseDatabase.getInstance();
-            DatabaseReference reference = database.getReference("user-services/" + fUser.getUid());
+            DatabaseReference reference = database.getReference("services");
             reference.addValueEventListener(new ValueEventListener() {
                 @RequiresApi(api = Build.VERSION_CODES.GINGERBREAD)
                 @Override
@@ -84,7 +89,7 @@ public class Chats extends AppCompatActivity {
                                 || s.getUserkeyInterested().equals(fUser.getUid())){
                             serviceList.add(s);
                         }
-                        Log.i("chats:",s.toString());
+                        Log.i("chats R:",s.toString());
                     }
                     ChatServiceAdapter.OnItemClickListener l = initListener();
                     ChatServiceAdapter chatCardAdapter = new ChatServiceAdapter(Chats.this, serviceList, l);

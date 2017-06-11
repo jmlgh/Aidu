@@ -144,7 +144,7 @@ public class Communities extends AppCompatActivity implements NavigationView.OnN
                     RecyclerView.LayoutManager layoutManager = new GridLayoutManager(Communities.this, 2);
                     cummunitiesrecicler.setLayoutManager(layoutManager);
                     cummunitiesrecicler.setItemAnimator(new DefaultItemAnimator());
-                    cummunitiesrecicler.addItemDecoration(new Communities.GridSpacingItemDecoration(2, dpToPx(10), true));
+                    //cummunitiesrecicler.addItemDecoration(new Communities.GridSpacingItemDecoration(2, dpToPx(10), true));
                     cummunitiesrecicler.setAdapter(cardAdapter);
                     //recyclerView.setHasFixedSize(true);
                     //recyclerView.setLayoutManager(new LinearLayoutManager(getBaseContext()));
@@ -571,14 +571,6 @@ public class Communities extends AppCompatActivity implements NavigationView.OnN
             startActivity(i);
 
         }
-    }
-
-    /**
-     * Converting dp to pixel
-     */
-    private int dpToPx(int dp) {
-        Resources r = getResources();
-        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
     }
 
     /**

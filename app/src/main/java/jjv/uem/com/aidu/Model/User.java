@@ -16,6 +16,7 @@ public class User {
     private String key;
     private double numVal;
     private double media;
+    private int points;
 
     public User() {
     }
@@ -27,7 +28,18 @@ public class User {
         this.key=user.getUid();
         this.numVal = 0;
         this.media = 0;
+        this.points=0;
 
+    }
+
+
+
+    public int getPoints() {
+        return points;
+    }
+
+    public void setPoints(int points) {
+        this.points = points;
     }
 
     public String getEmail() {
@@ -86,23 +98,14 @@ public class User {
         result.put("key",this.key );
         result.put("numVal",this.numVal );
         result.put("media", this.media);
+        result.put("points", this.points);
 
         return result;
     }
 
-    /*
-    |-NOMBRE
-|-EMAIL
-|-VALORACIÓN MEDIA
-|-SALDO DE PUNTOS
-|-UBICACIÓN HABITUAL
-|-FOTO PERFIL
-|-LISTA VALORACIONES - PUNTUACIÓN
-			|-------VALORACIÓN (COMENTARIO)
-			|-------USUARIO QUE HA REALIZADO - NOMBRE Y KEY
-|-COMUNIDADES
-|-KEY COMUNIDAD
-|-USUARIOS FAVS
-|-KEY USUARIO
-     */
+    public void addPoints(int i) {
+        this.points+=i;
+    }
+
+
 }

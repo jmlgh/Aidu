@@ -3,7 +3,6 @@ package jjv.uem.com.aidu.UI;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.os.Build;
@@ -49,6 +48,7 @@ import jjv.uem.com.aidu.Adapters.Service_Adapter_RV;
 import jjv.uem.com.aidu.Model.Service;
 import jjv.uem.com.aidu.R;
 import jjv.uem.com.aidu.util.CardAdapter;
+import jjv.uem.com.aidu.util.Constants;
 
 
 public class MainActivity extends AppCompatActivity
@@ -200,8 +200,11 @@ public class MainActivity extends AppCompatActivity
                     serviceList = new ArrayList<>();
                     for (DataSnapshot ds : iterator){
                         Service s = ds.getValue(Service.class);
-                        Log.i("SERVICE GET:",s.toString());
-                        serviceList.add(s);
+                        if(!s.getUserkey().equals(auth.getCurrentUser().getUid())&&
+                                s.getState().equals(Constants.DISPONIBLE)){
+                            serviceList.add(s);
+                        }
+
                     }
                     l = initListener();
                     cardAdapter = new CardAdapter(MainActivity.this, serviceList, l);
@@ -309,7 +312,6 @@ public class MainActivity extends AppCompatActivity
             Intent i = new Intent(this, Chats.class);
             startActivity(i);
         } else if (id == R.id.nav_home) {
-            finish();
             Intent i = new Intent(this, MainActivity.class);
             startActivity(i);
         } else if (id == R.id.nav_about_us) {

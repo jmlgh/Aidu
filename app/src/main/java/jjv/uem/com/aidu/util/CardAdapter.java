@@ -2,6 +2,7 @@ package jjv.uem.com.aidu.util;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -28,7 +29,9 @@ import java.util.List;
 
 import jjv.uem.com.aidu.Model.Service;
 import jjv.uem.com.aidu.R;
+import jjv.uem.com.aidu.UI.MainActivity;
 import jjv.uem.com.aidu.UI.MyServices;
+import jjv.uem.com.aidu.UI.ServiceView;
 
 /**
  * Created by javi_ on 24/05/2017.
@@ -110,6 +113,17 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.MyViewHolder> 
                     showPopupMenu(holder.dots,serviceList.get(position).getServiceKey());
                 }
             });
+
+            // no funciona... por que?
+            /*holder.thumbnnail.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(holder.thumbnnail.getContext(),
+                            ServiceView.class);
+                    i.putExtra(MainActivity.KEY_SERVICE, serviceList.get(position).getServiceKey());
+                    mContext.startActivity(i);
+                }
+            });*/
         }
 
     }

@@ -70,7 +70,7 @@ public class MyServices extends AppCompatActivity {
                     RecyclerView.LayoutManager layoutManager = new GridLayoutManager(MyServices.this, 2);
                     recyclerView.setLayoutManager(layoutManager);
                     recyclerView.setItemAnimator(new DefaultItemAnimator());
-                    recyclerView.addItemDecoration(new MainActivity.GridSpacingItemDecoration(2, dpToPx(10), true));
+                    //recyclerView.addItemDecoration(new MainActivity.GridSpacingItemDecoration(2, dpToPx(10), true));
                     recyclerView.setAdapter(cardAdapter);
                 }
 
@@ -82,10 +82,6 @@ public class MyServices extends AppCompatActivity {
         }
     }
 
-    private int dpToPx(int dp) {
-        Resources r = getResources();
-        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
-    }
 
     private CardAdapter.OnItemClickListener initListener(){
         CardAdapter.OnItemClickListener listener = new CardAdapter.OnItemClickListener() {

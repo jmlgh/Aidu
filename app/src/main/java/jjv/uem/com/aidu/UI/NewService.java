@@ -72,6 +72,7 @@ import jjv.uem.com.aidu.Dialog.DatepickerDialog;
 import jjv.uem.com.aidu.Dialog.TimepickerDialog;
 import jjv.uem.com.aidu.Model.Service;
 import jjv.uem.com.aidu.R;
+import jjv.uem.com.aidu.util.Constants;
 
 
 public class NewService extends AppCompatActivity {
@@ -335,8 +336,8 @@ public class NewService extends AppCompatActivity {
             service.setUserName(userName);
             service.setCommunity(getString(R.string.new_service_no_community));
 
-            service.setState("DISPONIBLE");
-            service.setUserkeyInterested("anyone");
+            service.setState(Constants.DISPONIBLE);
+            service.setUserkeyInterested("");
             service.setLatitude(latitude);
             service.setLongitude(longitude);
             service.setIcon(sp_category.getSelectedItemPosition());

@@ -20,14 +20,20 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
+import jjv.uem.com.aidu.Model.Service;
 import jjv.uem.com.aidu.Model.User;
 import jjv.uem.com.aidu.R;
+import jjv.uem.com.aidu.util.Constants;
 
 public class Register extends AppCompatActivity {
 
@@ -137,7 +143,7 @@ public class Register extends AppCompatActivity {
         }
     }
 
-    public static void saveUserOnDataBase(FirebaseUser user, String displayName, String password, final Context context
+    public static void saveUserOnDataBase(final FirebaseUser user, String displayName, String password, final Context context
     ) {
         Map<String, Object> childUpdates = new HashMap<>();
         User u = new User(user,password,displayName);
@@ -153,7 +159,8 @@ public class Register extends AppCompatActivity {
         });
     }
 
-        //asigna el listener a la instancia de auth
+
+    //asigna el listener a la instancia de auth
     @Override
     protected void onStart() {
         super.onStart();

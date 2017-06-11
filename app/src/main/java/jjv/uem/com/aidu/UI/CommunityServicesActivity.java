@@ -126,7 +126,7 @@ public class CommunityServicesActivity extends AppCompatActivity {
                 RecyclerView.LayoutManager layoutManager = new GridLayoutManager(CommunityServicesActivity.this, 2);
                 recyclerView.setLayoutManager(layoutManager);
                 recyclerView.setItemAnimator(new DefaultItemAnimator());
-                recyclerView.addItemDecoration(new CommunityServicesActivity.GridSpacingItemDecoration(2, dpToPx(10), true));
+                //recyclerView.addItemDecoration(new CommunityServicesActivity.GridSpacingItemDecoration(2, dpToPx(10), true));
                 recyclerView.setAdapter(cardAdapter);
                 //recyclerView.setHasFixedSize(true);
                 //recyclerView.setLayoutManager(new LinearLayoutManager(getBaseContext()));
@@ -221,13 +221,6 @@ public class CommunityServicesActivity extends AppCompatActivity {
 
     }*/
 
-    /**
-     * Converting dp to pixel
-     */
-    private int dpToPx(int dp) {
-        Resources r = getResources();
-        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
-    }
 
     @Override
     public void onBackPressed() {

@@ -1,6 +1,7 @@
 package jjv.uem.com.aidu.UI;
 
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
@@ -36,11 +37,12 @@ public class ServiceView extends AppCompatActivity {
     public static final String SERVICE_USER_KEY ="userkey" ;
     public static final String SERVICE_USERNAME ="username" ;
     public static final String SERVICE_STATE ="estado" ;
+    public static final int LONGITUD_TITLE = 15;
+
     private FirebaseDatabase database;
     private FirebaseAuth auth;
     private Service service;
     private TwoWayView twv_photos;
-    private ImageView mainPhoto;
     private int[]icons={
             R.drawable.cocina,
             R.drawable.transporte,
@@ -53,9 +55,9 @@ public class ServiceView extends AppCompatActivity {
             R.drawable.otros
     };
 
-    Button btnLocation, btnsendMessage;
-    TextView tvTypeService , tvUsername , tvPoints ,tvDateTime,tvDetails;
-    ImageView iv_icon;
+    private Button btnLocation, btnsendMessage;
+    private TextView tvServiceTitle , tvUsername , tvPoints ,tvDateTime,tvDetails;
+    private ImageView iv_icon, mainPhoto;
 
 
     @Override
@@ -63,15 +65,16 @@ public class ServiceView extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_service);
         btnLocation= (Button) findViewById(R.id.btn_location);
-        mainPhoto = (ImageView)findViewById(R.id.twv_photos_service);
+        mainPhoto = (ImageView)findViewById(R.id.image_photo_service);
         btnsendMessage = (Button) findViewById(R.id.btn_talk);
         //tvTypeService = (TextView) findViewById(R.id.tv_type_service);
         tvUsername = (TextView) findViewById(R.id.tv_username);
         tvPoints = (TextView) findViewById(R.id.tv_points_service);
         tvDateTime = (TextView) findViewById(R.id.tv_datetime);
         tvDetails = (TextView) findViewById(R.id.tv_description);
+        tvServiceTitle = (TextView)findViewById(R.id.tv_service_title);
         iv_icon = (ImageView) findViewById(R.id.iv_icon_service);
-        //twv_photos = (TwoWayView) findViewById(R.id.twv_photos_service);
+        twv_photos = (TwoWayView) findViewById(R.id.twv_photos_service);
 
         setTypeFace();
 
@@ -131,13 +134,18 @@ public class ServiceView extends AppCompatActivity {
                     tvUsername.setText(getString(R.string.user_name, service.getUserName()));
                     tvPoints.setText(getString(R.string.service_points, service.getPrice_points()));
                     tvDateTime.setText(service.getDate() + " - "+service.getHour());
-                    tvDetails.setText(service.getTitle()+": "+service.getDescription());
+                    String title = service.getTitle();
+                    if(title.length()>LONGITUD_TITLE){
+                        title = service.getTitle().substring(0,LONGITUD_TITLE)+"...";
+                    }
+                    tvServiceTitle.setText(title);
+                    tvDetails.setText(service.getDescription());
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         iv_icon.setImageResource(icons[service.getIcon()]);
                     }
                     photos= service.getPhotos();
                     adapter = new Images_Adapter(getBaseContext(), photos,false);
-                    //twv_photos.setAdapter(adapter);
+                    twv_photos.setAdapter(adapter);
                     Glide.with(getBaseContext()).load(service.getPhotos().get(0)).into(mainPhoto);
                 }
 
