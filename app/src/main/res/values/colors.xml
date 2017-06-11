@@ -9,6 +9,5 @@
     <color name="colorPrimaryFont">#ffff</color>
     <color name="colorDivider">#BDBDBD</color>
     <color name="colorPrimaryLightLighter">#e5f7d0</color>
-
     <color name="black_overlay">#66000000</color>
 </resources>
