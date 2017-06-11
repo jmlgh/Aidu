@@ -30,6 +30,7 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths"></meta-data>
         </provider>
+
         <activity
             android:name=".UI.MainActivity"
             android:label="Aidu"
@@ -134,7 +135,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-            android:screenOrientation="portrait" />
+
         <activity android:name=".UI.Tutorial"
             android:screenOrientation="portrait">
         </activity>

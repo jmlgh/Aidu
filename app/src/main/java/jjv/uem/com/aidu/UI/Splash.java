@@ -67,11 +67,6 @@ public class Splash extends AppCompatActivity {
             }
         });
 
-
-
-
-
-
     }
     private void openApp() {
         Handler handler = new Handler();
