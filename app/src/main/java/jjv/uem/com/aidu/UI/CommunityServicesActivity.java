@@ -3,11 +3,8 @@ package jjv.uem.com.aidu.UI;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Resources;
-import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.Typeface;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
@@ -20,7 +17,6 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -119,9 +115,8 @@ public class CommunityServicesActivity extends AppCompatActivity {
                 Iterable<DataSnapshot> iterator = dataSnapshot.getChildren();
                 serviceList = new ArrayList<>();
                 for (DataSnapshot ds : iterator) {
-
                     Service s = ds.getValue(Service.class);
-                    if(s.getState().equals(Constants.DISPONIBLE)) {
+                    if (s.getState().equals(Constants.DISPONIBLE)) {
                         Log.i("SERVICE GET:", s.toString());
                         serviceList.add(s);
                     }
@@ -183,8 +178,8 @@ public class CommunityServicesActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_chat) {
-            Intent i = new Intent(this,CommunityChat.class);
-            i.putExtra(KEY_COMMUNITY,community.getKey());
+            Intent i = new Intent(this, CommunityChat.class);
+            i.putExtra(KEY_COMMUNITY, community.getKey());
             startActivity(i);
 
 
@@ -283,7 +278,7 @@ public class CommunityServicesActivity extends AppCompatActivity {
                 Log.e("onclick", "pulsado: " + which);
                 if (members.get(which).getKey().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
                     Toast.makeText(getApplicationContext(), getText(R.string.community_services_already_admin), Toast.LENGTH_LONG).show();
-                    } else {
+                } else {
                     crearDialogo(members.get(which)).show();
                 }
             }
@@ -462,7 +457,7 @@ public class CommunityServicesActivity extends AppCompatActivity {
         builder.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                DatabaseReference reference = database.getReference("communities/"+community.getKey());
+                DatabaseReference reference = database.getReference("communities/" + community.getKey());
                 reference.removeValue();
                 Intent i = new Intent(CommunityServicesActivity.this, Communities.class);
                 startActivity(i);
