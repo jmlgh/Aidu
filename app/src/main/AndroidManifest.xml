@@ -141,4 +141,5 @@
             android:parentActivityName=".UI.MainActivity"></activity>
     </application>
 
+
 </manifest>
