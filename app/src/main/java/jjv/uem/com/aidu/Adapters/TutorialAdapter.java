@@ -35,7 +35,7 @@ public class TutorialAdapter extends FragmentPagerAdapter {
                 return TutorialFragment.newInstance(Color.parseColor("#37474F"), position); // grey
             case 3:
                 return TutorialFragment.newInstance(Color.parseColor("#FF5252"), position); // accent (red)
-            default:
+           default:
                 return TutorialFragment.newInstance(Color.parseColor("#FF5252"), position); // accent (red)
         }
     }
