@@ -129,24 +129,32 @@ public class ServiceView extends AppCompatActivity {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     service = dataSnapshot.getValue(Service.class);
-                    Log.w("SERVICE SELECT:",service.toString());
-                    //tvTypeService.setText(service.getTitle());
-                    tvUsername.setText(getString(R.string.user_name, service.getUserName()));
-                    tvPoints.setText(getString(R.string.service_points, service.getPrice_points()));
-                    tvDateTime.setText(service.getDate() + " - "+service.getHour());
-                    String title = service.getTitle();
-                    if(title.length()>LONGITUD_TITLE){
-                        title = service.getTitle().substring(0,LONGITUD_TITLE)+"...";
+                    if(service != null){
+                        Log.w("SERVICE SELECT:",service.toString());
+                        //tvTypeService.setText(service.getTitle());
+                        tvUsername.setText(getString(R.string.user_name, service.getUserName()));
+                        tvPoints.setText(getString(R.string.service_points, service.getPrice_points()));
+                        tvDateTime.setText(service.getDate() + " - "+service.getHour());
+                        String title = service.getTitle();
+                        if(title.length()>LONGITUD_TITLE){
+                            title = service.getTitle().substring(0,LONGITUD_TITLE)+"...";
+                        }
+                        tvServiceTitle.setText(title);
+                        tvDetails.setText(service.getDescription());
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                            iv_icon.setImageResource(icons[service.getIcon()]);
+                        }
+                        photos= service.getPhotos();
+                        adapter = new Images_Adapter(getBaseContext(), photos,false);
+                        twv_photos.setAdapter(adapter);
+                        Glide.with(getBaseContext()).load(service.getPhotos().get(0)).into(mainPhoto);
                     }
-                    tvServiceTitle.setText(title);
-                    tvDetails.setText(service.getDescription());
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        iv_icon.setImageResource(icons[service.getIcon()]);
+                    else{
+                        Intent i = new Intent(getBaseContext(), MainActivity.class);
+                        Toast.makeText(ServiceView.this, "Service finished. Your points have been transferred", Toast.LENGTH_SHORT).show();
+                        startActivity(i);
+                        finish();
                     }
-                    photos= service.getPhotos();
-                    adapter = new Images_Adapter(getBaseContext(), photos,false);
-                    twv_photos.setAdapter(adapter);
-                    Glide.with(getBaseContext()).load(service.getPhotos().get(0)).into(mainPhoto);
                 }
 
                 @Override
