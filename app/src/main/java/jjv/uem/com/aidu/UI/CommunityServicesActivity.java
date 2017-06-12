@@ -62,7 +62,7 @@ public class CommunityServicesActivity extends AppCompatActivity {
     private Service_Adapter_RV adapter;
     private CardAdapter cardAdapter;
 
-
+    private Menu menu;
     private Community community;
     private User member;
     private ArrayList<String> membersNames;
@@ -162,7 +162,7 @@ public class CommunityServicesActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-
+        this.menu = menu;
         if (community.getOwner().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
             getMenuInflater().inflate(R.menu.communitiesservices_menu_admin, menu);
         } else {
@@ -329,7 +329,8 @@ public class CommunityServicesActivity extends AppCompatActivity {
                 });
 
                 Toast.makeText(CommunityServicesActivity.this, getText(R.string.community_Services_owner_changed), Toast.LENGTH_SHORT).show();
-
+                menu.clear();
+                getMenuInflater().inflate(R.menu.communitiesservices_menu, menu);
             }
         });
         builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {

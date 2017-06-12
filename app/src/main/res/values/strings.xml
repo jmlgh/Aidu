@@ -39,7 +39,7 @@
     <string name="new_service_hint_address">Address</string>
     <string name="new_service_hint_Description">Description</string>
     <string name="new_service_text_photo">Photos</string>
-    <string name="new_service_button_new">ADD NEW</string>
+    <string name="new_service_button_new">ADD SERVICE</string>
     <string name="new_service_toast_enterallfields">Please complete all fields to create a new service</string>
     <string name="new_service_toast_service_created">The service was created correctly</string>
     <string name="new_service_toast_no_more_images">You can\'t put more than %d images</string>
@@ -103,7 +103,7 @@
     <string name="new_community_hint_address">Address</string>
     <string name="new_community_hint_Description">Description</string>
     <string name="new_community_text_photo">Photo</string>
-    <string name="new_community_button_new">ADD NEW</string>
+    <string name="new_community_button_new">ADD COMMUNITY</string>
     <string name="new_community_text_swicht_Off">Off</string>
     <string name="new_community_text_swicht_On">On</string>
     <string name="new_community_toast_enterallfields">Please complete all fields to create a new community</string>
@@ -111,7 +111,7 @@
     <string name="new_community_toast_service_created">The Community was created correctly</string>
     <string name="new_community_photo_selection">Select a picture:</string>
 
-    <string name="communities_activity_name">My communities</string>
+    <string name="communities_activity_name">Communities</string>
     <string name="communities_Options_dialog">Select an option</string>
     <string name="communities_members">Members</string>
 
@@ -125,7 +125,9 @@
     <string name="communityInfo_btn_vewmembers">VIEW MEMBERS</string>
 
     <string name="community_Services_Change_admin">Select a new admin</string>
+    <string name="community_Services_public_community">Select a community</string>
     <string name="community_Services_areSure">Are you sure that want to make %s the new admin?</string>
+    <string name="community_areSure">Are you sure that want to join to this community?</string>
     <string name="community_Services_owner_changed">The Community was updated correctly</string>
     <string name="community_services_already_admin">You are already the administrator of this community</string>
     <string name="community_services_add_new">Introduce the email</string>
@@ -141,7 +143,7 @@
     <string name="community_dialog_exit">Are you sure that you want to leave this community?</string>
     <string name="community_dialog_delete">Are you sure that you want to delete this community?</string>
     <string name="community_dialog_addnew">Add new community</string>
-    <string name="community_dialog_join">Introduce code</string>
+    <string name="community_dialog_join">Join a public community</string>
 
     <!-- CARD OPTIONS -->
     <string name="action_more_info">More info</string>
