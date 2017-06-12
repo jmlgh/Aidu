@@ -192,16 +192,19 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
-                            Intent i = new Intent(Login.this, Tutorial.class);
-
                             DatabaseReference ref = FirebaseDatabase.getInstance().getReference("user/"+auth.getCurrentUser().getUid());
                             ref.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
+                                    Intent i;
                                     if(dataSnapshot.getValue()==null){
-                                        Register.saveUserOnDataBase(auth.getCurrentUser(),auth.getCurrentUser().getDisplayName(),"PASSWORD GOOGLE UNKNOWN",getBaseContext());
 
+                                        Register.saveUserOnDataBase(auth.getCurrentUser(),auth.getCurrentUser().getDisplayName(),"PASSWORD GOOGLE UNKNOWN",getBaseContext());
+                                        i = new Intent(Login.this, Tutorial.class);
+                                    }else {
+                                        i = new Intent(Login.this, MainActivity.class);
                                     }
+                                    startActivity(i);
                                 }
 
                                 @Override
@@ -209,8 +212,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
                                 }
                             });
-
-                            startActivity(i);
 
                         }else{
                             Toast.makeText(Login.this, "Authentication failed.",
