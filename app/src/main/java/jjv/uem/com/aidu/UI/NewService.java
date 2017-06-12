@@ -18,6 +18,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.AnyRes;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
@@ -28,6 +29,9 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -35,6 +39,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -50,11 +55,15 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
 import org.lucasr.twowayview.TwoWayView;
 
@@ -71,8 +80,10 @@ import java.util.TimeZone;
 import jjv.uem.com.aidu.Adapters.Images_Adapter;
 import jjv.uem.com.aidu.Dialog.DatepickerDialog;
 import jjv.uem.com.aidu.Dialog.TimepickerDialog;
+import jjv.uem.com.aidu.Model.Community;
 import jjv.uem.com.aidu.Model.Service;
 import jjv.uem.com.aidu.R;
+import jjv.uem.com.aidu.util.CommunitiesCardAdapter;
 import jjv.uem.com.aidu.util.Constants;
 
 
@@ -92,10 +103,12 @@ public class NewService extends AppCompatActivity {
     StorageReference storageRef = storage.getReferenceFromUrl(URL_STORAGE_REFERENCE).child(FOLDER_STORAGE_IMG);
     ArrayList<String> photo = new ArrayList<>();
     private Images_Adapter adapter;
-    private TextView tv_date, tv_hour, tv_points, tv_photo;
+    private TextView tv_date, tv_hour, tv_points, tv_photo, tv_community;
     private EditText et_title, et_adress, et_description;
     private Spinner sp_category, sp_kind;
     private SeekBar sb_points;
+    private MaterialBetterSpinner mbs_community ;
+    private LinearLayout lt_spinner;
     private TwoWayView twv_photos;
     private Button btn_newService;
     private int pricePoints = 5;
@@ -110,12 +123,16 @@ public class NewService extends AppCompatActivity {
     private String userName, userUid;
     private ArrayList<String> photos = new ArrayList<>();
     private String key;
+    private String communityKey = null;
 
     private File filePathImageCamera;
     private FirebaseAuth mAuth;
     private LatLng cordenades;
     private double longitude;
     private double latitude;
+
+    private ArrayList<Community> myCommunities;
+    private ArrayList<String> myCommunitiesnames;
 
 
     private ProgressDialog pd;
@@ -144,6 +161,7 @@ public class NewService extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         key = mDatabase.child("service").push().getKey();
         initViews();
+        getmyCommunities();
         setTypeFace();
     }
 
@@ -178,6 +196,7 @@ public class NewService extends AppCompatActivity {
         tv_hour = (TextView) findViewById(R.id.tv_hour);
         tv_points = (TextView) findViewById(R.id.tv_points);
         tv_photo = (TextView) findViewById(R.id.tv_photos);
+        tv_community = (TextView) findViewById(R.id.tv_community);
         sp_category = (Spinner) findViewById(R.id.sp_category);
         sp_kind = (Spinner) findViewById(R.id.sp_kind);
         sb_points = (SeekBar) findViewById(R.id.sb_points);
@@ -185,6 +204,8 @@ public class NewService extends AppCompatActivity {
         twv_photos = (TwoWayView) findViewById(R.id.twv_photos);
         String currentTime = formatearHora(new Date().getTime());
         String currentDate = sdf.format(new Date());
+        mbs_community = (MaterialBetterSpinner) findViewById(R.id.mbs_community);
+        lt_spinner = (LinearLayout) findViewById(R.id.lt_spinner);
 
         Uri uri = getUriToDrawable(this, R.drawable.addphoto);
         photos.add(uri.toString());
@@ -287,9 +308,12 @@ public class NewService extends AppCompatActivity {
         tv_points.setTypeface(bubblerFont);
         tv_date.setTypeface(bubblerFont);
         tv_hour.setTypeface(bubblerFont);
+        tv_community.setTypeface(bubblerFont);
+        mbs_community.setTypeface(bubblerFont);
         tv_photo.setTypeface(bubblerFont);
         et_description.setTypeface(bubblerFont);
         et_title.setTypeface(bubblerFont);
+
         et_adress.setTypeface(bubblerFont);
         btn_newService.setTypeface(bubblerFont);
         TextView myTextView = new TextView(this);
@@ -323,6 +347,8 @@ public class NewService extends AppCompatActivity {
             Toast.makeText(this, getText(R.string.new_service_toast_enterallfields), Toast.LENGTH_SHORT).show();
         } else if (photos.size() < 2) {
             Toast.makeText(this, getText(R.string.new_service_toast_photos), Toast.LENGTH_SHORT).show();
+        } else if (communityKey == null) {
+            Toast.makeText(this, getText(R.string.new_service_toast_no_community), Toast.LENGTH_SHORT).show();
         } else {
             pd = new ProgressDialog(NewService.this);
             pd.setMessage("loading");
@@ -349,7 +375,7 @@ public class NewService extends AppCompatActivity {
             service.setKind(sp_kind.getSelectedItem().toString());
             service.setUserkey(userUid);
             service.setUserName(userName);
-            service.setCommunity(getString(R.string.new_service_no_community));
+            service.setCommunity(communityKey);
 
             service.setState(Constants.DISPONIBLE);
             service.setUserkeyInterested("");
@@ -547,6 +573,61 @@ public class NewService extends AppCompatActivity {
         }
     }
 
+    private void getmyCommunities() {
+        // Acceso a BBDD Firebase
+
+            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("communities");
+            //Query query = reference.orderByChild("members").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
+            reference.addValueEventListener(new ValueEventListener() {
+                @RequiresApi(api = Build.VERSION_CODES.GINGERBREAD)
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    Iterable<DataSnapshot> iterator = dataSnapshot.getChildren();
+                    myCommunities = new ArrayList<>();
+                    myCommunitiesnames = new ArrayList<>();
+                    myCommunitiesnames.add(getString(R.string.new_service_no_community));
+                    Log.e("mycommunity"," "+dataSnapshot.getChildrenCount()+"  "+ dataSnapshot.getKey());
+                    for (DataSnapshot ds : iterator) {
+                        Community c = ds.getValue(Community.class);
+                        Log.e("mycommunity",c.getName()+"  "+ c.getKey());
+                        if (c.getMembers().contains(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+
+                            //Log.i("SERVICE GET:",c.toString());
+                            myCommunities.add(c);
+                            myCommunitiesnames.add(c.getName());
+                        }
+                    }
+
+                    if(myCommunities!=null){
+                        lt_spinner.setVisibility(View.VISIBLE);
+                        ArrayAdapter<String> adapter = new ArrayAdapter<String>(NewService.this,
+                                android.R.layout.simple_dropdown_item_1line, myCommunitiesnames);
+
+                        mbs_community.setAdapter(adapter);
+                        mbs_community.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                if (position>0){
+                                    communityKey = myCommunities.get(position-1).getKey();
+                                }else {
+                                    communityKey = getString(R.string.new_service_no_community);
+                                }
+
+                            }
+                        });
+                    }
+
+
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+    }
 
 
 

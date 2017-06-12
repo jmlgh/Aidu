@@ -225,7 +225,7 @@ public class MainActivity extends AppCompatActivity
                     for (DataSnapshot ds : iterator){
                         Service s = ds.getValue(Service.class);
                         if(!s.getUserkey().equals(auth.getCurrentUser().getUid())&&
-                                s.getState().equals(Constants.DISPONIBLE)){
+                                s.getState().equals(Constants.DISPONIBLE)&&s.getCommunity().equals(getString(R.string.new_service_no_community))){
                             serviceList.add(s);
                         }
 

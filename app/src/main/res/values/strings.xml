@@ -37,6 +37,8 @@
     <string name="new_service_hint_title">Title</string>
     <string name="new_service_hint_points">Points: %d</string>
     <string name="new_service_hint_address">Address</string>
+    <string name="new_service_hint_community">Community: </string>
+    <string name="new_service_hint_select_community">Select Community</string>
     <string name="new_service_hint_Description">Description</string>
     <string name="new_service_text_photo">Photos</string>
     <string name="new_service_button_new">ADD SERVICE</string>
@@ -91,6 +93,7 @@
     <string name="label_search_cat">Category</string>
     <string name="label_search_results">Results</string>
     <string name="new_service_toast_photos">Please select at least one photo for create a new service</string>
+    <string name="new_service_toast_no_community">Please select at least one community</string>
     <string name="alert_yes">Yes</string>
     <string name="alert_open_details">Open details for this service?</string>
 
