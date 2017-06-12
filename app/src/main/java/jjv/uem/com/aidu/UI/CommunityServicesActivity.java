@@ -49,6 +49,8 @@ import jjv.uem.com.aidu.R;
 import jjv.uem.com.aidu.util.CardAdapter;
 import jjv.uem.com.aidu.util.Constants;
 
+import static jjv.uem.com.aidu.UI.Communities.KEY_COMMUNITY;
+
 public class CommunityServicesActivity extends AppCompatActivity {
     private static final String TAG = NewComunity.class.getSimpleName();
     private ActionBar actBar;
@@ -73,7 +75,7 @@ public class CommunityServicesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_community_services);
         Intent i = getIntent();
-        String communityKey = getIntent().getStringExtra(Communities.KEY_COMMUNITY);
+        String communityKey = getIntent().getStringExtra(KEY_COMMUNITY);
         database = FirebaseDatabase.getInstance();
         getComunity(communityKey);
 
@@ -180,17 +182,19 @@ public class CommunityServicesActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        /*if (id == R.id.action_chat) {
-            Log.d("accion ", "chat");
+        if (id == R.id.action_chat) {
+            Intent i = new Intent(this,CommunityChat.class);
+            i.putExtra(KEY_COMMUNITY,community.getKey());
+            startActivity(i);
 
 
-        }*/
+        }
         if (id == R.id.action_moreInfo) {
             Log.d("accion ", "mas informacion");
 
             Intent i = new Intent(CommunityServicesActivity.this, CommunityInfo.class);
 
-            i.putExtra(Communities.KEY_COMMUNITY, community.getKey());
+            i.putExtra(KEY_COMMUNITY, community.getKey());
             startActivity(i);
         }
 
