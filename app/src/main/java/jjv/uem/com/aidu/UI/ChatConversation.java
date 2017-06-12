@@ -137,7 +137,10 @@ public class ChatConversation extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Service sModificado = dataSnapshot.getValue(Service.class);
-                estate = sModificado.getState();
+                if(sModificado!=null){
+                    estate = sModificado.getState();
+                }
+
                 setButtonsVisibility();
             }
 
