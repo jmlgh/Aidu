@@ -26,6 +26,7 @@
             android:id="@+id/tv_message_comunities"
             android:textAlignment="center"
             android:padding="@dimen/activity_vertical_margin"
+            android:textSize="20sp"
             />
     </RelativeLayout>
 

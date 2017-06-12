@@ -46,6 +46,7 @@ import java.util.ArrayList;
 
 import jjv.uem.com.aidu.Adapters.Service_Adapter_RV;
 import jjv.uem.com.aidu.Model.Service;
+import jjv.uem.com.aidu.Model.User;
 import jjv.uem.com.aidu.R;
 import jjv.uem.com.aidu.util.CardAdapter;
 import jjv.uem.com.aidu.util.Constants;
@@ -73,7 +74,7 @@ public class MainActivity extends AppCompatActivity
     private CardAdapter.OnItemClickListener l;
     private Service_Adapter_RV adapter;
     private FloatingActionButton fabSearch, fabAddNew;
-    private TextView navUserName, navUserEmail , tv_message;
+    private TextView navUserName, navUserEmail, navUserPoints, tv_message;
     private View headerView;
     private NavigationView navigationView;
     private FirebaseUser usuarioLogeado;
@@ -165,12 +166,33 @@ public class MainActivity extends AppCompatActivity
         // views para el panel lateral
         navUserName = (TextView) headerView.findViewById(R.id.nav_username);
         navUserEmail = (TextView) headerView.findViewById(R.id.nav_usermail);
+        navUserPoints = (TextView)headerView.findViewById(R.id.nav_userpoints);
 
 
         // configura el menu lateral con el nombre de usuario y el email
         if(auth.getCurrentUser() != null){
             navUserName.setText(auth.getCurrentUser().getDisplayName());
             navUserEmail.setText(auth.getCurrentUser().getEmail());
+            database = FirebaseDatabase.getInstance();
+            DatabaseReference ref = database.getReference("user/" + auth.getCurrentUser().getUid());
+            ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    User u = dataSnapshot.getValue(User.class);
+                    if(u != null){
+                        navUserPoints.setText(getString(R.string.mlateral_points, String.valueOf(u.getPoints())));
+                        Log.i("mainAct_usrNNull: ", u.getDisplayName());
+                    }
+                    else{
+                        navUserPoints.setText("??? points");
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
         }
 
         getServices();

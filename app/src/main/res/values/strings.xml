@@ -81,6 +81,7 @@
     <string name="mlateral_email">Email</string>
     <string name="title_activity_location">Map</string>
     <string name="alert_about">About us</string>
+    <string name="mlateral_points">%s points</string>
 
 
     <!-- SERVICE SEARCH -->
