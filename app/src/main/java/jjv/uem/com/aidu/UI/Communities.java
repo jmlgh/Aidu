@@ -63,7 +63,7 @@ public class Communities extends AppCompatActivity implements NavigationView.OnN
     private FirebaseAuth auth;
     private FirebaseDatabase database;
 
-    private TextView navUserName, navUserEmail , tv_comunities_message;
+    private TextView navUserName, navUserEmail, navUserPoints, tv_comunities_message;
     private View headerView;
     private NavigationView navigationView;
     private RecyclerView cummunitiesrecicler;
@@ -109,12 +109,34 @@ public class Communities extends AppCompatActivity implements NavigationView.OnN
         // views para el panel lateral
         navUserName = (TextView) headerView.findViewById(R.id.nav_username);
         navUserEmail = (TextView) headerView.findViewById(R.id.nav_usermail);
+        navUserPoints = (TextView)headerView.findViewById(R.id.nav_userpoints);
         cummunitiesrecicler = (RecyclerView) findViewById(R.id.lstCommunities);
 
         // configura el menu lateral con el nombre de usuario y el email
         if (auth.getCurrentUser() != null) {
             navUserName.setText(auth.getCurrentUser().getDisplayName());
             navUserEmail.setText(auth.getCurrentUser().getEmail());
+
+            database = FirebaseDatabase.getInstance();
+            DatabaseReference ref = database.getReference("user/" + auth.getCurrentUser().getUid());
+            ref.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    User u = dataSnapshot.getValue(User.class);
+                    if(u != null){
+                        navUserPoints.setText(getString(R.string.mlateral_points, String.valueOf(u.getPoints())));
+                        Log.i("mainAct_usrNNull: ", u.getDisplayName());
+                    }
+                    else{
+                        navUserPoints.setText("??? points");
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
         }
         tv_comunities_message = (TextView) findViewById(R.id.tv_message_comunities);
         tv_comunities_message.setVisibility(View.INVISIBLE);
