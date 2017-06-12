@@ -133,6 +133,7 @@
         </activity>
 
         <activity android:name=".UI.Tutorial"
+            android:theme="@style/FullscreenTheme"
             android:screenOrientation="portrait">
         </activity>
     </application>

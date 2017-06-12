@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.util.Log;
 
 import jjv.uem.com.aidu.UI.Login;
 import jjv.uem.com.aidu.UI.MainActivity;
@@ -25,10 +26,12 @@ public class TutorialAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position){
             case 0:
+
                 return TutorialFragment.newInstance(Color.parseColor("#4E342E"), position); // Brown
             case 1:
                 return TutorialFragment.newInstance(Color.parseColor("#03A9F4"), position); // blue
             case 2:
+
                 return TutorialFragment.newInstance(Color.parseColor("#37474F"), position); // grey
             case 3:
                 return TutorialFragment.newInstance(Color.parseColor("#FF5252"), position); // accent (red)
@@ -39,6 +42,6 @@ public class TutorialAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 5;
+        return 6;
     }
 }

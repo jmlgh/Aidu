@@ -199,6 +199,7 @@
     <string name="tutorial_description_3">Create or join communities with friends, co-workers or neighbors</string>
     <string name="tutorial_title_4">Chat</string>
     <string name="tutorial_description_4">Yes, we also have chats! All your communication needs are met!</string>
+    <string name="tutorial_exit">Welcome to Aidu</string>
 
 
 </resources>
