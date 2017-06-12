@@ -15,7 +15,9 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.PopupMenu;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -36,6 +38,7 @@ public class MyServices extends AppCompatActivity {
     private RecyclerView recyclerView;
     public static final String KEY_SERVICE = "KEY_SERVICE";
     private FirebaseDatabase database;
+    private TextView tv_message_my_services;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +46,9 @@ public class MyServices extends AppCompatActivity {
         setContentView(R.layout.activity_my_services);
         database = FirebaseDatabase.getInstance();
         auth = FirebaseAuth.getInstance();
+        tv_message_my_services = (TextView) findViewById(R.id.tv_message_my_services);
+        tv_message_my_services.setVisibility(View.INVISIBLE);
+
         recyclerView = (RecyclerView) findViewById(R.id.MyServicesList);
 
         getServices();
@@ -65,6 +71,12 @@ public class MyServices extends AppCompatActivity {
                         Service s = ds.getValue(Service.class);
                         serviceList.add(s);
                     }
+                    if(serviceList.size()<=0){
+                        tv_message_my_services.setVisibility(View.VISIBLE);
+                    }else{
+                        tv_message_my_services.setVisibility(View.INVISIBLE);
+                    }
+
                     CardAdapter.OnItemClickListener l = initListener();
                     CardAdapter cardAdapter = new CardAdapter(MyServices.this, serviceList, l);
                     RecyclerView.LayoutManager layoutManager = new GridLayoutManager(MyServices.this, 2);

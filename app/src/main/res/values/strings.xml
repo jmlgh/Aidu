@@ -81,6 +81,7 @@
     <string name="mlateral_email">Email</string>
     <string name="title_activity_location">Map</string>
     <string name="alert_about">About us</string>
+    <string name="mlateral_points">%s points</string>
 
 
     <!-- SERVICE SEARCH -->
@@ -202,6 +203,10 @@
     <string name="tutorial_title_4">Chat</string>
     <string name="tutorial_description_4">Yes, we also have chats! All your communication needs are met!</string>
     <string name="tutorial_exit">Welcome to Aidu</string>
+    <string name="no_services_message_main">No services availables</string>
+    <string name="no_services_message_my_services">No services, create one</string>
+    <string name="no_comunities_message">Create or join a community</string>
+    <string name="no_chats_message">Create or join a service</string>
 
 
 </resources>

@@ -132,6 +132,21 @@ public class ChatConversation extends AppCompatActivity {
             }
         });
 
+        DatabaseReference dbref = database.getReference("services/"+serviceKey);
+        dbref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Service sModificado = dataSnapshot.getValue(Service.class);
+                estate = sModificado.getState();
+                setButtonsVisibility();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
 
     }
 
@@ -200,7 +215,6 @@ public class ChatConversation extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Service sModificado = dataSnapshot.getValue(Service.class);
-                estate = stat;
                 sModificado.setState(stat);
                 if(stat.equals(Constants.FINALIZADO)){
                     updatePointsUser(sModificado.getUserkeyInterested(),sModificado.getPrice_points());
@@ -214,6 +228,14 @@ public class ChatConversation extends AppCompatActivity {
                     }
                     dataSnapshot.getRef().setValue(sModificado);
                 }
+
+                Log.i("ESTADO SERVICIO 1" , "ESTATE : "+estate);
+                Log.i("ESTADO SERVICIO 2" , "STAT : "+stat);
+               // estate = sModificado.getState();
+
+                Log.i("ESTADO SERVICIO 3" , sModificado.getState());
+                Log.i("ESTADO SERVICIO 4" , estate);
+
 
 
                 setButtonsVisibility();

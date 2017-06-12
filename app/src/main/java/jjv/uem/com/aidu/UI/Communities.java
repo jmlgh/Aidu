@@ -63,7 +63,7 @@ public class Communities extends AppCompatActivity implements NavigationView.OnN
     private FirebaseAuth auth;
     private FirebaseDatabase database;
 
-    private TextView navUserName, navUserEmail;
+    private TextView navUserName, navUserEmail , tv_comunities_message;
     private View headerView;
     private NavigationView navigationView;
     private RecyclerView cummunitiesrecicler;
@@ -103,7 +103,6 @@ public class Communities extends AppCompatActivity implements NavigationView.OnN
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(Communities.this);
         headerView = navigationView.getHeaderView(0);
@@ -117,6 +116,8 @@ public class Communities extends AppCompatActivity implements NavigationView.OnN
             navUserName.setText(auth.getCurrentUser().getDisplayName());
             navUserEmail.setText(auth.getCurrentUser().getEmail());
         }
+        tv_comunities_message = (TextView) findViewById(R.id.tv_message_comunities);
+        tv_comunities_message.setVisibility(View.INVISIBLE);
     }
 
     private void getCommunities() {
@@ -139,6 +140,12 @@ public class Communities extends AppCompatActivity implements NavigationView.OnN
                             communitiesList.add(c);
                         }
                     }
+                    if(communitiesList.size()<=0){
+                        tv_comunities_message.setVisibility(View.VISIBLE);
+                    }else{
+                        tv_comunities_message.setVisibility(View.INVISIBLE);
+                    }
+
                     l = initListener();
                     lc = initlongListener();
                     //adapter = new Service_Adapter_RV(serviceList,l);

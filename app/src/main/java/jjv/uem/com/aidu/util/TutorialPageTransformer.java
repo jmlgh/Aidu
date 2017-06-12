@@ -50,16 +50,16 @@ public class TutorialPageTransformer implements ViewPager.PageTransformer {
             // Now, we want the image to move to the right,
             // i.e. in the opposite direction of the rest of the
             // content while fading out
-            View computer = page.findViewById(R.id.pic);
+            View pic = page.findViewById(R.id.pic);
 
             // We're attempting to create an effect for a View
             // specific to one of the pages in our ViewPager.
             // In other words, we need to check that we're on
             // the correct page and that the View in question
             // isn't null.
-            if (pagePosition == 0 && computer != null) {
-                computer.setAlpha(1.0f - absPosition);
-                computer.setTranslationX(-pageWidthTimesPosition * 1.5f);
+            if (pic != null) {
+                pic.setAlpha(1.0f - absPosition);
+                pic.setTranslationX(-pageWidthTimesPosition * 1.5f);
             }
 
             // Finally, it can be useful to know the direction
