@@ -11,4 +11,6 @@ public class Constants {
     public static final String EN_CURSO = "EN CURSO";
     public static final String FINALIZADO = "FINALIZADO";
 
+    public static final String APPLY = "Apply";
+    public static final String SUPPLY = "Supply";
 }
