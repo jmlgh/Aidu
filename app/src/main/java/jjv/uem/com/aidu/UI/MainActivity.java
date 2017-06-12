@@ -302,7 +302,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_my_services) {
-            finish();
+            //finish();
             Intent i = new Intent(this, MyServices.class);
             startActivity(i);
         } else if (id == R.id.nav_communities) {

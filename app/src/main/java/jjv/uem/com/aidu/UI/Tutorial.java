@@ -17,6 +17,7 @@ public class Tutorial extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tutorial);
 
+
         mViewPager = (ViewPager)findViewById(R.id.tutorial_viewpager);
 
         // set adapter

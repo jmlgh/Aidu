@@ -69,7 +69,7 @@ public class Register extends AppCompatActivity {
                     // si el usuario se loguea correctamente termina esta actividad
                     // y abre MainActivity
                     finish();
-                    Intent i = new Intent(Register.this, MainActivity.class);
+                    Intent i = new Intent(Register.this, Tutorial.class);
                     i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(i);
                 }else{

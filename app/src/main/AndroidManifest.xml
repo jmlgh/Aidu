@@ -31,12 +31,12 @@
                 android:resource="@xml/file_paths"></meta-data>
         </provider>
 
-
         <activity
             android:name=".UI.MainActivity"
             android:label="Aidu"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
+
         </activity>
         <activity
             android:name=".UI.Login"
@@ -133,6 +133,7 @@
         </activity>
 
         <activity android:name=".UI.Tutorial"
+            android:theme="@style/FullscreenTheme"
             android:screenOrientation="portrait">
         </activity>
     </application>

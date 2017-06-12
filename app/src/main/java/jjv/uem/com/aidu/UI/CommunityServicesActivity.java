@@ -47,6 +47,7 @@ import jjv.uem.com.aidu.Model.Service;
 import jjv.uem.com.aidu.Model.User;
 import jjv.uem.com.aidu.R;
 import jjv.uem.com.aidu.util.CardAdapter;
+import jjv.uem.com.aidu.util.Constants;
 
 public class CommunityServicesActivity extends AppCompatActivity {
     private static final String TAG = NewComunity.class.getSimpleName();
@@ -116,9 +117,12 @@ public class CommunityServicesActivity extends AppCompatActivity {
                 Iterable<DataSnapshot> iterator = dataSnapshot.getChildren();
                 serviceList = new ArrayList<>();
                 for (DataSnapshot ds : iterator) {
+
                     Service s = ds.getValue(Service.class);
-                    Log.i("SERVICE GET:", s.toString());
-                    serviceList.add(s);
+                    if(s.getState().equals(Constants.DISPONIBLE)) {
+                        Log.i("SERVICE GET:", s.toString());
+                        serviceList.add(s);
+                    }
                 }
                 l = initListener();
                 //adapter = new Service_Adapter_RV(serviceList,l);
@@ -275,8 +279,7 @@ public class CommunityServicesActivity extends AppCompatActivity {
                 Log.e("onclick", "pulsado: " + which);
                 if (members.get(which).getKey().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
                     Toast.makeText(getApplicationContext(), getText(R.string.community_services_already_admin), Toast.LENGTH_LONG).show();
-                    Log.e(TAG, "Errooooooooooooooooooooooooooooooooooooo");
-                } else {
+                    } else {
                     crearDialogo(members.get(which)).show();
                 }
             }
@@ -365,7 +368,7 @@ public class CommunityServicesActivity extends AppCompatActivity {
 
     private void adduser(String username) {
         DatabaseReference reference = database.getReference("user");
-        Query query = reference.orderByChild("displayName").equalTo(username);
+        Query query = reference.orderByChild("email").equalTo(username);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
 
             @Override

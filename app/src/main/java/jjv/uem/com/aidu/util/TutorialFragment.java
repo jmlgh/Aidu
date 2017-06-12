@@ -1,12 +1,15 @@
 package jjv.uem.com.aidu.util;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import jjv.uem.com.aidu.R;
+import jjv.uem.com.aidu.UI.MainActivity;
 
 /**
  * Created by javi_ on 11/06/2017.
@@ -48,18 +51,34 @@ public class TutorialFragment extends Fragment {
         switch (mPage) {
             case 0:
                 layoutResId = R.layout.tutorial_screen_one;
+                Log.i("FRAGMENT","CASE 0");
                 break;
             case 1:
                 layoutResId = R.layout.tutorial_screen_two;
+                Log.i("FRAGMENT","CASE 1");
                 break;
             case 2:
                 layoutResId = R.layout.tutorial_screen_three;
+                Log.i("FRAGMENT","CASE 2");
                 break;
             case 3:
                 layoutResId = R.layout.tutorial_screen_four;
+                Log.i("FRAGMENT","CASE 3");
+                break;
+            case 4:
+                layoutResId = R.layout.tutorial_screen_exit;
+                Log.i("FRAGMENT","CASE 4");
+                break;
+            case 5:
+                Log.i("FRAGMENT","CASE 5");
+                layoutResId = R.layout.tutorial_screen_four;
+                Intent i = new Intent(getContext(), MainActivity.class);
+                startActivity(i);
+                getActivity().finish();
                 break;
             default:
                 layoutResId = R.layout.tutorial_screen_four;
+                getActivity().finish();
         }
 
         // Inflate the layout resource file
