@@ -213,6 +213,8 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                                 }
                             });
 
+                            //startActivity(i);
+
                         }else{
                             Toast.makeText(Login.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
