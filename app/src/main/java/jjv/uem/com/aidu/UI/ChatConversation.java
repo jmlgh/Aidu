@@ -200,6 +200,7 @@ public class ChatConversation extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Service sModificado = dataSnapshot.getValue(Service.class);
+                estate = stat;
                 sModificado.setState(stat);
                 if(stat.equals(Constants.FINALIZADO)){
                     updatePointsUser(sModificado.getUserkeyInterested(),sModificado.getPrice_points());
