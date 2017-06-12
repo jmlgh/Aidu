@@ -35,7 +35,7 @@ public class ServiceView extends AppCompatActivity {
     public static final String LONGITUDE = "longitud";
     public static final String SERVICE_KEY = "serviceKey";
     public static final String SERVICE_USER_KEY ="userkey" ;
-    public static final String SERVICE_USERNAME ="username" ;
+    public static final String SERVICE_KIND ="kind" ;
     public static final String SERVICE_STATE ="estado" ;
     public static final int LONGITUD_TITLE = 15;
 
@@ -109,7 +109,7 @@ public class ServiceView extends AppCompatActivity {
                     Intent i = new Intent(getBaseContext(),ChatConversation.class);
                     i.putExtra(SERVICE_KEY,service.getServiceKey());
                     i.putExtra(SERVICE_USER_KEY,service.getUserkey());
-                    i.putExtra(SERVICE_USERNAME,service.getUserName());
+                    i.putExtra(SERVICE_KIND,service.getKind());
                     i.putExtra(SERVICE_STATE,service.getState());
                     startActivity(i);
                 }

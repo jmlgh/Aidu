@@ -63,12 +63,14 @@ public class Communities extends AppCompatActivity implements NavigationView.OnN
     private FirebaseAuth auth;
     private FirebaseDatabase database;
 
-    private TextView navUserName, navUserEmail , tv_comunities_message;
+    private TextView navUserName, navUserEmail, navUserPoints, tv_comunities_message;
     private View headerView;
     private NavigationView navigationView;
     private RecyclerView cummunitiesrecicler;
     private FirebaseUser usuarioLogeado;
     private ArrayList<Community> communitiesList;
+    private ArrayList<Community> publiCommunitiesList;
+    private ArrayList<String> publiCommunitiesnames;
     private CommunitiesCardAdapter cardAdapter;
     private CommunitiesCardAdapter.OnItemClickListener l;
     private CommunitiesCardAdapter.OnItemLongClickListener lc;
@@ -107,12 +109,34 @@ public class Communities extends AppCompatActivity implements NavigationView.OnN
         // views para el panel lateral
         navUserName = (TextView) headerView.findViewById(R.id.nav_username);
         navUserEmail = (TextView) headerView.findViewById(R.id.nav_usermail);
+        navUserPoints = (TextView)headerView.findViewById(R.id.nav_userpoints);
         cummunitiesrecicler = (RecyclerView) findViewById(R.id.lstCommunities);
 
         // configura el menu lateral con el nombre de usuario y el email
         if (auth.getCurrentUser() != null) {
             navUserName.setText(auth.getCurrentUser().getDisplayName());
             navUserEmail.setText(auth.getCurrentUser().getEmail());
+
+            database = FirebaseDatabase.getInstance();
+            DatabaseReference ref = database.getReference("user/" + auth.getCurrentUser().getUid());
+            ref.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    User u = dataSnapshot.getValue(User.class);
+                    if(u != null){
+                        navUserPoints.setText(getString(R.string.mlateral_points, String.valueOf(u.getPoints())));
+                        Log.i("mainAct_usrNNull: ", u.getDisplayName());
+                    }
+                    else{
+                        navUserPoints.setText("??? points");
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
         }
         tv_comunities_message = (TextView) findViewById(R.id.tv_message_comunities);
         tv_comunities_message.setVisibility(View.INVISIBLE);
@@ -166,6 +190,66 @@ public class Communities extends AppCompatActivity implements NavigationView.OnN
                 }
             });
         }
+    }
+
+    private void getPublicCommunities() {
+        // Acceso a BBDD Firebase
+        if (auth.getCurrentUser() != null) {
+            database = FirebaseDatabase.getInstance();
+            DatabaseReference reference = database.getReference("communities");
+            Query query = reference.orderByChild("publica").equalTo(true);
+            //Query query = reference.orderByChild("members").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
+            reference.addListenerForSingleValueEvent(new ValueEventListener() {
+                @RequiresApi(api = Build.VERSION_CODES.GINGERBREAD)
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    Iterable<DataSnapshot> iterator = dataSnapshot.getChildren();
+                    Log.e("comunidades publicas", String.valueOf(dataSnapshot.getChildrenCount()));
+                    Log.e("comunidades publicas", dataSnapshot.getKey());
+                    publiCommunitiesList = new ArrayList<>();
+                    publiCommunitiesnames = new ArrayList<>();
+                    for (DataSnapshot ds : iterator) {
+                        Community c = ds.getValue(Community.class);
+                        Log.e("comunidades publicas", ds.getKey());
+                        if (!c.getMembers().contains(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                            Log.e("comunidades publicas", ds.getKey()+" "+FirebaseAuth.getInstance().getCurrentUser().getUid() );
+                            //Log.i("SERVICE GET:",c.toString());
+                            publiCommunitiesList.add(c);
+                            publiCommunitiesnames.add(c.getName());
+                        }
+                    }
+                    joincoomunity();
+
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
+    }
+
+    public void joincoomunity() {
+
+
+        final CharSequence membersn[] = publiCommunitiesnames.toArray(new CharSequence[publiCommunitiesnames.size()]);
+        AlertDialog.Builder picker = new AlertDialog.Builder(Communities.this);
+        picker.setTitle(getString(R.string.community_Services_public_community));
+        picker.setCancelable(true);
+        picker.setItems(membersn, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Log.e("onclick", "pulsado: " + which);
+
+                    comfirmjoin(publiCommunitiesList.get(which).getKey()).show();
+
+            }
+        });
+        picker.show();
+
+
     }
 
     private CommunitiesCardAdapter.OnItemClickListener initListener() {
@@ -313,7 +397,7 @@ public class Communities extends AppCompatActivity implements NavigationView.OnN
     }
 
 
-    public void joincommunityDialog() {
+    /*public void joincommunityDialog() {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(Communities.this);
         LayoutInflater inflater = getLayoutInflater();
         final View dialogView = inflater.inflate(R.layout.dialog_addnewmember, null);
@@ -335,6 +419,25 @@ public class Communities extends AppCompatActivity implements NavigationView.OnN
             }
         });
         dialogBuilder.create().show();
+    }*/
+    private Dialog comfirmjoin(final String communitykey) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(Communities.this);
+        builder.setCancelable(false);
+        builder.setMessage(getString(R.string.community_areSure));
+        builder.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                addtocommunity(communitykey);
+            }
+        });
+        builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        return builder.create();
     }
 
     private void addtocommunity(String communitykey) {
@@ -499,6 +602,11 @@ public class Communities extends AppCompatActivity implements NavigationView.OnN
         return builder.create();
     }
 
+
+
+
+
+
     private boolean mostrarInfoAlert() {
         AlertDialog.Builder builder = new AlertDialog.Builder(Communities.this)
                 .setTitle(getString(R.string.alert_about))
@@ -546,7 +654,7 @@ public class Communities extends AppCompatActivity implements NavigationView.OnN
                         startActivity(i);
                         finish();
                     } else {
-                        joincommunityDialog();
+                        getPublicCommunities();
                     }
                 }
             });

@@ -175,7 +175,7 @@ public class MainActivity extends AppCompatActivity
             navUserEmail.setText(auth.getCurrentUser().getEmail());
             database = FirebaseDatabase.getInstance();
             DatabaseReference ref = database.getReference("user/" + auth.getCurrentUser().getUid());
-            ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            ref.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     User u = dataSnapshot.getValue(User.class);

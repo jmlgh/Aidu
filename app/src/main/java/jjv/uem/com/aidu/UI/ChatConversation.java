@@ -37,7 +37,7 @@ public class ChatConversation extends AppCompatActivity {
 
     private String serviceKey;
     private String keyUserProp;
-    private String userNameProp;
+    private String kind;
     private DatabaseReference ref;
     private Button btnEnviar,btnFinalizar,btnAceptar,btnDenegar;
     private EditText etMensaje;
@@ -53,7 +53,7 @@ public class ChatConversation extends AppCompatActivity {
         setContentView(R.layout.activity_chat_conversation);
         Intent i = getIntent();
         serviceKey =i.getStringExtra(ServiceView.SERVICE_KEY);
-        userNameProp = i.getStringExtra(ServiceView.SERVICE_USERNAME);
+        kind = i.getStringExtra(ServiceView.SERVICE_KIND);
         keyUserProp = i.getStringExtra(ServiceView.SERVICE_USER_KEY);
         estate = i.getStringExtra(ServiceView.SERVICE_STATE);
         etMensaje = (EditText) findViewById(R.id.et_msg);
@@ -137,7 +137,10 @@ public class ChatConversation extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Service sModificado = dataSnapshot.getValue(Service.class);
-                estate = sModificado.getState();
+                if(sModificado!=null){
+                    estate = sModificado.getState();
+                }
+
                 setButtonsVisibility();
             }
 
@@ -229,14 +232,6 @@ public class ChatConversation extends AppCompatActivity {
                     dataSnapshot.getRef().setValue(sModificado);
                 }
 
-                Log.i("ESTADO SERVICIO 1" , "ESTATE : "+estate);
-                Log.i("ESTADO SERVICIO 2" , "STAT : "+stat);
-               // estate = sModificado.getState();
-
-                Log.i("ESTADO SERVICIO 3" , sModificado.getState());
-                Log.i("ESTADO SERVICIO 4" , estate);
-
-
 
                 setButtonsVisibility();
             }
@@ -254,21 +249,38 @@ public class ChatConversation extends AppCompatActivity {
     }
 
     private void updatePointsUser(String userkeyInterested, final String price_points) {
+        if(kind.equals(Constants.APPLY)){
+            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("user/"+userkeyInterested);
+            ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    User userMod = dataSnapshot.getValue(User.class);
+                    userMod.addPoints(Integer.parseInt(price_points));
+                    dataSnapshot.getRef().setValue(userMod);
+                }
 
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("user/"+userkeyInterested);
-        ref.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                User userMod = dataSnapshot.getValue(User.class);
-                userMod.addPoints(Integer.parseInt(price_points));
-                dataSnapshot.getRef().setValue(userMod);
-            }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                }
+            });
+        }else{
+            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("user/"+keyUserProp);
+            ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    User userMod = dataSnapshot.getValue(User.class);
+                    userMod.addPoints(Integer.parseInt(price_points));
+                    dataSnapshot.getRef().setValue(userMod);
+                }
 
-            }
-        });
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
+
     }
 
     public static void esconderTeclado(Activity activity) {

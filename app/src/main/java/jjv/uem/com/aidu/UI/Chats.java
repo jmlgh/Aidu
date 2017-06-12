@@ -66,7 +66,7 @@ public class Chats extends AppCompatActivity {
                 Intent i = new Intent(getBaseContext(),ChatConversation.class);
                 i.putExtra(ServiceView.SERVICE_KEY,service.getServiceKey());
                 i.putExtra(ServiceView.SERVICE_USER_KEY,service.getUserkey());
-                i.putExtra(ServiceView.SERVICE_USERNAME,service.getUserName());
+                i.putExtra(ServiceView.SERVICE_KIND,service.getKind());
                 i.putExtra(ServiceView.SERVICE_STATE,service.getState());
                 startActivity(i);
             }

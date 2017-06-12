@@ -330,7 +330,7 @@ public class NewComunity extends AppCompatActivity {
 
         final boolean result = Utility.checkPermission(NewComunity.this);
         if (result) {
-            CharSequence options[] = new CharSequence[]{"Galery", "Camera"};
+            CharSequence options[] = new CharSequence[]{"Gallery", "Camera"};
 
             AlertDialog.Builder picker = new AlertDialog.Builder(this);
             picker.setTitle(getString(R.string.new_service_photo_selection));
