@@ -98,7 +98,7 @@
 
 
     <!-- ADD COMMUNITY -->
-    <string name="new_community_activity_name">Add new Community</string>
+    <string name="new_community_activity_name">Add Community</string>
     <string name="new_community_hint_name">Name</string>
     <string name="new_community_text_public">Make it public:</string>
     <string name="new_community_hint_address">Address</string>
@@ -143,7 +143,7 @@
 
     <string name="community_dialog_exit">Are you sure that you want to leave this community?</string>
     <string name="community_dialog_delete">Are you sure that you want to delete this community?</string>
-    <string name="community_dialog_addnew">Add new community</string>
+    <string name="community_dialog_addnew">Add community</string>
     <string name="community_dialog_join">Join a public community</string>
 
     <!-- CARD OPTIONS -->
