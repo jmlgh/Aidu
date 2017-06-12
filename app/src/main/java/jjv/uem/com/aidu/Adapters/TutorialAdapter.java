@@ -1,10 +1,14 @@
 package jjv.uem.com.aidu.Adapters;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import jjv.uem.com.aidu.UI.Login;
+import jjv.uem.com.aidu.UI.MainActivity;
+import jjv.uem.com.aidu.UI.Tutorial;
 import jjv.uem.com.aidu.util.TutorialFragment;
 
 /**
@@ -35,6 +39,6 @@ public class TutorialAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 4;
+        return 5;
     }
 }

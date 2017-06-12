@@ -192,7 +192,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
-                            Intent i = new Intent(Login.this, MainActivity.class);
+                            Intent i = new Intent(Login.this, Tutorial.class);
 
                             DatabaseReference ref = FirebaseDatabase.getInstance().getReference("user/"+auth.getCurrentUser().getUid());
                             ref.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -200,6 +200,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                     if(dataSnapshot.getValue()==null){
                                         Register.saveUserOnDataBase(auth.getCurrentUser(),auth.getCurrentUser().getDisplayName(),"PASSWORD GOOGLE UNKNOWN",getBaseContext());
+
                                     }
                                 }
 

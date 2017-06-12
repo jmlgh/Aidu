@@ -128,9 +128,9 @@
     <string name="community_Services_areSure">Are you sure that want to make %s the new admin?</string>
     <string name="community_Services_owner_changed">The Community was updated correctly</string>
     <string name="community_services_already_admin">You are already the administrator of this community</string>
-    <string name="community_services_add_new">Introduce the name</string>
+    <string name="community_services_add_new">Introduce the email</string>
     <string name="community_services_joinCommunity">Introduce the code of the community</string>
-    <string name="community_services_dialog_hint_username">Username</string>
+    <string name="community_services_dialog_hint_username">Email</string>
     <string name="community_services_dialog_hint_Community_code">Community code</string>
     <string name="community_toast_user_not_found">User not found</string>
     <string name="community_toast_community_not_found">Community not found</string>

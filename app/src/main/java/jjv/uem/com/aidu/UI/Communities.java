@@ -261,7 +261,7 @@ public class Communities extends AppCompatActivity implements NavigationView.OnN
 
     private void adduser(String username, final Community community) {
         DatabaseReference reference = database.getReference("user");
-        Query query = reference.orderByChild("displayName").equalTo(username);
+        Query query = reference.orderByChild("email").equalTo(username);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
 
             @Override
@@ -468,6 +468,7 @@ public class Communities extends AppCompatActivity implements NavigationView.OnN
             public void onClick(DialogInterface dialog, int which) {
                 // firebase sign out
                 FirebaseAuth.getInstance().signOut();
+                finish();
                 auth.signOut();
                 /*Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(new ResultCallback<Status>() {
                     @Override

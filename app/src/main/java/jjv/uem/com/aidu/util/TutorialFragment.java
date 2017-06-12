@@ -1,5 +1,6 @@
 package jjv.uem.com.aidu.util;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -7,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import jjv.uem.com.aidu.R;
+import jjv.uem.com.aidu.UI.MainActivity;
 
 /**
  * Created by javi_ on 11/06/2017.
@@ -58,6 +60,10 @@ public class TutorialFragment extends Fragment {
             case 3:
                 layoutResId = R.layout.tutorial_screen_four;
                 break;
+            case 4:
+                layoutResId = R.layout.tutorial_screen_four;
+                Intent i = new Intent(getContext(), MainActivity.class);
+                startActivity(i);
             default:
                 layoutResId = R.layout.tutorial_screen_four;
         }
