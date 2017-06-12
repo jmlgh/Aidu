@@ -180,11 +180,11 @@ public class CommunityServicesActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_chat) {
+        /*if (id == R.id.action_chat) {
             Log.d("accion ", "chat");
 
 
-        }
+        }*/
         if (id == R.id.action_moreInfo) {
             Log.d("accion ", "mas informacion");
 

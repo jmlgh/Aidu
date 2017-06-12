@@ -139,7 +139,7 @@
                 android:layout_alignParentBottom="true"
                 android:layout_margin="10dp"
                 android:background="@drawable/boton_redondo_oscuro"
-                android:text="@string/new_service_button_new"
+                android:text="@string/new_community_button_new"
                 android:textColor="@android:color/white"
                 android:textSize="20sp"
                 android:onClick="addCommunity"/>
