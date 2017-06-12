@@ -10,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,12 +39,15 @@ public class Chats extends AppCompatActivity {
     private RecyclerView recyclerView;
     private ChatServiceAdapter.OnItemClickListener listenerChatService;
     private ChatServiceAdapter adapter;
+    private TextView tv_chats_message;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chats);
+        tv_chats_message = (TextView) findViewById(R.id.tv_message_chats);
+        tv_chats_message.setVisibility(View.INVISIBLE);
 
         database = FirebaseDatabase.getInstance();
         fUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -90,6 +94,12 @@ public class Chats extends AppCompatActivity {
                             serviceList.add(s);
                         }
                         Log.i("chats R:",s.toString());
+                    }
+
+                    if(serviceList.size()<=0){
+                        tv_chats_message.setVisibility(View.VISIBLE);
+                    }else{
+                        tv_chats_message.setVisibility(View.INVISIBLE);
                     }
                     ChatServiceAdapter.OnItemClickListener l = initListener();
                     ChatServiceAdapter chatCardAdapter = new ChatServiceAdapter(Chats.this, serviceList, l);

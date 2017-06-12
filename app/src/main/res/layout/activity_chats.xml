@@ -14,9 +14,18 @@
 
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:id="@+id/list_service_chats"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="1dp" />
+
+        <jjv.uem.com.aidu.util.TextViewCustom
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/no_chats_message"
+            android:id="@+id/tv_message_chats"
+            android:textAlignment="center"
+            android:padding="@dimen/activity_vertical_margin"
+            />
     </LinearLayout>
 </LinearLayout>

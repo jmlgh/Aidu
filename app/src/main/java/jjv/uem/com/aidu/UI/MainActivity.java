@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity
     private CardAdapter.OnItemClickListener l;
     private Service_Adapter_RV adapter;
     private FloatingActionButton fabSearch, fabAddNew;
-    private TextView navUserName, navUserEmail;
+    private TextView navUserName, navUserEmail , tv_message;
     private View headerView;
     private NavigationView navigationView;
     private FirebaseUser usuarioLogeado;
@@ -83,6 +83,8 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        tv_message = (TextView) findViewById(R.id.tv_message_main);
+        tv_message.setVisibility(View.INVISIBLE);
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
@@ -206,6 +208,13 @@ public class MainActivity extends AppCompatActivity
                         }
 
                     }
+
+                    if(serviceList.size()<=0){
+                        tv_message.setVisibility(View.VISIBLE);
+                    }else{
+                        tv_message.setVisibility(View.INVISIBLE);
+                    }
+
                     l = initListener();
                     cardAdapter = new CardAdapter(MainActivity.this, serviceList, l);
                     RecyclerView.LayoutManager layoutManager = new GridLayoutManager(MainActivity.this, 2);

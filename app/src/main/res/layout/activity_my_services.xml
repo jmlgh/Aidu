@@ -18,6 +18,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+    <jjv.uem.com.aidu.util.TextViewCustom
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/no_services_message_my_services"
+        android:id="@+id/tv_message_my_services"
+        android:textAlignment="center"
+        android:padding="@dimen/activity_vertical_margin"
+        />
 
 
 </RelativeLayout>

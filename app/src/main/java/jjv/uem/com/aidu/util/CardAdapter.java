@@ -154,7 +154,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.MyViewHolder> 
                             new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    Toast.makeText(mContext, "delete: "+key, Toast.LENGTH_SHORT).show();
+                                   // Toast.makeText(mContext, "delete: "+key, Toast.LENGTH_SHORT).show();
                                     DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
                                     Query query = ref.child("services").orderByChild("serviceKey").equalTo(key);
                                     Query queryTwo = ref.child("user-services/"
@@ -166,19 +166,18 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.MyViewHolder> 
                                         @Override
                                         public void onDataChange(DataSnapshot dataSnapshot) {
 
-                                            Service s = dataSnapshot.getValue(Service.class);
-                                            if(s.getUserkey().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
-                                                for (DataSnapshot ds: dataSnapshot.getChildren()) {
-                                                    ds.getRef().removeValue();
-                                                }
-                                            }else{
-                                                /*TODO probar cuando se hagan reservas de servicios que no se hayan creado
-                                                s.setUserkeyInterested("");
-                                                dataSnapshot.getRef().setValue(s);*/
-                                            }
-
-
-
+                                                    for (DataSnapshot ds: dataSnapshot.getChildren()) {
+                                                        Service s = ds.getValue(Service.class);
+                                                        if(s!=null){
+                                                            if(s.getUserkey().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
+                                                                ds.getRef().removeValue();
+                                                            }else{
+                                                                s.setUserkeyInterested("");
+                                                                s.setState(Constants.DISPONIBLE);
+                                                                ds.getRef().setValue(s);
+                                                            }
+                                                        }
+                                                    }
                                         }
 
                                         @Override
@@ -186,8 +185,9 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.MyViewHolder> 
                                             Toast.makeText(mContext, mContext.getString(R.string.error_standar), Toast.LENGTH_SHORT).show();
                                         }
                                     };
-
+                                    Log.i("SERVICE TO DELETE"," primera q");
                                     query.addListenerForSingleValueEvent(vee);
+                                    Log.i("SERVICE TO DELETE"," segunda q");
                                     queryTwo.addListenerForSingleValueEvent(vee);
 
 
