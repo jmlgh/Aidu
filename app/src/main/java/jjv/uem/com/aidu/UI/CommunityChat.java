@@ -52,7 +52,7 @@ public class CommunityChat extends AppCompatActivity {
         communitykey = i.getStringExtra(Communities.KEY_COMMUNITY);
         etMensaje = (EditText) findViewById(R.id.et_msg_com);
         btnEnviar = (Button) findViewById(R.id.btn_enviar_com);
-
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         listaMensajes = (RecyclerView) findViewById(R.id.lista_msgs_com);
 
         initDatabase();

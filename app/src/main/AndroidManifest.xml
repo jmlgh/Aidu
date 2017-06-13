@@ -117,7 +117,7 @@
         <activity
             android:name=".UI.ChatConversation"
             android:label="@string/title_activity_chat_conversation"
-            android:parentActivityName=".UI.MainActivity"
+            android:parentActivityName=".UI.Chats"
             android:screenOrientation="portrait" />
         <activity
             android:name=".UI.Splash"
@@ -137,8 +137,7 @@
             android:theme="@style/FullscreenTheme"></activity>
         <activity android:name=".UI.CommunityChat"
             android:screenOrientation="portrait"
-            android:label="@string/title_activity_chat_community"
-            android:parentActivityName=".UI.MainActivity"></activity>
+            android:label="@string/title_activity_chat_community"></activity>
     </application>
 
 
