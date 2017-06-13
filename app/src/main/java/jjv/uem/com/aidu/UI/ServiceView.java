@@ -136,9 +136,9 @@ public class ServiceView extends AppCompatActivity {
                         tvPoints.setText(getString(R.string.service_points, service.getPrice_points()));
                         tvDateTime.setText(service.getDate() + " - "+service.getHour());
                         String title = service.getTitle();
-                        if(title.length()>LONGITUD_TITLE){
-                            title = service.getTitle().substring(0,LONGITUD_TITLE)+"...";
-                        }
+                        //if(title.length()>LONGITUD_TITLE){
+                            //title = service.getTitle().substring(0,LONGITUD_TITLE)+"...";
+                        //}
                         tvServiceTitle.setText(title);
                         tvDetails.setText(service.getDescription());
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
