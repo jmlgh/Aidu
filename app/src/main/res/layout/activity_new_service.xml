@@ -50,18 +50,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="@dimen/atribute_margin_bottom"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
-                <Spinner
+                <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
                     android:id="@+id/sp_category"
-                    android:layout_width="match_parent"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:hint="@string/select_category"
+                    app:met_floatingLabel="normal"
                     android:layout_weight="2.5" />
 
-                <Spinner
+                <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
                     android:id="@+id/sp_kind"
-                    android:layout_width="match_parent"
+                    android:hint="@string/select_kind"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
+                    app:met_floatingLabel="normal"
+                    android:gravity="center"
                     android:layout_weight="4" />
             </LinearLayout>
 
@@ -146,13 +152,13 @@
                 android:orientation="horizontal"
                 android:visibility="invisible">
 
-                <TextView
+                <!--<TextView
                     android:id="@+id/tv_community"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
                     android:text="@string/new_service_hint_community"
-                    android:textSize="@dimen/new_service_text_size" />
+                    android:textSize="@dimen/new_service_text_size" />-->
 
                 <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
                     android:id="@+id/mbs_community"

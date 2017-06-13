@@ -105,7 +105,7 @@ public class NewService extends AppCompatActivity {
     private Images_Adapter adapter;
     private TextView tv_date, tv_hour, tv_points, tv_photo, tv_community;
     private EditText et_title, et_adress, et_description;
-    private Spinner sp_category, sp_kind;
+    private MaterialBetterSpinner sp_category, sp_kind;
     private SeekBar sb_points;
     private MaterialBetterSpinner mbs_community ;
     private LinearLayout lt_spinner;
@@ -130,6 +130,9 @@ public class NewService extends AppCompatActivity {
     private LatLng cordenades;
     private double longitude;
     private double latitude;
+    private String kind_selected;
+    private String category_selected;
+    private int icon_selected;
 
     private ArrayList<Community> myCommunities;
     private ArrayList<String> myCommunitiesnames;
@@ -154,6 +157,9 @@ public class NewService extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_service);
         getUserData();
+        kind_selected="";
+        category_selected="";
+        icon_selected=-1;
 
         initKinds();
         initCategories();
@@ -196,9 +202,9 @@ public class NewService extends AppCompatActivity {
         tv_hour = (TextView) findViewById(R.id.tv_hour);
         tv_points = (TextView) findViewById(R.id.tv_points);
         tv_photo = (TextView) findViewById(R.id.tv_photos);
-        tv_community = (TextView) findViewById(R.id.tv_community);
-        sp_category = (Spinner) findViewById(R.id.sp_category);
-        sp_kind = (Spinner) findViewById(R.id.sp_kind);
+        //tv_community = (TextView) findViewById(R.id.tv_community);
+        sp_category = (MaterialBetterSpinner) findViewById(R.id.sp_category);
+        sp_kind = (MaterialBetterSpinner) findViewById(R.id.sp_kind);
         sb_points = (SeekBar) findViewById(R.id.sb_points);
         btn_newService = (Button) findViewById(R.id.btn_new_service);
         twv_photos = (TwoWayView) findViewById(R.id.twv_photos);
@@ -231,6 +237,7 @@ public class NewService extends AppCompatActivity {
         sp_category.setAdapter(adapter_category);
         ArrayAdapter<String> adapter_kind = new ArrayAdapter(this, android.R.layout.simple_spinner_item, kinds);
         sp_kind.setAdapter(adapter_kind);
+
 
         tv_date.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -265,6 +272,24 @@ public class NewService extends AppCompatActivity {
                 }
             }
         });
+
+
+        sp_category.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                icon_selected = position;
+                category_selected=categories[position];
+            }
+        });
+
+        sp_kind.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                kind_selected=kinds[position];
+            }
+        });
+
+
 
         sb_points.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -308,11 +333,13 @@ public class NewService extends AppCompatActivity {
         tv_points.setTypeface(bubblerFont);
         tv_date.setTypeface(bubblerFont);
         tv_hour.setTypeface(bubblerFont);
-        tv_community.setTypeface(bubblerFont);
+        //tv_community.setTypeface(bubblerFont);
         mbs_community.setTypeface(bubblerFont);
         tv_photo.setTypeface(bubblerFont);
         et_description.setTypeface(bubblerFont);
         et_title.setTypeface(bubblerFont);
+        sp_category.setTypeface(bubblerFont);
+        sp_kind.setTypeface(bubblerFont);
 
         et_adress.setTypeface(bubblerFont);
         btn_newService.setTypeface(bubblerFont);
@@ -349,7 +376,11 @@ public class NewService extends AppCompatActivity {
             Toast.makeText(this, getText(R.string.new_service_toast_photos), Toast.LENGTH_SHORT).show();
         } else if (communityKey == null) {
             Toast.makeText(this, getText(R.string.new_service_toast_no_community), Toast.LENGTH_SHORT).show();
-        } else {
+        } else if(icon_selected==-1||category_selected.equals("")) {
+            Toast.makeText(this, getText(R.string.new_service_toast_no_category), Toast.LENGTH_SHORT).show();
+        }else if(kind_selected.equals("")){
+            Toast.makeText(this, getText(R.string.new_service_toast_no_kind), Toast.LENGTH_SHORT).show();
+        }else {
             pd = new ProgressDialog(NewService.this);
             pd.setMessage("loading");
             pd.show();
@@ -369,10 +400,10 @@ public class NewService extends AppCompatActivity {
             service.setTitle(et_title.getText().toString());
             service.setLocation(et_adress.getText().toString());
             service.setPrice_points("" + pricePoints);
-            service.setCategory(sp_category.getSelectedItem().toString());
+            service.setCategory(category_selected);
             service.setDate(tv_date.getText().toString());
             service.setHour(tv_hour.getText().toString());
-            service.setKind(sp_kind.getSelectedItem().toString());
+            service.setKind(kind_selected);
             service.setUserkey(userUid);
             service.setUserName(userName);
             service.setCommunity(communityKey);
@@ -381,7 +412,7 @@ public class NewService extends AppCompatActivity {
             service.setUserkeyInterested("");
             service.setLatitude(latitude);
             service.setLongitude(longitude);
-            service.setIcon(sp_category.getSelectedItemPosition());
+            service.setIcon(icon_selected);
 
 
             service.setPhotos(photo);

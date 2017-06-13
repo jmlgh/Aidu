@@ -208,6 +208,10 @@
     <string name="no_comunities_message">Create or join a community</string>
     <string name="no_chats_message">Create or join a service</string>
     <string name="title_activity_chat_community">Community Talks</string>
+    <string name="select_category">Category</string>
+    <string name="select_kind">Kind</string>
+    <string name="new_service_toast_no_category">Please , select category</string>
+    <string name="new_service_toast_no_kind">Please select a kind</string>
 
 
 </resources>

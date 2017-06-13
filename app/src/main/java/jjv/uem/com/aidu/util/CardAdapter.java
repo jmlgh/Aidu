@@ -140,9 +140,9 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.MyViewHolder> 
 
             switch (menuItem.getItemId()) {
                 case R.id.action_more_info:
-                    Toast.makeText(mContext, "Add to favourite "+key, Toast.LENGTH_SHORT).show();
-
-
+                    Intent i = new Intent(mContext,ServiceView.class);
+                    i.putExtra(MyServices.KEY_SERVICE,key);
+                    mContext.startActivity(i);
                     return true;
                 case R.id.action_delete:
 
