@@ -103,16 +103,14 @@ public class ServiceView extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if(service.getUserkey().equals(auth.getCurrentUser().getUid())){
-                    Toast.makeText(getBaseContext(),R.string.error_service_yours,Toast.LENGTH_SHORT).show();
-                }else{
+
                     Intent i = new Intent(getBaseContext(),ChatConversation.class);
                     i.putExtra(SERVICE_KEY,service.getServiceKey());
                     i.putExtra(SERVICE_USER_KEY,service.getUserkey());
                     i.putExtra(SERVICE_KIND,service.getKind());
                     i.putExtra(SERVICE_STATE,service.getState());
                     startActivity(i);
-                }
+
 
             }
         });
