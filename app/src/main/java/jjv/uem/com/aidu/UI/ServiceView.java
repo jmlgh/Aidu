@@ -103,15 +103,12 @@ public class ServiceView extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-
                     Intent i = new Intent(getBaseContext(),ChatConversation.class);
                     i.putExtra(SERVICE_KEY,service.getServiceKey());
                     i.putExtra(SERVICE_USER_KEY,service.getUserkey());
                     i.putExtra(SERVICE_KIND,service.getKind());
                     i.putExtra(SERVICE_STATE,service.getState());
                     startActivity(i);
-
-
             }
         });
 
