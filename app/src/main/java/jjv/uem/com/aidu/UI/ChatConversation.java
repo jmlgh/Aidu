@@ -164,41 +164,94 @@ public class ChatConversation extends AppCompatActivity {
 
     private void setButtonsVisibility() {
 
-        if(estate.equals(Constants.FINALIZADO)){
-            btnAceptar.setVisibility(View.INVISIBLE);
-            btnDenegar.setVisibility(View.INVISIBLE);
-            btnFinalizar.setVisibility(View.INVISIBLE);
-        }else{
-            if(!usuarioLogueado.getUid().equals(keyUserProp)){
-
-                if(estate.equals(Constants.DISPONIBLE)){
-                    btnDenegar.setVisibility(View.INVISIBLE);
-                    btnAceptar.setVisibility(View.VISIBLE);
-                }else if(estate.equals(Constants.FINALIZADO)) {
-                    btnDenegar.setVisibility(View.INVISIBLE);
-                    btnAceptar.setVisibility(View.INVISIBLE);
-                }else{
-                    btnDenegar.setVisibility(View.VISIBLE);
-                    btnAceptar.setVisibility(View.INVISIBLE);
-                }
-
+        if(kind.equals(Constants.APPLY)){
+            if(estate.equals(Constants.FINALIZADO)){
+                btnAceptar.setVisibility(View.INVISIBLE);
+                btnDenegar.setVisibility(View.INVISIBLE);
                 btnFinalizar.setVisibility(View.INVISIBLE);
-
             }else {
-                if (estate.equals(Constants.ESPERA)) {
-                    btnDenegar.setVisibility(View.VISIBLE);
-                    btnAceptar.setVisibility(View.VISIBLE);
+                if (!usuarioLogueado.getUid().equals(keyUserProp)) {
+
+                    if (estate.equals(Constants.DISPONIBLE)) {
+                        btnDenegar.setVisibility(View.INVISIBLE);
+                        btnAceptar.setVisibility(View.VISIBLE);
+                    } else if (estate.equals(Constants.FINALIZADO)) {
+                        btnDenegar.setVisibility(View.INVISIBLE);
+                        btnAceptar.setVisibility(View.INVISIBLE);
+                    } else {
+                        btnDenegar.setVisibility(View.VISIBLE);
+                        btnAceptar.setVisibility(View.INVISIBLE);
+                    }
+
                     btnFinalizar.setVisibility(View.INVISIBLE);
-                } else if (estate.equals(Constants.EN_CURSO)) {
-                    btnDenegar.setVisibility(View.VISIBLE);
-                    btnAceptar.setVisibility(View.INVISIBLE);
-                    btnFinalizar.setVisibility(View.VISIBLE);
-                } else{
-                    btnDenegar.setVisibility(View.INVISIBLE);
-                    btnAceptar.setVisibility(View.INVISIBLE);
-                    btnFinalizar.setVisibility(View.INVISIBLE);
+
+                } else {
+                    if (estate.equals(Constants.ESPERA)) {
+                        btnDenegar.setVisibility(View.VISIBLE);
+                        btnAceptar.setVisibility(View.VISIBLE);
+                        btnFinalizar.setVisibility(View.INVISIBLE);
+                    } else if (estate.equals(Constants.EN_CURSO)) {
+                        btnDenegar.setVisibility(View.VISIBLE);
+                        btnAceptar.setVisibility(View.INVISIBLE);
+                        btnFinalizar.setVisibility(View.VISIBLE);
+                    } else {
+                        btnDenegar.setVisibility(View.INVISIBLE);
+                        btnAceptar.setVisibility(View.INVISIBLE);
+                        btnFinalizar.setVisibility(View.INVISIBLE);
+                    }
                 }
             }
+        }else{
+            //si es supply
+            if(estate.equals(Constants.FINALIZADO)){
+                btnAceptar.setVisibility(View.INVISIBLE);
+                btnDenegar.setVisibility(View.INVISIBLE);
+                btnFinalizar.setVisibility(View.INVISIBLE);
+            }else {
+
+                if (usuarioLogueado.getUid().equals(keyUserProp)) {
+                        //usuario propietario es igual al logueado y es tipo supply
+                    if (estate.equals(Constants.DISPONIBLE)|| estate.equals(Constants.FINALIZADO)) {
+                        btnDenegar.setVisibility(View.INVISIBLE);
+                        btnAceptar.setVisibility(View.INVISIBLE);
+                        btnFinalizar.setVisibility(View.INVISIBLE);
+                    } else if (estate.equals(Constants.ESPERA)) {
+                        btnDenegar.setVisibility(View.VISIBLE);
+                        btnAceptar.setVisibility(View.VISIBLE);
+                        btnFinalizar.setVisibility(View.INVISIBLE);
+                    } else {
+                        btnDenegar.setVisibility(View.VISIBLE);
+                        btnAceptar.setVisibility(View.INVISIBLE);
+                        btnFinalizar.setVisibility(View.INVISIBLE);
+                    }
+
+
+
+                } else {
+                    //usuario propietario no es el logueado y es tipo supply
+                    if (estate.equals(Constants.ESPERA)) {
+                        btnDenegar.setVisibility(View.VISIBLE);
+                        btnAceptar.setVisibility(View.INVISIBLE);
+                        btnFinalizar.setVisibility(View.INVISIBLE);
+                    } else if (estate.equals(Constants.EN_CURSO)) {
+                        btnDenegar.setVisibility(View.VISIBLE);
+                        btnAceptar.setVisibility(View.INVISIBLE);
+                        btnFinalizar.setVisibility(View.VISIBLE);
+                    } else if(estate.equals(Constants.DISPONIBLE)) {
+                        btnDenegar.setVisibility(View.INVISIBLE);
+                        btnAceptar.setVisibility(View.VISIBLE);
+                        btnFinalizar.setVisibility(View.INVISIBLE);
+                    }else{
+                        btnDenegar.setVisibility(View.INVISIBLE);
+                        btnAceptar.setVisibility(View.INVISIBLE);
+                        btnFinalizar.setVisibility(View.INVISIBLE);
+                    }
+                }
+            }
+
+
+
+
         }
 
 
