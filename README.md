@@ -11,4 +11,4 @@ Video DEMO:
 [![Demo Video - AIDU](https://i.ytimg.com/vi_webp/KSeu416yIJk/sddefault.webp)](https://youtu.be/KSeu416yIJk)
 
 
-![alt tag](https://github.com/jmlgh/Aidu/blob/master/app/src/main/res/drawable/aidu.png) [Download from Google Play](https://play.google.com)
+![alt tag](https://github.com/jmlgh/Aidu/blob/master/app/src/main/res/drawable/aidu.png) [Download from Google Play](https://play.google.com/store/apps/details?id=jjv.uem.com.aidu)
