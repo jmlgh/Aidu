@@ -55,6 +55,7 @@ public class CommunityChat extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         listaMensajes = (RecyclerView) findViewById(R.id.lista_msgs_com);
 
+
         initDatabase();
 
         btnEnviar.setOnClickListener(new View.OnClickListener() {

@@ -34,7 +34,6 @@ import jjv.uem.com.aidu.util.Constants;
 public class ChatConversation extends AppCompatActivity {
 
     private FirebaseDatabase database;
-
     private String serviceKey;
     private String keyUserProp;
     private String kind;
