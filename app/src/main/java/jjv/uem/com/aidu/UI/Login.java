@@ -205,6 +205,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                                         i = new Intent(Login.this, MainActivity.class);
                                     }
                                     startActivity(i);
+
                                 }
 
                                 @Override
@@ -237,6 +238,11 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         if(authStateListener != null){
             auth.removeAuthStateListener(authStateListener);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        finishAffinity();
     }
 
     @Override

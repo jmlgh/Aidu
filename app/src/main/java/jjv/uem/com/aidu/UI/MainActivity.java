@@ -404,6 +404,7 @@ public class MainActivity extends AppCompatActivity
                     @Override
                     public void onResult(@NonNull Status status) {
                         mGoogleApiClient.disconnect();
+                        finish();
                     }
                 });
                 // google sign out
