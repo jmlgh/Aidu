@@ -18,7 +18,7 @@ import jjv.uem.com.aidu.UI.Chats;
  */
 
 public class ChatServiceAdapter extends RecyclerView.Adapter<ChatServiceAdapter.ViewHolder> {
-    private static final int LONGITUD_CARD = 14;
+    private static final int LONGITUD_CARD = 20;
     private Context context;
     private ArrayList<Service> serviceList;
     private OnItemClickListener listener;
